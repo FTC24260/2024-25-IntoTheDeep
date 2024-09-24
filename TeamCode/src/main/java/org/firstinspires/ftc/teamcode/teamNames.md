@@ -1,5 +1,6 @@
 # Use this to test if git permissions are working or not
 
 Arnav Chauhan
+Arjun Rao
 Sateesh Pallapothu
 Santosh Pallapothu
