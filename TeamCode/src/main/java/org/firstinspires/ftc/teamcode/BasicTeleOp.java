@@ -95,7 +95,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             // Robot Speed
-            if (gamepad1.a == true) {
+            if (gamepad1.a) {
                 speed = 0.25;
             } else if (gamepad1.b) {
                 speed = 0.5;
@@ -103,31 +103,37 @@ public class BasicTeleOp extends LinearOpMode {
                 speed = 0.75;
             } else if (gamepad1.x) {
                 speed = 1;
-            }
+            } else if (gamepad1.left_trigger > 0.1) {
+                speed = 1;
+            } else if (gamepad1.right_trigger > 0.1) {
+                speed = 0.25;
 
-            //Claw open and close
-            if (gamepad2.a) {
-                servoClaw.setPosition(1);
-            if (gamepad2.b) {
-                servoClaw.setPosition(0);
-            }
-            if (gamepad2.y){
-                ClawAngle.setTargetPosition(100);
-            }
-            if(gamepad2.right_trigger > 0.1){
-                ArmMotor.setTargetPosition(100);
-                sleep(500);
-                ClawAngle.setTargetPosition(-100);
-            }
 
-                // Arm Motor up and down
-                } if (gamepad2.x) {
-                ArmMotor.setTargetPosition(-1160);
-                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ArmMotor.setPower(0.5);
+                //Claw open and close
+                if (gamepad2.a) {
+                    servoClaw.setPosition(1);
+                    if (gamepad2.b) {
+                        servoClaw.setPosition(0);
+                    }
+                    if (gamepad2.y) {
+                        ClawAngle.setTargetPosition(100);
+                    }
+                    if (gamepad2.right_trigger > 0.1) {
+                        ArmMotor.setTargetPosition(100);
+                        sleep(500);
+                        ClawAngle.setTargetPosition(-100);
+                    }
+
+                    // Arm Motor up and down
+                }
+                if (gamepad2.x) {
+                    ArmMotor.setTargetPosition(-1160);
+                    ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor.setPower(0.5);
 
                 }
             }
         }
     }
+}
 
