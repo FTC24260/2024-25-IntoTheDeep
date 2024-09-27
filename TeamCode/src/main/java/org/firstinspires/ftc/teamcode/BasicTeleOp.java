@@ -33,8 +33,8 @@ public class BasicTeleOp extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
-        ArmMotor = hardwareMap.get(DcMotor.class, "chainMotor1");
-        ClawAngle = hardwareMap.get(DcMotor.class, "chainMotor2");
+        ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+        ClawAngle = hardwareMap.get(DcMotor.class, "ClawAngle");
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
         servoClaw = hardwareMap.get(Servo.class, "servoClaw");
 
