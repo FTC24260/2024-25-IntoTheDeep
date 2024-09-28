@@ -33,14 +33,14 @@ public class BasicTeleOp extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
-        ArmMotor = hardwareMap.get(DcMotor.class, "chainMotor1");
-        ClawAngle = hardwareMap.get(DcMotor.class, "chainMotor2");
+        ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+        ClawAngle = hardwareMap.get(DcMotor.class, "ClawAngle");
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
         servoClaw = hardwareMap.get(Servo.class, "servoClaw");
 
 
-        ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ClawAngle.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //ClawAngle.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -66,7 +66,7 @@ public class BasicTeleOp extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to c
             // combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
+            double drive = gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
             leftFrontDrive.setPower((drive + turn + strafe) * speed);
@@ -115,7 +115,7 @@ public class BasicTeleOp extends LinearOpMode {
                     if (gamepad2.b) {
                         servoClaw.setPosition(0);
                     }
-                    if (gamepad2.y) {
+                    /* if (gamepad2.y) {
                         ClawAngle.setTargetPosition(100);
                     }
                     if (gamepad2.right_trigger > 0.1) {
@@ -130,7 +130,7 @@ public class BasicTeleOp extends LinearOpMode {
                     ArmMotor.setTargetPosition(-1160);
                     ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     ArmMotor.setPower(0.5);
-
+                */
                 }
             }
         }
