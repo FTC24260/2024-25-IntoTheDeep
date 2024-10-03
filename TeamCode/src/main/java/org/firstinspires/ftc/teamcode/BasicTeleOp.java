@@ -14,10 +14,10 @@ import com.qualcomm.robotcore.util.Range;
 
 public class BasicTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotor leftFront = null;
+    private DcMotor rightFront = null;
+    private DcMotor leftBack = null;
+    private DcMotor rightBack = null;
     private DcMotor ArmMotor = null;
     private DcMotor ClawAngle = null;
     private DcMotor linearSlide = null;
@@ -29,10 +29,10 @@ public class BasicTeleOp extends LinearOpMode {
         telemetry.update();
 
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
         ClawAngle = hardwareMap.get(DcMotor.class, "ClawAngle");
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
@@ -42,10 +42,10 @@ public class BasicTeleOp extends LinearOpMode {
         //ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //ClawAngle.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
         double speed = 0.5;
 
         // Wait for the game to start (driver presses PLAY)
@@ -69,21 +69,21 @@ public class BasicTeleOp extends LinearOpMode {
             double drive = gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
-            leftFrontDrive.setPower((drive + turn + strafe) * speed);
-            rightFrontDrive.setPower((drive - turn - strafe) * speed);
-            rightBackDrive.setPower((drive - turn + strafe) * speed);
-            leftBackDrive.setPower((drive + turn - strafe) * speed);
+            leftFront.setPower((drive + turn + strafe) * speed);
+            rightFront.setPower((drive - turn - strafe) * speed);
+            rightBack.setPower((drive - turn + strafe) * speed);
+            leftBack.setPower((drive + turn - strafe) * speed);
 
             if (gamepad1.right_stick_y == 0) {
-                leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             } else if (gamepad1.left_stick_x == 0) {
-                leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
             if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
@@ -115,7 +115,11 @@ public class BasicTeleOp extends LinearOpMode {
                     if (gamepad2.b) {
                         servoClaw.setPosition(0);
                     }
+<<<<<<< HEAD
                     /* if (gamepad2.y) {
+=======
+                     if (gamepad2.y) {
+>>>>>>> 207484c86c76c6ce6f51a095c56d85cce3c83812
                         ClawAngle.setTargetPosition(100);
                     }
                     if (gamepad2.right_trigger > 0.1) {
