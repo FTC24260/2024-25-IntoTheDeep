@@ -222,6 +222,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
     }
 
+    public void driveFieldCentric(double x, double y, double omega) {
+        setWeightedDrivePower(new Pose2d(x, y, omega));
+    }
+
     public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
         PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
                 coefficients.p, coefficients.i, coefficients.d,

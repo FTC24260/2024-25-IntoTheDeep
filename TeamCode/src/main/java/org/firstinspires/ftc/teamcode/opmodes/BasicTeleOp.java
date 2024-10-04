@@ -1,13 +1,10 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name="Basic: Teleop", group="Linear OpMode")
@@ -22,6 +19,7 @@ public class BasicTeleOp extends LinearOpMode {
     private DcMotor ClawAngle = null;
     private DcMotor linearSlide = null;
     private Servo servoClaw = null;
+
 
     @Override
     public void runOpMode() {
@@ -115,7 +113,7 @@ public class BasicTeleOp extends LinearOpMode {
                     if (gamepad2.b) {
                         servoClaw.setPosition(0);
                     }
-<<<<<<< HEAD
+
                     /* if (gamepad2.y) {
 =======
                      if (gamepad2.y) {
