@@ -13,6 +13,7 @@ public class Scheduler {
 
     public void run() {
         Iterator<Command> iterator = commands.iterator();
+
         while (iterator.hasNext()) {
             Command command = iterator.next();
             if (!command.isFinished()) {

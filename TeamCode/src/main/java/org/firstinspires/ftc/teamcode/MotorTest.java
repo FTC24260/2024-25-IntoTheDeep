@@ -56,9 +56,6 @@ public class MotorTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
-            double rightPower;
 
                 if (gamepad2.x) {
                     linearSlide.setPower(0.1);
