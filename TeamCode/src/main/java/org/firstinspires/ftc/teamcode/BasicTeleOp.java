@@ -115,7 +115,7 @@ public class BasicTeleOp extends LinearOpMode {
                     if (gamepad2.b) {
                         servoClaw.setPosition(0);
                     }
-<<<<<<< HEAD
+
                     /* if (gamepad2.y) {
 =======
                      if (gamepad2.y) {
