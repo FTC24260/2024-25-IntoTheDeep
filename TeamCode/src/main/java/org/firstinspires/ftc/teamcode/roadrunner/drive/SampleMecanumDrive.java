@@ -21,6 +21,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -122,7 +123,11 @@ public class SampleMecanumDrive extends MecanumDrive {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        // TODO: reverse any motors using DcMotor.setDirection()
+        // reverse any motors using DcMotor.setDirection()
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -222,8 +227,16 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
     }
 
-    public void driveFieldCentric(double x, double y, double omega) {
-        setWeightedDrivePower(new Pose2d(x, y, omega));
+    public void driveFieldCentric(double xVel, double yVel, double turnVel) {
+        double xVelocity = Math.max(-1.0, Math.min(1.0, xVel));
+        double yVelocity = Math.max(-1.0, Math.min(1.0, yVel));
+        double turnVelocity = Math.max(-1.0, Math.min(1.0, turnVel));
+
+        double heading = getRawExternalHeading();
+        double adjustedX = xVelocity * Math.cos(heading) - yVelocity * Math.sin(heading);
+        double adjustedY = xVelocity * Math.sin(heading) + yVelocity * Math.cos(heading);
+
+        setWeightedDrivePower(new Pose2d(adjustedX, adjustedY, turnVelocity));
     }
 
     public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {

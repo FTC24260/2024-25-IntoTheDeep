@@ -13,8 +13,8 @@ public class BasicTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
-    private DcMotor leftBack = null;
-    private DcMotor rightBack = null;
+    private DcMotor leftRear = null;
+    private DcMotor rightRear = null;
     private DcMotor ArmMotor = null;
     private DcMotor ClawAngle = null;
     private DcMotor linearSlide = null;
@@ -29,8 +29,8 @@ public class BasicTeleOp extends LinearOpMode {
 
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
         ClawAngle = hardwareMap.get(DcMotor.class, "ClawAngle");
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
@@ -41,9 +41,9 @@ public class BasicTeleOp extends LinearOpMode {
         //ClawAngle.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
         double speed = 0.5;
 
         // Wait for the game to start (driver presses PLAY)
@@ -69,19 +69,19 @@ public class BasicTeleOp extends LinearOpMode {
             double strafe = gamepad1.left_stick_x;
             leftFront.setPower((drive + turn + strafe) * speed);
             rightFront.setPower((drive - turn - strafe) * speed);
-            rightBack.setPower((drive - turn + strafe) * speed);
-            leftBack.setPower((drive + turn - strafe) * speed);
+            rightRear.setPower((drive - turn + strafe) * speed);
+            leftRear.setPower((drive + turn - strafe) * speed);
 
             if (gamepad1.right_stick_y == 0) {
                 leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             } else if (gamepad1.left_stick_x == 0) {
                 leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
             if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
