@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 
@@ -25,7 +24,7 @@ public class TestMecanumFieldCentric extends LinearOpMode {
             double turn = gamepad1.right_stick_x;
 
 
-            mecanum.drive(x, y, turn);
+            mecanum.driveFieldCentric(x, y, turn);
 
             telemetry.addData("x", x);
             telemetry.addData("y", y);
