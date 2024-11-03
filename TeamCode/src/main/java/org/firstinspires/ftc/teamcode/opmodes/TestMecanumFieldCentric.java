@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 public class TestMecanumFieldCentric extends LinearOpMode {
     private Mecanum mecanum;
 
-
     @Override
     public void runOpMode(){
         mecanum = new Mecanum();
@@ -17,20 +16,17 @@ public class TestMecanumFieldCentric extends LinearOpMode {
 
         waitForStart();
 
-
         while (opModeIsActive()) {
-            double x = gamepad1.left_stick_x;
-            double y = -gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
-
+            double x = gamepad1.left_stick_x/4;
+            double y = -gamepad1.left_stick_y/4;  // Negated to match standard coordinate system
+            double turn = gamepad1.right_stick_x/4;
 
             mecanum.driveFieldCentric(x, y, turn);
 
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("turn", turn);
+            // Add more detailed telemetry
+            telemetry.addData("Inputs", "X: %.2f, Y: %.2f, Turn: %.2f", x, y, turn);
+            telemetry.addData("Heading (deg)", "%.2f", Math.toDegrees(mecanum.drivetrain.getRawExternalHeading()));
             telemetry.update();
-
         }
     }
 }

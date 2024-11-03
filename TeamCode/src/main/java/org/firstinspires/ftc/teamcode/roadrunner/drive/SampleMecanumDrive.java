@@ -228,14 +228,17 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void driveFieldCentric(double xVel, double yVel, double turnVel) {
+
         double xVelocity = Math.max(-1.0, Math.min(1.0, xVel));
         double yVelocity = Math.max(-1.0, Math.min(1.0, yVel));
         double turnVelocity = Math.max(-1.0, Math.min(1.0, turnVel));
 
-        double heading = getRawExternalHeading();
-        double adjustedX = xVelocity * Math.cos(heading) - yVelocity * Math.sin(heading);
-        double adjustedY = xVelocity * Math.sin(heading) + yVelocity * Math.cos(heading);
 
+        double heading = getRawExternalHeading();
+        double adjustedX = xVelocity * Math.cos(-heading) - yVelocity * Math.sin(-heading);
+        double adjustedY = xVelocity * Math.sin(-heading) + yVelocity * Math.cos(-heading);
+
+        // Send the rotated values to the drivetrain
         setWeightedDrivePower(new Pose2d(adjustedX, adjustedY, turnVelocity));
     }
 
