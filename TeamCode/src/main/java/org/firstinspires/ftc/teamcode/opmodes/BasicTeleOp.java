@@ -15,10 +15,6 @@ public class BasicTeleOp extends LinearOpMode {
     private DcMotor rightFront = null;
     private DcMotor leftRear = null;
     private DcMotor rightRear = null;
-    private DcMotor ArmMotor = null;
-    private DcMotor ClawAngle = null;
-    private DcMotor linearSlide = null;
-    private Servo servoClaw = null;
 
 
     @Override
@@ -31,10 +27,6 @@ public class BasicTeleOp extends LinearOpMode {
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
-        ClawAngle = hardwareMap.get(DcMotor.class, "ClawAngle");
-        linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
-        servoClaw = hardwareMap.get(Servo.class, "servoClaw");
 
 
         //ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -57,6 +49,7 @@ public class BasicTeleOp extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -84,14 +77,6 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
-            if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
-                linearSlide.setPower((gamepad2.left_stick_y));
-                //linearSlide.setPower(0);
-            } else {
-                linearSlide.setPower(0);
-                linearSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-
             // Robot Speed
             if (gamepad1.a) {
                 speed = 0.25;
@@ -101,41 +86,15 @@ public class BasicTeleOp extends LinearOpMode {
                 speed = 0.75;
             } else if (gamepad1.x) {
                 speed = 1;
-            } else if (gamepad1.left_trigger > 0.1) {
-                speed = 1;
             } else if (gamepad1.right_trigger > 0.1) {
                 speed = 0.25;
-
-
-                //Claw open and close
-                if (gamepad2.a) {
-                    servoClaw.setPosition(1);
-                    if (gamepad2.b) {
-                        servoClaw.setPosition(0);
-                    }
-
-                    /* if (gamepad2.y) {
-=======
-                     if (gamepad2.y) {
->>>>>>> 207484c86c76c6ce6f51a095c56d85cce3c83812
-                        ClawAngle.setTargetPosition(100);
-                    }
-                    if (gamepad2.right_trigger > 0.1) {
-                        ArmMotor.setTargetPosition(100);
-                        sleep(500);
-                        ClawAngle.setTargetPosition(-100);
-                    }
-
-                    // Arm Motor up and down
-                }
-                if (gamepad2.x) {
-                    ArmMotor.setTargetPosition(-1160);
-                    ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    ArmMotor.setPower(0.5);
-                */
-                }
+            } else if (gamepad1.right_trigger < 0.1) {
+                speed = 0.5;
+            } else if (gamepad1.left_trigger > 0.1) {
+                speed = 1;
+            } else if (gamepad1.left_trigger < 0.1) {
+                speed = 0.5;
             }
         }
     }
 }
-
