@@ -17,9 +17,9 @@ public class TestMecanumFieldCentric extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            double x = gamepad1.left_stick_x/4;
-            double y = -gamepad1.left_stick_y/4;  // Negated to match standard coordinate system
-            double turn = gamepad1.right_stick_x/4;
+            double x = gamepad1.left_stick_x;
+            double y = -gamepad1.left_stick_y;  // Negated to match standard coordinate system
+            double turn = gamepad1.right_stick_x;
 
             mecanum.driveFieldCentric(x, y, turn);
 
