@@ -19,7 +19,6 @@ public class BasicTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        telemetry.addData("s", "forlan");
         telemetry.update();
 
 
