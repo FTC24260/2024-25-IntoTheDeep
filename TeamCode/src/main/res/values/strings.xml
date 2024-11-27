@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/strings.xml -->
 <resources>
-
+    <string name="pref_rc_connected">RC Connected</string>
+    <string name="pref_warn_about_2_4_ghz_band">Warn about 2.4 GHz band</string>
+    <string name="pref_warn_about_obsolete_software">Warn about obsolete software</string>
+    <string name="pref_warn_about_mismatched_app_versions">Warn about mismatched app versions</string>
+    <string name="pref_warn_about_incorrect_clocks">Warn about incorrect clocks</string>
+    <string name="pref_wifi_automute">WiFi Automute</string>
+    <string name="pref_pairing_kind">Pairing Kind</string>
+    <string name="toastRobotSetupComplete">Robot setup complete</string>
+    <string name="toastRestartRobotComplete">Robot restart complete</string>
+    <string name="pref_app_theme">App Theme</string>
+    <string name="appThemeChangeRestartNotifyRC">App theme change requires restart</string>
 </resources>
