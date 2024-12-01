@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class IntakeClaw extends SubsystemParent {
+public class OuttakeClaw extends SubsystemParent {
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.75;
     private ClawState clawState = ClawState.CLOSED;

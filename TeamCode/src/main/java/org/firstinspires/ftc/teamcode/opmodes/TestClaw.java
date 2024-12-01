@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.subsystems.IntakeClaw;
+import org.firstinspires.ftc.teamcode.subsystems.OuttakeClaw;
 
 @TeleOp
 public class TestClaw extends LinearOpMode {
 
-    private IntakeClaw claw = new IntakeClaw();
+    private OuttakeClaw claw = new OuttakeClaw();
 
     @Override
     public void runOpMode() throws InterruptedException {
