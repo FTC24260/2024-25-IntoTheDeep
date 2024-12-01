@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeClaw;
 
 public class Transfer extends SubsystemParent {
 
@@ -16,7 +17,7 @@ public class Transfer extends SubsystemParent {
     private final int MOTOR_TOILET_POSITION = -1000;
 
     private final double ELBOW_UP = 0.25;
-    private final double ELBOW_DOWN = 0;
+    private final double ELBOW_DOWN = 0.25;
 
 
     @Override

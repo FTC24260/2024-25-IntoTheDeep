@@ -8,7 +8,7 @@ public class IntakeClaw extends SubsystemParent {
     private final double CLAW_CLOSED_POSITION = 0.75;
     private ClawState clawState = ClawState.CLOSED;
 
-    private enum ClawState {
+    public enum ClawState {
         OPEN,
         CLOSED
     }
