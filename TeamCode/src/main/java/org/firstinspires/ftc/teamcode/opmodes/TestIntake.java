@@ -18,8 +18,9 @@ public class TestIntake extends LinearOpMode {
     private final double INTAKE_POWER = 0.33;
     private final int MOTOR_INTAKE_POSITION = 1000;
     private final int MOTOR_TOILET_POSITION = -1000;
-    private final double ELBOW_UP = 1;
-    private final double ELBOW_DOWN = 0;
+    private final double ELBOW_UP = 0.8;
+    private final double ELBOW_DOWN = 0.3;
+            ;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.75;
     enum ClawState {
