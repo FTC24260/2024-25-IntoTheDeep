@@ -16,7 +16,7 @@ public class Intake extends SubsystemParent {
     private Servo intakeElbowL;
     private Servo claw;
 
-    private final double INTAKE_POWER = 0.33;
+    private final double INTAKE_POWER = 0.08;
     private final int MOTOR_INTAKE_POSITION = 1000;
     private final int MOTOR_TOILET_POSITION = -1000;
     private final double ELBOW_UP = 0.25;
