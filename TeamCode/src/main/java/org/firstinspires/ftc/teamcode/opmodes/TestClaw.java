@@ -18,9 +18,11 @@ public class TestClaw extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad1.a) {
                 claw.toggleClaw();
-                telemetry.addData("ToggleClaw", claw.getClawPosition().toString());
             }
-            sleep(50);
+            telemetry.addData("ToggleClaw", claw.getClawState());
+            telemetry.update();
+
+            //sleep(50);
         }
     }
 }

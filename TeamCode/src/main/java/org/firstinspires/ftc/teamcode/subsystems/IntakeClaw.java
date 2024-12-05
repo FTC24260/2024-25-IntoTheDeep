@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeClaw extends SubsystemParent {
-    private double CLAW_OPEN_POSITION = 0;
-    private double CLAW_CLOSED_POSITION = 1;
+    private final double CLAW_OPEN_POSITION = 0.2;
+    private final double CLAW_CLOSED_POSITION = 0.75;
     private ClawState clawState = ClawState.CLOSED;
 
-    public enum ClawState {
+    private enum ClawState {
         OPEN,
         CLOSED
     }
@@ -21,8 +19,7 @@ public class IntakeClaw extends SubsystemParent {
     @Override
     public void init(HardwareMap hwMap) {
         claw = hwMap.get(Servo.class, "claw");
-        claw.setPosition(CLAW_OPEN_POSITION);
-        telemetry.addData("ToggleClaw", getClawPosition().toString());
+        claw.setPosition(CLAW_CLOSED_POSITION);
     }
 
     public void openClaw() {
@@ -34,7 +31,7 @@ public class IntakeClaw extends SubsystemParent {
         claw.setPosition(CLAW_CLOSED_POSITION);
         clawState = ClawState.CLOSED;
     }
-    public ClawState getClawPosition(){
+    public ClawState getClawState(){
         return clawState;
     }
 

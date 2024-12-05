@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,6 +38,8 @@ public class Intake extends SubsystemParent {
         intakeElbowR = hwMap.get(Servo.class, "intakeElbowR");
         intakeElbowL = hwMap.get(Servo.class, "intakeElbowL");
         claw = hwMap.get(Servo.class, "claw");
+        telemetry.addData("Elbow Servos","Activated");
+        telemetry.update();
 
         claw.setPosition(CLAW_CLOSED_POSITION);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
