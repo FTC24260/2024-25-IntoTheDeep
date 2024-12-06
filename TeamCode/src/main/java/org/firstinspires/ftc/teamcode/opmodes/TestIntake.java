@@ -44,10 +44,12 @@ public class TestIntake extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad2.a) {
                 goToToilet();
+                sleep(1000);
                 openClaw();
             }
             if (gamepad2.b){
                 goToIntake();
+                sleep(1000);
                 closeClaw();
             }
             if (gamepad2.x){
