@@ -48,7 +48,7 @@ public class TestIntake extends LinearOpMode {
             }
             if (gamepad2.b){
                 goToIntake();
-                openClaw();
+                closeClaw();
             }
             if (gamepad2.x){
                 toggleClaw();
