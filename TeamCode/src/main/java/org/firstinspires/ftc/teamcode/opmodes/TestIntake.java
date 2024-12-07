@@ -18,10 +18,10 @@ public class TestIntake extends LinearOpMode {
     private final double INTAKE_POWER = 0.08;
     private final int MOTOR_INTAKE_POSITION = 5;
     private final int MOTOR_TOILET_POSITION = -5;
-    private final double ELBOW_UP = 0.65;
-    private final double ELBOW_DOWN = 0.1;
+    private final double ELBOW_UP = 0.8;
+    private final double ELBOW_DOWN = 0.28;
     private final double CLAW_OPEN_POSITION = 0.2;
-    private final double CLAW_CLOSED_POSITION = 0.75;
+    private final double CLAW_CLOSED_POSITION = 0.85;
     enum ClawState {
         OPEN, CLOSED
     }
@@ -58,8 +58,6 @@ public class TestIntake extends LinearOpMode {
 
         intakeElbowR.setPosition(ELBOW_UP);
         intakeElbowL.setPosition(ELBOW_DOWN);
-        sleep(1000);
-        openClaw();
     }
 
     public void goToIntake() {
