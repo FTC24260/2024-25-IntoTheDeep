@@ -17,7 +17,7 @@ public class TestIntake extends LinearOpMode {
     private Servo claw;
     private final double INTAKE_POWER = 0.3;
     private final int MOTOR_INTAKE_POSITION = 700;
-    private final int MOTOR_TOILET_POSITION = -700;
+    private final int MOTOR_TOILET_POSITION = -400;
     private final double ELBOW_UP = 0.9;
     private final double ELBOW_DOWN = 0.35;
     private final double CLAW_OPEN_POSITION = 0.2;
@@ -54,12 +54,12 @@ public class TestIntake extends LinearOpMode {
         }
     }
     public void goToToilet() {
+        intakeElbowR.setPosition(ELBOW_UP);
+        intakeElbowL.setPosition(ELBOW_DOWN);
+        sleep(2000);
         intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
-
-        intakeElbowR.setPosition(ELBOW_UP);
-        intakeElbowL.setPosition(ELBOW_DOWN);
     }
 
     public void goToIntake() {
