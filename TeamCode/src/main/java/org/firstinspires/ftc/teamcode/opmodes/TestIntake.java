@@ -16,10 +16,10 @@ public class TestIntake extends LinearOpMode {
     private Servo intakeElbowL;
     private Servo claw;
     private final double INTAKE_POWER = 0.3;
-    private final int MOTOR_INTAKE_POSITION = 700;
-    private final int MOTOR_TOILET_POSITION = -400;
-    private final double ELBOW_UP = 0.9;
-    private final double ELBOW_DOWN = 0.35;
+    private final int MOTOR_INTAKE_POSITION = 850;
+    private final int MOTOR_TOILET_POSITION = -200;
+    private final double ELBOW_UP = 0.5;
+    private final double ELBOW_DOWN = 0;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
     enum ClawState {
@@ -39,8 +39,8 @@ public class TestIntake extends LinearOpMode {
         claw.setPosition(CLAW_CLOSED_POSITION);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
         waitForStart();
+        openClaw();
         while (opModeIsActive()) {
             if (gamepad2.a) {
                 goToToilet();
@@ -54,12 +54,14 @@ public class TestIntake extends LinearOpMode {
         }
     }
     public void goToToilet() {
+        openClaw();
         intakeElbowR.setPosition(ELBOW_UP);
         intakeElbowL.setPosition(ELBOW_DOWN);
         sleep(2000);
         intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
+
     }
 
     public void goToIntake() {
