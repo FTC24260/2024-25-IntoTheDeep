@@ -15,11 +15,11 @@ public class TestIntake extends LinearOpMode {
     private Servo intakeElbowR;
     private Servo intakeElbowL;
     private Servo claw;
-    private final double INTAKE_POWER = 0.08;
-    private final int MOTOR_INTAKE_POSITION = 5;
-    private final int MOTOR_TOILET_POSITION = -5;
-    private final double ELBOW_UP = 0.8;
-    private final double ELBOW_DOWN = 0.28;
+    private final double INTAKE_POWER = 0.3;
+    private final int MOTOR_INTAKE_POSITION = 700;
+    private final int MOTOR_TOILET_POSITION = -700;
+    private final double ELBOW_UP = 0.9;
+    private final double ELBOW_DOWN = 0.35;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
     enum ClawState {
@@ -33,6 +33,8 @@ public class TestIntake extends LinearOpMode {
         intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
         intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
         claw = hardwareMap.get(Servo.class, "claw");
+
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         claw.setPosition(CLAW_CLOSED_POSITION);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -64,6 +66,7 @@ public class TestIntake extends LinearOpMode {
         intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_POWER);
+        sleep(2000);
 
         intakeElbowR.setPosition(ELBOW_DOWN);
         intakeElbowL.setPosition(ELBOW_UP);
