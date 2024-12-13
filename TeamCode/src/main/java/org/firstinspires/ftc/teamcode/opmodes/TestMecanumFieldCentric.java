@@ -2,17 +2,27 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 
 @TeleOp(name = "Test Mecanum Field Centric", group = "Tests")
 public class TestMecanumFieldCentric extends LinearOpMode {
     private Mecanum mecanum;
+    private DcMotor leftFront = null;
+    private DcMotor rightFront = null;
+    private DcMotor leftRear = null;
+    private DcMotor rightRear = null;
 
     @Override
     public void runOpMode(){
         mecanum = new Mecanum();
         mecanum.init(hardwareMap);
+        leftFront = hardwareMap.get(DcMotor.class,"leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
