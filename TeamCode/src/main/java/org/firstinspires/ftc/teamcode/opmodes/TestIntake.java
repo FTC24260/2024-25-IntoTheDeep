@@ -16,10 +16,12 @@ public class TestIntake extends LinearOpMode {
     private Servo intakeElbowL;
     private Servo claw;
     private final double INTAKE_POWER = 0.3;
-    private final int MOTOR_INTAKE_POSITION = 850;
-    private final int MOTOR_TOILET_POSITION = -200;
-    private final double ELBOW_UP = 0.5;
-    private final double ELBOW_DOWN = 0;
+    private final int MOTOR_INTAKE_POSITION = 1584;
+    private final int MOTOR_TOILET_POSITION = 774;
+    private final double LELBOW_UP = 0;
+    private final double LELBOW_DOWN = 0.5;
+    private final double RELBOW_UP = 0.3;
+    private final double RELBOW_DOWN = 1;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
     enum ClawState {
@@ -54,26 +56,26 @@ public class TestIntake extends LinearOpMode {
         }
     }
     public void goToToilet() {
-        openClaw();
-        intakeElbowR.setPosition(ELBOW_UP);
-        intakeElbowL.setPosition(ELBOW_DOWN);
-        sleep(2000);
-        intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(-INTAKE_POWER);
+        //openClaw();
+        intakeElbowR.setPosition(RELBOW_UP);
+        intakeElbowL.setPosition(LELBOW_DOWN);
+        //sleep(2000);
+        //intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
+        //intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //intakeMotor.setPower(-INTAKE_POWER);
 
     }
 
     public void goToIntake() {
-        intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(INTAKE_POWER);
-        sleep(2000);
+        //intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
+        //intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //intakeMotor.setPower(INTAKE_POWER);
+        //sleep(2000);
 
-        intakeElbowR.setPosition(ELBOW_DOWN);
-        intakeElbowL.setPosition(ELBOW_UP);
-        sleep(1000);
-        closeClaw();
+        intakeElbowR.setPosition(RELBOW_DOWN);
+        intakeElbowL.setPosition(LELBOW_UP);
+        //sleep(1000);
+        //closeClaw();
     }
 
     public void openClaw() {

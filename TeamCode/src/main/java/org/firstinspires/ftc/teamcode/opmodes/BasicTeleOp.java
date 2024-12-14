@@ -22,13 +22,17 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo intakeElbowR;
     private Servo intakeElbowL;
     private Servo claw;
-    private final double INTAKE_POWER = 0.3;
-    private final int MOTOR_INTAKE_POSITION = 400;
-    private final int MOTOR_TOILET_POSITION = 700;
-    private final double ELBOW_UP = -0.7;
-    private final double ELBOW_DOWN = 0.7;
+    private final double INTAKE_POWER = 0.5;
+    private final int MOTOR_INTAKE_POSITION = 1584;
+    private final int MOTOR_TOILET_POSITION = 774;
+    private final double ELBOW_UP = 0.5;
+    private final double ELBOW_DOWN = -0.5;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
+    private final double intakeMotorTicksPerRev = 3895.9;
+    private final double intakeMotorCircum = 50.26;
+    private final double intakeMotorTicksPerInch = 77.5;
+    private final double ticksPerAngle = 8.6;
     enum ClawState {
         OPEN, CLOSED
     }
@@ -37,7 +41,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        telemetry.addData("s", "forlan");
+        telemetry.addData("niggas in", "paris");
         telemetry.update();
 
 
