@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.SubsystemParent;
+
 @TeleOp
 
 public class TestIntake extends LinearOpMode {
@@ -18,10 +18,10 @@ public class TestIntake extends LinearOpMode {
     private final double INTAKE_POWER = 0.3;
     private final int MOTOR_INTAKE_POSITION = 1584;
     private final int MOTOR_TOILET_POSITION = 774;
-    private final double LELBOW_UP = 0;
-    private final double LELBOW_DOWN = 0.5;
-    private final double RELBOW_UP = 0.3;
-    private final double RELBOW_DOWN = 1;
+    private final double LELBOW_TRANSFER = 0.25;
+    private final double LELBOW_INTAKE = 1;
+    private final double RELBOW_TRANSFER = 0.25;
+    private final double RELBOW_INTAKE = 1;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
     enum ClawState {
@@ -57,8 +57,8 @@ public class TestIntake extends LinearOpMode {
     }
     public void goToToilet() {
         //openClaw();
-        intakeElbowR.setPosition(RELBOW_UP);
-        intakeElbowL.setPosition(LELBOW_DOWN);
+        intakeElbowR.setPosition(RELBOW_TRANSFER);
+        intakeElbowL.setPosition(LELBOW_INTAKE);
         //sleep(2000);
         //intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
         //intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -72,8 +72,8 @@ public class TestIntake extends LinearOpMode {
         //intakeMotor.setPower(INTAKE_POWER);
         //sleep(2000);
 
-        intakeElbowR.setPosition(RELBOW_DOWN);
-        intakeElbowL.setPosition(LELBOW_UP);
+        intakeElbowR.setPosition(RELBOW_INTAKE);
+        intakeElbowL.setPosition(LELBOW_TRANSFER);
         //sleep(1000);
         //closeClaw();
     }
