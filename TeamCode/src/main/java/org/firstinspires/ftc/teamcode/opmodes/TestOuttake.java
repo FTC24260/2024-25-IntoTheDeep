@@ -16,16 +16,16 @@ public class TestOuttake extends LinearOpMode {
     private Servo OuttakeClaw;
     private final double ShoulderPositionOut = 0.4;
     private final int ShoulderPositionTransfer = 0;
-    private final double OuttakeClawOpen = 0.5;
-    private final double OuttakeClawClosed = 0;
     private final double linearSlidesPower = 0.75;
-    private final double CLAW_OPEN_POSITION = 0.2;
-    private final double CLAW_CLOSED_POSITION = 0.85;
+    private final double CLAW_FULL_OPEN_POSITION = 0;
+    private final double CLAW_DEFAULT_OPEN_POSITION = 0.1;
+    private final double CLAW_CLOSED_POSITION = 0.4;
+    private final int R_linearSlidesMax = 1000;
+    private final int L_linearSlidesMin = 0;
 
-    enum ClawState {
+    private enum ClawState {
         OPEN, CLOSED
     }
-
     private Intake.ClawState clawState = Intake.ClawState.CLOSED;
 
     @Override
@@ -42,24 +42,29 @@ public class TestOuttake extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad2.right_trigger > 0.1) {
+            if (gamepad2.left_trigger > 0.1) {
                 linearSlidesUp();
-            } else if (gamepad2.left_trigger > 0.1) {
+            } else if (gamepad2.right_trigger > 0.1) {
                 linearSlidesDown();
             } else {
                 linearSlidesStop();
             }
             if (gamepad2.right_bumper) {
+                closeClaw();
                 OuttakeShoulder.setPosition(ShoulderPositionOut);
-                OuttakeClaw.setPosition(OuttakeClawClosed);
             }
 
             if (gamepad2.left_bumper) {
+                closeClaw();
+                sleep(500);
                 OuttakeShoulder.setPosition(ShoulderPositionTransfer);
-                OuttakeClaw.setPosition(OuttakeClawOpen);
             }
             if (gamepad2.x) {
-                toggleClaw();
+                openClaw();
+
+            }
+            if (gamepad2.y) {
+                closeClaw();
 
             }
         }
@@ -81,7 +86,7 @@ public class TestOuttake extends LinearOpMode {
         linearSlideR.setPower(0);
     }
     public void openClaw() {
-        OuttakeClaw.setPosition(CLAW_OPEN_POSITION);
+        OuttakeClaw.setPosition(CLAW_DEFAULT_OPEN_POSITION);
         clawState = Intake.ClawState.OPEN;
     }
 

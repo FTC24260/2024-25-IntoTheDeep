@@ -17,18 +17,25 @@ public class TestIntake extends LinearOpMode {
     private Servo claw; 
     private final double INTAKE_POWER = 0.3;
     private final int MOTOR_INTAKE_POSITION = 300;
-    private final int MOTOR_TOILET_POSITION = 200;
-    private final double RELBOW_TRANSFER = 0.25;
-    private final double RELBOW_INTAKE = 1;
-    private final double LELBOW_TRANSFER = 1;
-    private final double LELBOW_INTAKE = 0.25;
-    private final double ELBOW_INTAKE_POSITIONING = 0.25;
+    private final int MOTOR_TRANSFER_POSITION = 200;
+    private final double R_ELBOW_TRANSFER = 0.25;
+    private final double R_ELBOW_INTAKE = 1;
+    private final double L_ELBOW_TRANSFER = 0.25;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE_POSITIONING = 0.75;
+    private final double L_ELBOW_INTAKE_POSITIONING = 0.75;
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
+
     enum ClawState {
         OPEN, CLOSED
     }
     private Intake.ClawState clawState = Intake.ClawState.CLOSED;
+
+    private enum IntakeState {
+        POSITIONING, INTAKE, TRANSFER
+    }
+    private Intake.IntakeState intakeState = Intake.IntakeState.TRANSFER;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -57,14 +64,17 @@ public class TestIntake extends LinearOpMode {
             if (gamepad2.x){
                 toggleClaw();
             }
+            if (gamepad2.right_bumper){
+                toggleIntake();
+            }
         }
     }
 
     public void goToTransfer() {
-        intakeElbowR.setPosition(RELBOW_TRANSFER);
-        intakeElbowL.setPosition(LELBOW_TRANSFER);
+        intakeElbowR.setPosition(R_ELBOW_TRANSFER);
+        intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         sleep(800);
-        intakeMotor.setTargetPosition(MOTOR_TOILET_POSITION);
+        intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
         sleep(2000);
@@ -77,19 +87,13 @@ public class TestIntake extends LinearOpMode {
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_POWER);
         sleep(2000);
-        intakeElbowR.setPosition(ELBOW_INTAKE_POSITIONING);
-        intakeElbowL.setPosition(ELBOW_INTAKE_POSITIONING);
-
-
-        intakeElbowR.setPosition(RELBOW_INTAKE);
-        intakeElbowL.setPosition(LELBOW_TRANSFER);
-        //sleep(1000);
-        //closeClaw();
+        intakeElbowR.setPosition(R_ELBOW_INTAKE_POSITIONING);
+        intakeElbowL.setPosition(L_ELBOW_INTAKE_POSITIONING);
     }
 
     public void goToIntake() {
-        intakeElbowR.setPosition(RELBOW_INTAKE);
-        intakeElbowL.setPosition(LELBOW_INTAKE);
+        intakeElbowR.setPosition(R_ELBOW_INTAKE);
+        intakeElbowL.setPosition(L_ELBOW_INTAKE);
         sleep(1000);
         closeClaw();
     }
@@ -111,6 +115,21 @@ public class TestIntake extends LinearOpMode {
         } else {
             closeClaw();
             sleep(500);
+        }
+    }
+
+    public void toggleIntake() {
+        if (intakeState == Intake.IntakeState.TRANSFER) {
+            intakeElbowR.setPosition(R_ELBOW_INTAKE_POSITIONING);
+            intakeElbowL.setPosition(L_ELBOW_INTAKE_POSITIONING);
+
+        } else if (intakeState == Intake.IntakeState.POSITIONING) {
+            intakeElbowR.setPosition(R_ELBOW_INTAKE);
+            intakeElbowL.setPosition(L_ELBOW_INTAKE);
+
+        } else {
+            intakeElbowR.setPosition(R_ELBOW_INTAKE_POSITIONING);
+            intakeElbowL.setPosition(L_ELBOW_INTAKE_POSITIONING);
         }
     }
 }

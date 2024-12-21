@@ -31,6 +31,12 @@ public class Intake extends SubsystemParent {
 
     private ClawState clawState = ClawState.CLOSED;
 
+    public enum IntakeState {
+        POSITIONING, INTAKE, TRANSFER
+    }
+
+    private IntakeState intakeState = IntakeState.TRANSFER;
+
     @Override
     public void init(HardwareMap hwMap) {
         intakeMotor = hwMap.get(DcMotorEx.class, "intakeMotor");
