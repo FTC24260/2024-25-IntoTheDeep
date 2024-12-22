@@ -15,8 +15,8 @@ public class TestOuttake extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
     private final double ShoulderPositionSpecimen = 0.8;
-    private final double ShoulderPositionTransfer = 0.4;
-    private final double ShoulderPositionBasket = 0;
+    private final double ShoulderPositionBasket = 0.4;
+    private final double ShoulderPositionTransfer = 0.5;
     private final double linearSlidesPower = 0.75;
     private final double CLAW_FULL_OPEN_POSITION = 0;
     private final double CLAW_DEFAULT_OPEN_POSITION = 0.1;
@@ -67,14 +67,10 @@ public class TestOuttake extends LinearOpMode {
             }
 
             if (gamepad2.left_bumper) {
-                ShoulderBasket();
+                ShoulderTransfer();
             }
             if (gamepad2.x) {
-                openClaw();
-
-            }
-            if (gamepad2.y) {
-                closeClaw();
+                toggleClaw();
 
             }
         }
