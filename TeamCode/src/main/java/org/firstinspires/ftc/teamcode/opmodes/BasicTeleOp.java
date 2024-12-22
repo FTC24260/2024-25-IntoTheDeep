@@ -32,7 +32,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.4;
     private final double R_ELBOW_TRANSFER = 0.81;
-    private final double INTAKE_CLAW_OPEN_POSITION = 0.2;
+    private final double INTAKE_CLAW_OPEN_POSITION = 0;
     private final double INTAKE_CLAW_CLOSED_POSITION = 1;
     private final double ShoulderPositionSpecimen = 0.8;
     private final double ShoulderPositionBasket = 0.4;
