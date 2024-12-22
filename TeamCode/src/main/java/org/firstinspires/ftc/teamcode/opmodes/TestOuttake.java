@@ -14,14 +14,16 @@ public class TestOuttake extends LinearOpMode {
     private DcMotorEx linearSlideR;
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
-    private final double ShoulderPositionOut = 0.4;
-    private final int ShoulderPositionTransfer = 0;
+    private final double ShoulderPositionSpecimen = 0.8;
+    private final double ShoulderPositionTransfer = 0.4;
+    private final double ShoulderPositionBasket = 0;
     private final double linearSlidesPower = 0.75;
     private final double CLAW_FULL_OPEN_POSITION = 0;
     private final double CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double CLAW_CLOSED_POSITION = 0.4;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
+    private final double linearSlidesBufferZone = 0.1;
 
     private enum ClawState {
         OPEN, CLOSED
@@ -42,22 +44,30 @@ public class TestOuttake extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad2.left_trigger > 0.1) {
+            if (gamepad2.right_trigger > linearSlidesBufferZone) {
+                //ShoulderTransfer();
+                //sleep(3000);
                 linearSlidesUp();
-            } else if (gamepad2.right_trigger > 0.1) {
+
+            } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
                 linearSlidesDown();
-            } else {
+                //sleep(3000);
+                //ShoulderBasket();
+
+            } else if (gamepad2.right_stick_y > linearSlidesBufferZone && gamepad2.right_stick_button) {
+                linearSlidesUp();
+                sleep(3000);
+                ShoulderSpecimen();
+            }
+            else {
                 linearSlidesStop();
             }
             if (gamepad2.right_bumper) {
-                closeClaw();
-                OuttakeShoulder.setPosition(ShoulderPositionOut);
+                ShoulderSpecimen();
             }
 
             if (gamepad2.left_bumper) {
-                closeClaw();
-                sleep(500);
-                OuttakeShoulder.setPosition(ShoulderPositionTransfer);
+                ShoulderBasket();
             }
             if (gamepad2.x) {
                 openClaw();
@@ -84,6 +94,19 @@ public class TestOuttake extends LinearOpMode {
     private void linearSlidesStop() {
         linearSlideL.setPower(0);
         linearSlideR.setPower(0);
+    }
+    public void ShoulderSpecimen() {
+        closeClaw();
+        OuttakeShoulder.setPosition(ShoulderPositionSpecimen);
+    }
+    public void ShoulderBasket() {
+        closeClaw();
+        OuttakeShoulder.setPosition(ShoulderPositionBasket);
+    }
+    public void ShoulderTransfer() {
+        closeClaw();
+        sleep(500);
+        OuttakeShoulder.setPosition(ShoulderPositionTransfer);
     }
     public void openClaw() {
         OuttakeClaw.setPosition(CLAW_DEFAULT_OPEN_POSITION);

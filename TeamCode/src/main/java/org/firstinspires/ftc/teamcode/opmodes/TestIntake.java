@@ -14,19 +14,21 @@ public class TestIntake extends LinearOpMode {
     private DcMotorEx intakeMotor;
     private Servo intakeElbowR;
     private Servo intakeElbowL;
-    private Servo claw; 
-    private final double INTAKE_POWER = 0.3;
+    private Servo claw;
     private final int MOTOR_INTAKE_POSITION = 900;
     private final int MOTOR_TRANSFER_POSITION = 0;
+    private final double INTAKE_POWER = 0.3;
 
-    private final double R_ELBOW_INTAKE = 0.78;
-    private final double L_ELBOW_INTAKE = 0.12;
+    private final double L_ELBOW_INTAKE = 0.76;
+    private final double R_ELBOW_INTAKE = 0.45;
 
-    private final double R_ELBOW_TRANSFER = 0.3;
+    private final double L_ELBOW_POSITIONING = 0.73;
+    private final double R_ELBOW_POSITIONING = 0.5;
+
     private final double L_ELBOW_TRANSFER = 0.4;
+    private final double R_ELBOW_TRANSFER = 0.81;
 
-    private final double R_ELBOW_POSITIONING = 0.7;
-    private final double L_ELBOW_POSITIONING = 0.2;
+
 
     private final double CLAW_OPEN_POSITION = 0.2;
     private final double CLAW_CLOSED_POSITION = 0.85;
