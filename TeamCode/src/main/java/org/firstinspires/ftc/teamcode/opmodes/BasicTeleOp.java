@@ -32,6 +32,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.4;
     private final double R_ELBOW_TRANSFER = 0.81;
+    private final double R_ELBOW_FULLY_BACK = 1;
+    private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
     private final double INTAKE_CLAW_CLOSED_POSITION = 1;
     private final double ShoulderPositionSpecimen = 0.8;
@@ -121,19 +123,21 @@ public class BasicTeleOp extends LinearOpMode {
                 goToPositioning();
                 openIntakeClaw();
 
-            } if (gamepad2.a) {
+            } if (gamepad2.y) {
                 goToIntakeFromPositioning();
                 sleep(500);
                 closeIntakeClaw();
 
-            } if (gamepad2.y) {
+            } if (gamepad2.x) {
                 goToPositioningFromIntake();
                 openIntakeClaw();
 
-            } if (gamepad2.x) {
+            } if (gamepad2.a) {
                 goToTransfer();
-                sleep(1200);
+                sleep(1500);
                 transferSample();
+                sleep(500);
+                goToFullyBack();
             }
 
 
@@ -213,6 +217,11 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowL.setPosition(L_ELBOW_POSITIONING);
 
         intakeState = IntakeState.POSITIONING;
+    }
+
+    public void goToFullyBack() {
+        intakeElbowR.setPosition(R_ELBOW_FULLY_BACK);
+        intakeElbowL.setPosition(L_ELBOW_FULLY_BACK);
     }
 
     public void toggleIntake() {
