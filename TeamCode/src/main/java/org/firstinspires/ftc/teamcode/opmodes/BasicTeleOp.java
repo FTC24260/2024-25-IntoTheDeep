@@ -26,12 +26,12 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     private final double INTAKE_POWER = 0.3;
-    private final double L_ELBOW_INTAKE = 0.78;
-    private final double R_ELBOW_INTAKE = 0.45;
+    private final double L_ELBOW_INTAKE = 0.83;
+    private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_POSITIONING = 0.7;
     private final double R_ELBOW_POSITIONING = 0.55;
     private final double L_ELBOW_TRANSFER = 0.4;
-    private final double R_ELBOW_TRANSFER = 0.81;
+    private final double R_ELBOW_TRANSFER = 1;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -43,8 +43,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 900;
-    private final int MOTOR_TRANSFER_POSITION = 30;
+    private final int MOTOR_INTAKE_POSITION = 930;
+    private final int MOTOR_TRANSFER_POSITION = 250;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
 
@@ -119,7 +119,10 @@ public class BasicTeleOp extends LinearOpMode {
             } else {
                 linearSlidesStop();
 
-            } if (gamepad2.b) {
+            } if (gamepad2.start) {
+                toggleOuttakeClaw();
+            }
+            if (gamepad2.b) {
                 goToPositioning();
                 openIntakeClaw();
 
@@ -132,13 +135,19 @@ public class BasicTeleOp extends LinearOpMode {
                 openIntakeClaw();
 
             } if (gamepad2.a) {
+                closeOuttakeClaw();
+                ShoulderTransfer();
+                sleep(700);
+                openOuttakeClaw();
+                sleep(1000);
                 goToTransfer();
-                sleep(1500);
-                transferSample();
-                sleep(510);
-                goToFullyBack();
 
-            } if (gamepad2.right_bumper) {
+            } if (gamepad2.back) {
+                transferSample();
+                sleep(1000);
+                goToFullyBack();
+            }
+            if (gamepad2.right_bumper) {
                 ShoulderTransfer();
 
             } else if (gamepad2.left_bumper) {
@@ -313,7 +322,9 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void transferSample() {
-        openIntakeClaw();
         closeOuttakeClaw();
+        sleep(1000);
+        openIntakeClaw();
+
     }
 }
