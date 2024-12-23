@@ -26,8 +26,8 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     private final double INTAKE_POWER = 0.3;
-    private final double L_ELBOW_INTAKE = 0.76;
-    private final double R_ELBOW_INTAKE = 0.45;
+    private final double L_ELBOW_INTAKE = 0.77;
+    private final double R_ELBOW_INTAKE = 0.46;
     private final double L_ELBOW_POSITIONING = 0.65;
     private final double R_ELBOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.4;
@@ -43,8 +43,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 950;
-    private final int MOTOR_TRANSFER_POSITION = 0;
+    private final int MOTOR_INTAKE_POSITION = 900;
+    private final int MOTOR_TRANSFER_POSITION = 30;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
 
@@ -125,7 +125,6 @@ public class BasicTeleOp extends LinearOpMode {
 
             } if (gamepad2.y) {
                 goToIntakeFromPositioning();
-                sleep(500);
                 closeIntakeClaw();
 
             } if (gamepad2.x) {
@@ -136,7 +135,7 @@ public class BasicTeleOp extends LinearOpMode {
                 goToTransfer();
                 sleep(1500);
                 transferSample();
-                sleep(500);
+                sleep(510);
                 goToFullyBack();
             }
 
