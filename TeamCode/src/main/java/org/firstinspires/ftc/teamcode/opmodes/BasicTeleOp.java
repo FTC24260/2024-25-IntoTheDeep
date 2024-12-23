@@ -17,11 +17,11 @@ public class BasicTeleOp extends LinearOpMode {
     private DcMotor leftRear = null;
     private DcMotor rightRear = null;
     private DcMotorEx intakeMotor;
+    private DcMotorEx linearSlideL;
+    private DcMotorEx linearSlideR;
     private Servo intakeElbowR;
     private Servo intakeElbowL;
     private Servo claw;
-    private DcMotorEx linearSlideL;
-    private DcMotorEx linearSlideR;
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
@@ -38,11 +38,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionBasket = 0.4;
     private final double ShoulderPositionTransfer = 0.5;
     private final double linearSlidesPower = 0.75;
-    private final double OUTTAKE_CLAW_FULL_OPEN_POSITION = 0;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 900;
+    private final int MOTOR_INTAKE_POSITION = 950;
     private final int MOTOR_TRANSFER_POSITION = 0;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
@@ -95,53 +94,49 @@ public class BasicTeleOp extends LinearOpMode {
         double speed = 0.5;
 
         waitForStart();
-        openOuttakeClaw();
+        //ShoulderTransfer();
+        //goToTransfer();
         runtime.reset();
 
         while (opModeIsActive()) {
+
             if (gamepad2.right_stick_y > linearSlidesBufferZone) {
                 linearSlidesUp();
-                sleep(2000);
-                ShoulderBasket();
+                //sleep(2000);
+                //ShoulderBasket();
 
             } else if (gamepad2.right_stick_y < -linearSlidesBufferZone) {
-                ShoulderTransfer();
+                //ShoulderTransfer();
                 linearSlidesDown();
 
             } else if (gamepad2.right_stick_y > linearSlidesBufferZone && gamepad2.right_stick_button) {
                 linearSlidesUp();
-                sleep(2000);
-                ShoulderSpecimen();
+                //sleep(2000);
+                //ShoulderSpecimen();
 
             } else {
                 linearSlidesStop();
 
-            } if (gamepad2.right_bumper) {
-                ShoulderSpecimen();
-
-            } if (gamepad2.left_bumper) {
-                ShoulderTransfer();
-
-            } if (gamepad2.x) {
-                toggleOuttakeClaw();
-
-            } if (gamepad2.right_trigger > 0.1) {
-                goToTransfer();
-
-            } if (gamepad2.left_trigger > 0.1) {
+            } if (gamepad2.b) {
                 goToPositioning();
+                openIntakeClaw();
 
             } if (gamepad2.a) {
                 goToIntakeFromPositioning();
-                sleep(200);
+                sleep(500);
                 closeIntakeClaw();
 
-            } if (gamepad2.b) {
-                transferSample();
-
             } if (gamepad2.y) {
-                toggleIntakeClaw();
+                goToPositioningFromIntake();
+                openIntakeClaw();
+
+            } if (gamepad2.x) {
+                goToTransfer();
+                sleep(1200);
+                transferSample();
             }
+
+
 
             // Drive controls
             double drive = gamepad1.left_stick_y;
@@ -211,6 +206,13 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(1000);
         closeIntakeClaw();
         intakeState = IntakeState.INTAKE;
+    }
+
+    public void goToPositioningFromIntake() {
+        intakeElbowR.setPosition(R_ELBOW_POSITIONING);
+        intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+
+        intakeState = IntakeState.POSITIONING;
     }
 
     public void toggleIntake() {
