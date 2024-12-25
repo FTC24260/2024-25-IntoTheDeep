@@ -26,25 +26,26 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     private final double INTAKE_POWER = 0.3;
-    private final double L_ELBOW_INTAKE = 0.83;
-    private final double R_ELBOW_INTAKE = 0.4;
-    private final double L_ELBOW_POSITIONING = 0.7;
-    private final double R_ELBOW_POSITIONING = 0.55;
-    private final double L_ELBOW_TRANSFER = 0.4;
-    private final double R_ELBOW_TRANSFER = 1;
-    private final double R_ELBOW_FULLY_BACK = 1;
-    private final double L_ELBOW_FULLY_BACK = 0.2;
-    private final double INTAKE_CLAW_OPEN_POSITION = 0;
-    private final double INTAKE_CLAW_CLOSED_POSITION = 1;
-    private final double ShoulderPositionSpecimen = 0.8;
+    private final double ShoulderPositionSpecimen = 0.35;
     private final double ShoulderPositionBasket = 0;
-    private final double ShoulderPositionTransfer = 0.9;
+    private final double ShoulderPositionTransfer = 0.95;
     private final double linearSlidesPower = 0.75;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 930;
-    private final int MOTOR_TRANSFER_POSITION = 250;
+    private final int MOTOR_INTAKE_POSITION = 1000;
+    private final int MOTOR_TRANSFER_POSITION = 300;
+    private final int MOTOR_FULLY_BACK_POSITION = 20;
+    private final double L_ELBOW_INTAKE = 0.8;
+    private final double R_ELBOW_INTAKE = 0.5;
+    private final double L_ELBOW_POSITIONING = 0.73;
+    private final double R_ELBOW_POSITIONING = 0.6;
+    private final double L_ELBOW_TRANSFER = 0.42;
+    private final double R_ELBOW_TRANSFER = 0.98;
+    private final double R_ELBOW_FULLY_BACK = 1;
+    private final double L_ELBOW_FULLY_BACK = 0.2;
+    private final double INTAKE_CLAW_OPEN_POSITION = 0;
+    private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
 
@@ -129,35 +130,35 @@ public class BasicTeleOp extends LinearOpMode {
             } if (gamepad2.y) {
                 goToIntakeFromPositioning();
                 closeIntakeClaw();
+                closeOuttakeClaw();
+                ShoulderTransfer();
+                sleep(700);
+                openOuttakeClaw();
 
             } if (gamepad2.x) {
                 goToPositioningFromIntake();
                 openIntakeClaw();
 
             } if (gamepad2.a) {
-                closeOuttakeClaw();
-                ShoulderTransfer();
-                sleep(700);
-                openOuttakeClaw();
-                sleep(1000);
                 goToTransfer();
+
 
             } if (gamepad2.back) {
                 transferSample();
                 sleep(1000);
                 goToFullyBack();
             }
-            if (gamepad2.right_bumper) {
+            if (gamepad2.left_bumper) {
                 ShoulderTransfer();
 
-            } else if (gamepad2.left_bumper) {
-                ShoulderBasket();
+            } else if (gamepad2.right_bumper) {
+                ShoulderSpecimen();
             }
 
 
 
             // Drive controls
-            double drive = gamepad1.left_stick_y;
+            double drive = -gamepad1.left_stick_y;
             double turn = -gamepad1.right_stick_x;
             double strafe = -gamepad1.left_stick_x;
 
@@ -236,6 +237,9 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToFullyBack() {
         intakeElbowR.setPosition(R_ELBOW_FULLY_BACK);
         intakeElbowL.setPosition(L_ELBOW_FULLY_BACK);
+        intakeMotor.setTargetPosition(MOTOR_FULLY_BACK_POSITION);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeMotor.setPower(-INTAKE_POWER);
     }
 
     public void toggleIntake() {
