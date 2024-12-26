@@ -29,19 +29,19 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionSpecimen = 0.35;
     private final double ShoulderPositionBasket = 0;
     private final double ShoulderPositionTransfer = 0.95;
-    private final double linearSlidesPower = 0.75;
+    private final double linearSlidesPower = 0.1;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
     private final int MOTOR_INTAKE_POSITION = 1000;
-    private final int MOTOR_TRANSFER_POSITION = 300;
+    private final int MOTOR_TRANSFER_POSITION = 800;
     private final int MOTOR_FULLY_BACK_POSITION = 20;
-    private final double L_ELBOW_INTAKE = 0.8;
-    private final double R_ELBOW_INTAKE = 0.5;
+    private final double L_ELBOW_INTAKE = 0.82;
+    private final double R_ELBOW_INTAKE = 0.48;
     private final double L_ELBOW_POSITIONING = 0.73;
     private final double R_ELBOW_POSITIONING = 0.6;
-    private final double L_ELBOW_TRANSFER = 0.42;
-    private final double R_ELBOW_TRANSFER = 0.98;
+    private final double L_ELBOW_TRANSFER = 0.21;
+    private final double R_ELBOW_TRANSFER = 0.99;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -97,25 +97,17 @@ public class BasicTeleOp extends LinearOpMode {
         double speed = 0.5;
 
         waitForStart();
-        //ShoulderTransfer();
-        //goToTransfer();
+        closeOuttakeClaw();
+        ShoulderTransfer();
         runtime.reset();
 
         while (opModeIsActive()) {
 
             if (gamepad2.right_stick_y > linearSlidesBufferZone) {
                 linearSlidesUp();
-                //sleep(2000);
-                //ShoulderBasket();
 
             } else if (gamepad2.right_stick_y < -linearSlidesBufferZone) {
-                //ShoulderTransfer();
-                linearSlidesDown();
-
-            } else if (gamepad2.right_stick_y > linearSlidesBufferZone && gamepad2.right_stick_button) {
-                linearSlidesUp();
-                //sleep(2000);
-                //ShoulderSpecimen();
+                ShoulderSpecimen();
 
             } else {
                 linearSlidesStop();
@@ -125,6 +117,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
             if (gamepad2.b) {
                 goToPositioning();
+                sleep(200);
                 openIntakeClaw();
 
             } if (gamepad2.y) {
@@ -132,7 +125,6 @@ public class BasicTeleOp extends LinearOpMode {
                 closeIntakeClaw();
                 closeOuttakeClaw();
                 ShoulderTransfer();
-                sleep(700);
                 openOuttakeClaw();
 
             } if (gamepad2.x) {
@@ -141,6 +133,7 @@ public class BasicTeleOp extends LinearOpMode {
 
             } if (gamepad2.a) {
                 goToTransfer();
+                openOuttakeClaw();
 
 
             } if (gamepad2.back) {
@@ -149,10 +142,10 @@ public class BasicTeleOp extends LinearOpMode {
                 goToFullyBack();
             }
             if (gamepad2.left_bumper) {
-                ShoulderTransfer();
+                ShoulderSpecimen();
 
             } else if (gamepad2.right_bumper) {
-                ShoulderSpecimen();
+                ShoulderTransfer();
             }
 
 
