@@ -26,22 +26,22 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     private final double INTAKE_POWER = 0.3;
-    private final double ShoulderPositionSpecimen = 0.35;
-    private final double ShoulderPositionBasket = 0;
-    private final double ShoulderPositionTransfer = 0.95;
+    private final double ShoulderPositionTransfer = 0.35;
+    private final double ShoulderPositionSpecimen = 0;
+    private final double ShoulderPositionBasket = 0.8;
     private final double linearSlidesPower = 0.1;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 1000;
-    private final int MOTOR_TRANSFER_POSITION = 800;
+    private final int MOTOR_INTAKE_POSITION = 1030;
+    private final int MOTOR_TRANSFER_POSITION = 775;
     private final int MOTOR_FULLY_BACK_POSITION = 20;
     private final double L_ELBOW_INTAKE = 0.82;
     private final double R_ELBOW_INTAKE = 0.48;
-    private final double L_ELBOW_POSITIONING = 0.73;
-    private final double R_ELBOW_POSITIONING = 0.6;
-    private final double L_ELBOW_TRANSFER = 0.21;
-    private final double R_ELBOW_TRANSFER = 0.99;
+    private final double L_ELBOW_POSITIONING = 0.75;
+    private final double R_ELBOW_POSITIONING = 0.58;
+    private final double L_ELBOW_TRANSFER = 0.24;
+    private final double R_ELBOW_TRANSFER = 0.96;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -99,6 +99,7 @@ public class BasicTeleOp extends LinearOpMode {
         waitForStart();
         closeOuttakeClaw();
         ShoulderTransfer();
+
         runtime.reset();
 
         while (opModeIsActive()) {
@@ -107,7 +108,7 @@ public class BasicTeleOp extends LinearOpMode {
                 linearSlidesUp();
 
             } else if (gamepad2.right_stick_y < -linearSlidesBufferZone) {
-                ShoulderSpecimen();
+                linearSlidesDown();
 
             } else {
                 linearSlidesStop();
@@ -126,6 +127,7 @@ public class BasicTeleOp extends LinearOpMode {
                 closeOuttakeClaw();
                 ShoulderTransfer();
                 openOuttakeClaw();
+                speed = 0.1;
 
             } if (gamepad2.x) {
                 goToPositioningFromIntake();
@@ -142,7 +144,7 @@ public class BasicTeleOp extends LinearOpMode {
                 goToFullyBack();
             }
             if (gamepad2.left_bumper) {
-                ShoulderSpecimen();
+                ShoulderBasket();
 
             } else if (gamepad2.right_bumper) {
                 ShoulderTransfer();
