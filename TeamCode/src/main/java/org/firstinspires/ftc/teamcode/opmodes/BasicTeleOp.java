@@ -25,9 +25,10 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
-    private final double INTAKE_POWER = 0.5;
+    private final double INTAKE_POWER = 0.6;
     private final double ShoulderPositionTransfer = 0.35;
     private final double ShoulderPositionSpecimen = 0;
+    private final double ShoulderPositionRest = 0.15;
     private final double ShoulderPositionBasket = 0.8;
     private final double linearSlidesPower = 0.1;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
@@ -98,9 +99,7 @@ public class BasicTeleOp extends LinearOpMode {
         double speed = 0.5;
 
         waitForStart();
-        closeOuttakeClaw();
-        ShoulderTransfer();
-        openIntakeClaw();
+        ShoulderRest();
         runtime.reset();
 
         while (opModeIsActive()) {
@@ -121,6 +120,7 @@ public class BasicTeleOp extends LinearOpMode {
                 goToPositioning();
                 sleep(500);
                 openIntakeClaw();
+                speed = 0.1;
 
             } if (gamepad2.y) {
                 goToIntakeFromPositioning();
@@ -128,7 +128,6 @@ public class BasicTeleOp extends LinearOpMode {
                 closeOuttakeClaw();
                 ShoulderTransfer();
                 openOuttakeClaw();
-                speed = 0.1;
 
             } if (gamepad2.x) {
                 goToPositioningFromIntake();
@@ -183,14 +182,6 @@ public class BasicTeleOp extends LinearOpMode {
                 speed = 1;
             }
 
-            if (gamepad1.right_trigger > 0.1) {
-                speed = 0.25;
-            } else if (gamepad1.left_trigger > 0.1) {
-                speed = 1;
-            } else if (gamepad1.right_trigger < 0.1 || gamepad1.left_trigger < 0.1) {
-                speed = 0.5;
-            }
-
             telemetry.addData("Speed", speed);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
@@ -211,7 +202,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_POWER);
-        sleep(2000);
+        sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_POSITIONING);
         intakeState = IntakeState.POSITIONING;
@@ -306,6 +297,12 @@ public class BasicTeleOp extends LinearOpMode {
         closeOuttakeClaw();
         sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
+    }
+
+    public void ShoulderRest() {
+        closeOuttakeClaw();
+        sleep(200);
+        OuttakeShoulder.setPosition(ShoulderPositionRest);
     }
 
     public void openOuttakeClaw() {
