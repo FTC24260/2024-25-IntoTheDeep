@@ -25,7 +25,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
-    private final double INTAKE_POWER = 0.3;
+    private final double INTAKE_POWER = 0.5;
     private final double ShoulderPositionTransfer = 0.35;
     private final double ShoulderPositionSpecimen = 0;
     private final double ShoulderPositionBasket = 0.8;
@@ -33,18 +33,19 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.4;
     private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 1030;
-    private final int MOTOR_TRANSFER_POSITION = 775;
-    private final int MOTOR_FULLY_BACK_POSITION = 20;
+    private final int MOTOR_INTAKE_POSITION = 1000;
+    private final int MOTOR_TRANSFER_POSITION = 625;
+    private final int MOTOR_FULLY_BACK_POSITION = 0;
     private final double L_ELBOW_INTAKE = 0.82;
     private final double R_ELBOW_INTAKE = 0.48;
-    private final double L_ELBOW_POSITIONING = 0.75;
-    private final double R_ELBOW_POSITIONING = 0.58;
+    private final double L_ELBOW_POSITIONING = 0.73;
+    private final double R_ELBOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.24;
     private final double R_ELBOW_TRANSFER = 0.96;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
+    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.31;
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
     private final int R_linearSlidesMax = 1000;
     private final int L_linearSlidesMin = 0;
@@ -99,7 +100,7 @@ public class BasicTeleOp extends LinearOpMode {
         waitForStart();
         closeOuttakeClaw();
         ShoulderTransfer();
-
+        openIntakeClaw();
         runtime.reset();
 
         while (opModeIsActive()) {
@@ -118,7 +119,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
             if (gamepad2.b) {
                 goToPositioning();
-                sleep(200);
+                sleep(500);
                 openIntakeClaw();
 
             } if (gamepad2.y) {
@@ -136,6 +137,8 @@ public class BasicTeleOp extends LinearOpMode {
             } if (gamepad2.a) {
                 goToTransfer();
                 openOuttakeClaw();
+                sleep(700);
+                closeLooselyIntakeClaw();
 
 
             } if (gamepad2.back) {
@@ -256,6 +259,11 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void closeIntakeClaw() {
         claw.setPosition(INTAKE_CLAW_CLOSED_POSITION);
+        clawState = ClawState.CLOSED;
+    }
+
+    public void closeLooselyIntakeClaw() {
+        claw.setPosition(INTAKE_CLAW_LOOSELY_CLOSED_POSITION);
         clawState = ClawState.CLOSED;
     }
 
