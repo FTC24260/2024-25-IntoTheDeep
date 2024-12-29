@@ -35,14 +35,14 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
     private final double linearSlidesBufferZone = 0.1;
     private final int MOTOR_INTAKE_POSITION = 1000;
-    private final int MOTOR_TRANSFER_POSITION = 600;
+    private final int MOTOR_TRANSFER_POSITION = 550;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
     private final double L_ELBOW_INTAKE = 0.82;
     private final double R_ELBOW_INTAKE = 0.48;
     private final double L_ELBOW_POSITIONING = 0.73;
     private final double R_ELBOW_POSITIONING = 0.6;
-    private final double L_ELBOW_TRANSFER = 0.26;
-    private final double R_ELBOW_TRANSFER = 0.94;
+    private final double L_ELBOW_TRANSFER = 0.25;
+    private final double R_ELBOW_TRANSFER = 0.95;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -136,7 +136,7 @@ public class BasicTeleOp extends LinearOpMode {
             } if (gamepad2.a) {
                 goToTransfer();
                 openOuttakeClaw();
-                sleep(700);
+                sleep(500);
                 closeLooselyIntakeClaw();
 
 
@@ -191,7 +191,7 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
-        sleep(800);
+        sleep(1000);
         intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
