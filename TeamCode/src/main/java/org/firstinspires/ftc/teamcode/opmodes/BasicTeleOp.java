@@ -25,7 +25,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
-    private final double INTAKE_POWER = 0.6;
+    private final double INTAKE_POWER = 1;
     private final double ShoulderPositionTransfer = 0.35;
     private final double ShoulderPositionSpecimen = 0;
     private final double ShoulderPositionRest = 0.15;
@@ -39,8 +39,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final int MOTOR_FULLY_BACK_POSITION = 0;
     private final double L_ELBOW_INTAKE = 0.82;
     private final double R_ELBOW_INTAKE = 0.48;
-    private final double L_ELBOW_POSITIONING = 0.73;
-    private final double R_ELBOW_POSITIONING = 0.6;
+    private final double L_ELBOW_POSITIONING = 0.72;
+    private final double R_ELBOW_POSITIONING = 0.61;
     private final double L_ELBOW_TRANSFER = 0.25;
     private final double R_ELBOW_TRANSFER = 0.95;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -48,8 +48,6 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
     private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.31;
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
-    private final int R_linearSlidesMax = 1000;
-    private final int L_linearSlidesMin = 0;
 
     private enum ClawState {
         OPEN, CLOSED
@@ -142,7 +140,7 @@ public class BasicTeleOp extends LinearOpMode {
 
             } if (gamepad2.back) {
                 transferSample();
-                sleep(1000);
+                sleep(200);
                 goToFullyBack();
             }
             if (gamepad2.left_bumper) {
@@ -327,7 +325,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         closeOuttakeClaw();
-        sleep(1000);
+        sleep(200);
         openIntakeClaw();
 
     }
