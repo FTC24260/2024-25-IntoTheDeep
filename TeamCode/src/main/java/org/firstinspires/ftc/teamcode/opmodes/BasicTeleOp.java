@@ -25,30 +25,45 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
-    private final double INTAKE_POWER = 0.7;
-    private final double ShoulderPositionTransfer = 0.35;
-    private final double ShoulderPositionSpecimen = 0;
+    //Outtake Shoulder
+    private final double ShoulderPositionTransfer = 0.4;
+    private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.05;
-    private final double ShoulderPositionBasket = 0.8;
-    private final double linearSlidesPower = 0.1;
+    private final double ShoulderPositionBasket = 0.85;
+
+    //Linear Slides
+    private final double linearSlidesPower = 1;
+    private final double linearSlidesBufferZone = 0.1;
+
+    //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
-    private final double linearSlidesBufferZone = 0.1;
-    private final int MOTOR_INTAKE_POSITION = 1000;
-    private final int MOTOR_TRANSFER_POSITION = 550;
-    private final int MOTOR_FULLY_BACK_POSITION = 0;
-    private final double L_ELBOW_INTAKE = 0.82;
-    private final double R_ELBOW_INTAKE = 0.48;
+
+    //Intake Elbows
+    private final double L_ELBOW_INTAKE = 0.85;
+    private final double R_ELBOW_INTAKE = 0.45;
     private final double L_ELBOW_POSITIONING = 0.72;
     private final double R_ELBOW_POSITIONING = 0.61;
-    private final double L_ELBOW_TRANSFER = 0.25;
-    private final double R_ELBOW_TRANSFER = 0.95;
+    private final double L_ELBOW_TRANSFER = 0.26;
+    private final double R_ELBOW_TRANSFER = 0.94;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
+
+    //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
     private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.31;
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
+
+    //Intake Shoulder Motor
+    private final double INTAKE_POWER = 0.7;
+    private final int MOTOR_INTAKE_POSITION = 1000;
+    private final int MOTOR_TRANSFER_POSITION = 580;
+    private final int MOTOR_FULLY_BACK_POSITION = 0;
+
+    //Drive Speeds
+    private double speed = 0.5;
     private final double POSITIONING_SPEED = 0.1;
+
 
     private enum ClawState {
         OPEN, CLOSED
@@ -67,67 +82,48 @@ public class BasicTeleOp extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
-        intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
-        claw = hardwareMap.get(Servo.class, "claw");
-        linearSlideL = hardwareMap.get(DcMotorEx.class, "linearSlideL");
-        linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
-        OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
-        OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+        hwMapAndEncodersAndDriveDirections();
 
-        linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
-
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
-
-        double speed = 0.5;
 
         waitForStart();
-        ShoulderRest();
-        closeOuttakeClaw();
-        openIntakeClaw();
+        InitializedPosition();
+
         runtime.reset();
 
         while (opModeIsActive()) {
             // Update speed based on robot state
             if (intakeState == IntakeState.POSITIONING) {
                 speed = POSITIONING_SPEED;
+
             } else {
                 // Handle other speed controls
                 if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
                     speed = 1;
+
                 } else if (gamepad1.a) {
                     speed = 0.25;
+
                 } else if (gamepad1.b) {
                     speed = 0.5;
+
                 } else if (gamepad1.y) {
                     speed = 0.75;
+
                 } else if (gamepad1.x) {
                     speed = 1;
+
                 } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
                     speed = 0.5;
+
                 }
             }
 
             if (gamepad2.right_trigger > linearSlidesBufferZone) {
                 linearSlidesUp();
+
             } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
                 linearSlidesDown();
+
             } else {
                 linearSlidesStop();
             }
@@ -192,6 +188,7 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
+        closeLooselyIntakeClaw();
         sleep(1000);
         intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -225,6 +222,7 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToFullyBack() {
         intakeElbowR.setPosition(R_ELBOW_FULLY_BACK);
         intakeElbowL.setPosition(L_ELBOW_FULLY_BACK);
+        sleep(500);
         intakeMotor.setTargetPosition(MOTOR_FULLY_BACK_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
@@ -325,7 +323,44 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void transferSample() {
+        openIntakeClaw();
+        sleep(100);
         closeOuttakeClaw();
+
+    }
+
+    public void hwMapAndEncodersAndDriveDirections() {
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
+        intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
+        claw = hardwareMap.get(Servo.class, "claw");
+        linearSlideL = hardwareMap.get(DcMotorEx.class, "linearSlideL");
+        linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
+        OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
+        OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+
+        linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
+
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+    public void InitializedPosition() {
+        ShoulderRest();
         openIntakeClaw();
     }
 }
