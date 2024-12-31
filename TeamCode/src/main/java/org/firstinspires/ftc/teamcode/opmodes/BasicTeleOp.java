@@ -91,97 +91,9 @@ public class BasicTeleOp extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
-            // Update speed based on robot state
-            if (intakeState == IntakeState.POSITIONING) {
-                speed = POSITIONING_SPEED;
-
-            } else {
-                // Handle other speed controls
-                if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
-                    speed = 1;
-
-                } else if (gamepad1.a) {
-                    speed = 0.25;
-
-                } else if (gamepad1.b) {
-                    speed = 0.5;
-
-                } else if (gamepad1.y) {
-                    speed = 0.75;
-
-                } else if (gamepad1.x) {
-                    speed = 1;
-
-                } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
-                    speed = 0.5;
-
-                }
-            }
-
-            if (gamepad2.right_trigger > linearSlidesBufferZone) {
-                linearSlidesUp();
-
-            } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
-                linearSlidesDown();
-
-            } else {
-                linearSlidesStop();
-            }
-
-            if (gamepad2.start) {
-                toggleOuttakeClaw();
-            }
-            if (gamepad2.b) {
-                goToPositioning();
-                sleep(300);
-                openIntakeClaw();
-            }
-            if (gamepad2.y) {
-                goToIntakeFromPositioning();
-                closeIntakeClaw();
-            }
-            if (gamepad2.x) {
-                goToPositioningFromIntake();
-                openIntakeClaw();
-            }
-            if (gamepad2.a) {
-                ShoulderTransfer();
-                openOuttakeClaw();
-                sleep(500);
-                goToTransfer();
-            }
-            if (gamepad2.back) {
-                transferSample();
-                sleep(600);
-                goToFullyBack();
-            }
-            if (gamepad2.left_bumper) {
-                ShoulderBasket();
-            } else if (gamepad2.right_bumper) {
-                ShoulderTransfer();
-            }
-
-            // Drive controls
-            double drive = -gamepad2.left_stick_y;
-            double turn = -gamepad2.right_stick_x;
-            double strafe = -gamepad2.left_stick_x;
-
-            leftFront.setPower((drive + turn + strafe) * speed);
-            rightFront.setPower((drive - turn - strafe) * speed);
-            rightRear.setPower((drive - turn + strafe) * speed);
-            leftRear.setPower((drive + turn - strafe) * speed);
-
-            if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
-                leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-
-            telemetry.addData("Speed", speed);
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Robot State", intakeState.toString());
-            telemetry.update();
+            HandleDriveControls();
+            HandleNonChassisMovements();
+            TelemetryPrintStatements();
         }
     }
 
@@ -193,6 +105,8 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_POWER);
+
+        intakeState = IntakeState.TRANSFER;
     }
 
     public void goToPositioning() {
@@ -202,6 +116,7 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+
         intakeState = IntakeState.POSITIONING;
     }
 
@@ -209,13 +124,14 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_INTAKE);
         intakeElbowL.setPosition(L_ELBOW_INTAKE);
         sleep(1000);
-        closeIntakeClaw();
+
         intakeState = IntakeState.INTAKE;
     }
 
     public void goToPositioningFromIntake() {
         intakeElbowR.setPosition(R_ELBOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+
         intakeState = IntakeState.POSITIONING;
     }
 
@@ -362,5 +278,108 @@ public class BasicTeleOp extends LinearOpMode {
     public void InitializedPosition() {
         ShoulderRest();
         openIntakeClaw();
+    }
+
+    public void HandleDriveControls() {
+        // Drive controls
+        double drive = -gamepad2.left_stick_y;
+        double turn = -gamepad2.right_stick_x;
+        double strafe = -gamepad2.left_stick_x;
+
+        leftFront.setPower((drive + turn + strafe) * speed);
+        rightFront.setPower((drive - turn - strafe) * speed);
+        rightRear.setPower((drive - turn + strafe) * speed);
+        leftRear.setPower((drive + turn - strafe) * speed);
+
+        if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
+        // Update speed based on robot state
+        if (intakeState == IntakeState.POSITIONING) {
+            speed = POSITIONING_SPEED;
+
+        } else {
+            // Handle other speed controls
+            if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
+                speed = 1;
+
+            } else if (gamepad1.a) {
+                speed = 0.25;
+
+            } else if (gamepad1.b) {
+                speed = 0.5;
+
+            } else if (gamepad1.y) {
+                speed = 0.75;
+
+            } else if (gamepad1.x) {
+                speed = 1;
+
+            } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
+                speed = 0.5;
+
+            }
+        }
+    }
+
+    public void HandleNonChassisMovements() {
+
+        if (gamepad2.right_trigger > linearSlidesBufferZone) {
+            linearSlidesUp();
+
+        } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
+            linearSlidesDown();
+
+        } else {
+            linearSlidesStop();
+        }
+
+        if (gamepad2.start) {
+            if (intakeState == IntakeState.INTAKE) {
+                toggleIntakeClaw();
+            } else {
+                toggleOuttakeClaw();
+            }
+        }
+
+        if (gamepad2.b) {
+            goToPositioning();
+            sleep(300);
+            openIntakeClaw();
+        }
+        if (gamepad2.y) {
+            goToIntakeFromPositioning();
+        }
+        if (gamepad2.x) {
+            goToPositioningFromIntake();
+            openIntakeClaw();
+        }
+        if (gamepad2.a) {
+            ShoulderTransfer();
+            openOuttakeClaw();
+            sleep(500);
+            goToTransfer();
+        }
+        if (gamepad2.back) {
+            transferSample();
+            sleep(600);
+            goToFullyBack();
+        }
+        if (gamepad2.left_bumper) {
+            ShoulderBasket();
+        } else if (gamepad2.right_bumper) {
+            ShoulderTransfer();
+        }
+    }
+
+    public void TelemetryPrintStatements() {
+        telemetry.addData("Speed", speed);
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Robot State", intakeState.toString());
+        telemetry.update();
     }
 }
