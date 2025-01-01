@@ -62,7 +62,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Drive Speeds
     private double speed = 0.5;
-    private final double POSITIONING_SPEED = 0.1;
+    private final double POSITIONING_SPEED = 0.2;
 
 
     private enum ClawState {
@@ -240,7 +240,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         openIntakeClaw();
-        sleep(100);
+        sleep(50);
         closeOuttakeClaw();
 
     }
@@ -358,11 +358,12 @@ public class BasicTeleOp extends LinearOpMode {
             goToPositioningFromIntake();
             openIntakeClaw();
         }
-        if (gamepad2.a) {
-            ShoulderTransfer();
-            openOuttakeClaw();
-            sleep(500);
-            goToTransfer();
+            if (gamepad2.a) {
+                closeIntakeClaw();
+                ShoulderTransfer();
+                openOuttakeClaw();
+                sleep(500);
+                goToTransfer();
         }
         if (gamepad2.back) {
             transferSample();
@@ -371,6 +372,7 @@ public class BasicTeleOp extends LinearOpMode {
         }
         if (gamepad2.left_bumper) {
             ShoulderBasket();
+
         } else if (gamepad2.right_bumper) {
             ShoulderTransfer();
         }
