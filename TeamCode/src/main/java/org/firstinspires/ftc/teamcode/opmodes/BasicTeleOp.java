@@ -40,10 +40,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.85;
-    private final double R_ELBOW_INTAKE = 0.45;
-    private final double L_ELBOW_POSITIONING = 0.72;
-    private final double R_ELBOW_POSITIONING = 0.61;
+    private final double L_ELBOW_INTAKE = 0.9;
+    private final double R_ELBOW_INTAKE = 0.4;
+    private final double L_ELBOW_POSITIONING = 0.8;
+    private final double R_ELBOW_POSITIONING = 0.53;
     private final double L_ELBOW_TRANSFER = 0.26;
     private final double R_ELBOW_TRANSFER = 0.94;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -55,9 +55,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
 
     //Intake Shoulder Motor
-    private final double INTAKE_POWER = 0.7;
-    private final int MOTOR_INTAKE_POSITION = 1000;
-    private final int MOTOR_TRANSFER_POSITION = 580;
+    private final double INTAKE_UP_POWER = 0.7;
+    private final double INTAKE_DOWN_POWER = 0.25;
+    private final int MOTOR_INTAKE_POSITION = 975;
+    private final int MOTOR_TRANSFER_POSITION = 530;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -104,7 +105,7 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(1000);
         intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(-INTAKE_POWER);
+        intakeMotor.setPower(-INTAKE_UP_POWER);
 
         intakeState = IntakeState.TRANSFER;
     }
@@ -112,7 +113,8 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToPositioning() {
         intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(INTAKE_POWER);
+        intakeMotor.setPower(INTAKE_DOWN_POWER);
+        openOuttakeClaw();
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_POSITIONING);
@@ -141,7 +143,7 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(500);
         intakeMotor.setTargetPosition(MOTOR_FULLY_BACK_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(-INTAKE_POWER);
+        intakeMotor.setPower(-INTAKE_UP_POWER);
     }
 
     public void toggleIntake() {
@@ -350,6 +352,7 @@ public class BasicTeleOp extends LinearOpMode {
             goToPositioning();
             sleep(300);
             openIntakeClaw();
+
         }
         if (gamepad2.y) {
             goToIntakeFromPositioning();
