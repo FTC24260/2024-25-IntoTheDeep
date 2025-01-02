@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
-
 @TeleOp(name="Basic: Teleop", group="Linear OpMode")
 public class BasicTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -42,8 +40,10 @@ public class BasicTeleOp extends LinearOpMode {
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 0.9;
     private final double R_ELBOW_INTAKE = 0.4;
-    private final double L_ELBOW_POSITIONING = 0.8;
-    private final double R_ELBOW_POSITIONING = 0.53;
+    private final double L_ELBOW_HIGH_POSITIONING = 0.68;
+    private final double R_ELBOW_HIGH_POSITIONING = 0.65;
+    private final double L_ELBOW_LOW_POSITIONING = 0.8;
+    private final double R_ELBOW_LOW_POSITIONING = 0.53;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -56,9 +56,9 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 0.7;
-    private final double INTAKE_DOWN_POWER = 0.25;
+    private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
-    private final int MOTOR_TRANSFER_POSITION = 530;
+    private final int MOTOR_TRANSFER_POSITION = 550;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -116,8 +116,11 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setPower(INTAKE_DOWN_POWER);
         openOuttakeClaw();
         sleep(1000);
-        intakeElbowR.setPosition(R_ELBOW_POSITIONING);
-        intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+        intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
+        intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
+        sleep(500);
+        intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
+        intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
 
         intakeState = IntakeState.POSITIONING;
     }
@@ -131,8 +134,8 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void goToPositioningFromIntake() {
-        intakeElbowR.setPosition(R_ELBOW_POSITIONING);
-        intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+        intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
+        intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
 
         intakeState = IntakeState.POSITIONING;
     }
@@ -152,8 +155,8 @@ public class BasicTeleOp extends LinearOpMode {
             intakeElbowL.setPosition(L_ELBOW_INTAKE);
             intakeState = IntakeState.INTAKE;
         } else if (intakeState == IntakeState.INTAKE) {
-            intakeElbowR.setPosition(R_ELBOW_POSITIONING);
-            intakeElbowL.setPosition(L_ELBOW_POSITIONING);
+            intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
+            intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
             intakeState = IntakeState.POSITIONING;
         }
     }
@@ -241,9 +244,9 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void transferSample() {
-        openIntakeClaw();
-        sleep(50);
         closeOuttakeClaw();
+        sleep(50);
+        openIntakeClaw();
 
     }
 
@@ -325,6 +328,31 @@ public class BasicTeleOp extends LinearOpMode {
                 speed = 0.5;
 
             }
+        }
+
+        if (gamepad2.dpad_up) {
+            leftFront.setPower(0.2);
+            leftRear.setPower(0.1);
+            rightFront.setPower(0.1);
+            rightRear.setPower(0.1);
+        }
+        if (gamepad2.dpad_down) {
+            leftFront.setPower(-0.2);
+            leftRear.setPower(-0.2);
+            rightFront.setPower(-0.2);
+            rightRear.setPower(-0.2);
+        }
+        if (gamepad2.dpad_right) {
+            leftFront.setPower(-0.2);
+            leftRear.setPower(0.2);
+            rightFront.setPower(0.2);
+            rightRear.setPower(-0.2);
+        }
+        if (gamepad2.dpad_left) {
+            leftFront.setPower(0.2);
+            leftRear.setPower(-0.2);
+            rightFront.setPower(-0.2);
+            rightRear.setPower(0.2);
         }
     }
 
