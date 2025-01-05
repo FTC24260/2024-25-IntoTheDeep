@@ -188,12 +188,12 @@ public class BasicTeleOp extends LinearOpMode {
 
     private void linearSlidesUp() {
         linearSlideL.setPower(linearSlidesPower);
-        linearSlideR.setPower(-linearSlidesPower);
+        linearSlideR.setPower(linearSlidesPower);
     }
 
     private void linearSlidesDown() {
         linearSlideL.setPower(-linearSlidesPower);
-        linearSlideR.setPower(linearSlidesPower);
+        linearSlideR.setPower(-linearSlidesPower);
     }
 
     private void linearSlidesStop() {

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedBasketSideLevel1AscentParkAuto",  group = "Qualifiers" )
+@Autonomous (name = "RedLeftPreloadBasketAscentPark",  group = "Qualifiers" )
 public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;

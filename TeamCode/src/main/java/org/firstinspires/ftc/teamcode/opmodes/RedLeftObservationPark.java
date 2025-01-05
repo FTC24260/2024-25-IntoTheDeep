@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedBasketSideObservationZoneParkAuto",  group = "Qualifiers" )
+@Autonomous (name = "RedLeftObservationPark",  group = "Qualifiers" )
 public class RedLeftObservationPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
