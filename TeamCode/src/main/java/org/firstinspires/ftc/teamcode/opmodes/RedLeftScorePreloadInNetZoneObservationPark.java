@@ -93,7 +93,7 @@ public class RedLeftScorePreloadInNetZoneObservationPark extends LinearOpMode {
 
         while (opModeIsActive()) {
             driveForward(12);
-            strafeLeft(12);
+            strafeLeft(24);
             turnLeft(135);
             goToPositioning();
             goToIntakeFromPositioning();

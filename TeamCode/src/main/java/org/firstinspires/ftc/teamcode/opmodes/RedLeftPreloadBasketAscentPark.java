@@ -93,10 +93,10 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
 
         while (opModeIsActive()) {
             driveForward(12);
-            strafeLeft(12);
+            strafeLeft(24);
             turnRight(45);
-            ShoulderBasket();
             linearSlidesUp();
+            ShoulderBasket();
             openOuttakeClaw();
             ShoulderTransfer();
             linearSlidesDown();

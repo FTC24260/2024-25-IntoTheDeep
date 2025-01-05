@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedLeftScorePreloadInBasketObservationPark",  group = "Qualifiers" )
-public class RedLeftScorePreloadInBasketObservationPark extends LinearOpMode {
+@Autonomous (name = "RedLeftScorePreloadBasketPushNeutralsObservationPark",  group = "Qualifiers" )
+public class RedLeftScorePreloadBasketPushNeutralsObservationPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -101,8 +101,18 @@ public class RedLeftScorePreloadInBasketObservationPark extends LinearOpMode {
             ShoulderTransfer();
             linearSlidesDown();
             turnLeft(45);
-            strafeRight(100);
-            driveBackward(12);
+            strafeLeft(12);
+            goToPositioning();
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            goToFullyBack();
+            strafeRight(12);
+            turnLeft(135);
+            goToPositioning();
+            goToFullyBack();
+            turnLeft(45);
+            strafeLeft(96);
+            driveForward(12);
 
         }
     }
