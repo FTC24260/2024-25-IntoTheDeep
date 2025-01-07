@@ -44,7 +44,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.8;
     private final double R_ELBOW_LOW_POSITIONING = 0.53;
-    private final double L_ELBOW_TRANSFER = 0.29;
+    private final double L_ELBOW_TRANSFER = 0.28;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
@@ -58,7 +58,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
-    private final int MOTOR_TRANSFER_POSITION = 550;
+    private final int MOTOR_TRANSFER_POSITION = 520;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -244,9 +244,9 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void transferSample() {
-        closeOuttakeClaw();
-        sleep(50);
         openIntakeClaw();
+        sleep(30);
+        closeOuttakeClaw();
 
     }
 
@@ -274,22 +274,21 @@ public class BasicTeleOp extends LinearOpMode {
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void InitializedPosition() {
-        ShoulderRest();
         openIntakeClaw();
     }
 
     public void HandleDriveControls() {
         // Drive controls
         double drive = -gamepad2.left_stick_y;
-        double turn = -gamepad2.right_stick_x;
-        double strafe = -gamepad2.left_stick_x;
+        double turn = gamepad2.right_stick_x;
+        double strafe = gamepad2.left_stick_x;
 
         leftFront.setPower((drive + turn + strafe) * speed);
         rightFront.setPower((drive - turn - strafe) * speed);
