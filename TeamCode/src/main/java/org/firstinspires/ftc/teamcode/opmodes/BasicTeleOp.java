@@ -30,7 +30,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionBasket = 0.85;
 
     //Linear Slides
-    private final double linearSlidesPower = 1;
+    private final double linearSlidesPower = 0.5;
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
@@ -188,12 +188,12 @@ public class BasicTeleOp extends LinearOpMode {
 
     private void linearSlidesUp() {
         linearSlideL.setPower(linearSlidesPower);
-        linearSlideR.setPower(linearSlidesPower);
+        linearSlideR.setPower(-linearSlidesPower);
     }
 
     private void linearSlidesDown() {
         linearSlideL.setPower(-linearSlidesPower);
-        linearSlideR.setPower(-linearSlidesPower);
+        linearSlideR.setPower(linearSlidesPower);
     }
 
     private void linearSlidesStop() {

@@ -17,7 +17,7 @@ public class RedLeftObservationPark extends LinearOpMode {
     int leftRearPos;
     int rightRearPos;
 
-    private final int ticksPerInch = 188;
+    private final int ticksPerInch = 10;
     private final double wheelbase = 16.5;
     private final double robotRotationCircumference = 73.4;
 
@@ -43,8 +43,13 @@ public class RedLeftObservationPark extends LinearOpMode {
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftFrontPos = 0;
         rightFrontPos = 0;
@@ -55,8 +60,21 @@ public class RedLeftObservationPark extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            strafeRight(84,0.5);
+        if (opModeIsActive()) {
+            strafeRight(30, 1);
+            leftFront.setPower(0);
+            rightFront.setPower(0);
+            leftRear.setPower(0);
+            rightRear.setPower(0);
+
+            while (opModeIsActive()) {
+                telemetry.addData("Status", "Holding Position");
+                telemetry.addData("Left Front Position", leftFront.getCurrentPosition());
+                telemetry.addData("Right Front Position", rightFront.getCurrentPosition());
+                telemetry.addData("Left Rear Position", leftRear.getCurrentPosition());
+                telemetry.addData("Right Rear Position", rightRear.getCurrentPosition());
+                telemetry.update();
+            }
         }
     }
 

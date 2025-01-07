@@ -27,10 +27,10 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     int rightFrontPos;
     int leftRearPos;
     int rightRearPos;
-    private final int ticksPerInch = 188;
+    private final int ticksPerInch = 20;
     private final double wheelbase = 16.5;
     private final double robotRotationCircumference = 73.4;
-    private final double speed = 0.5;
+    private final double speed = 1;
     private final double POSITIONING_SPEED = 0.2;
 
     private final double ShoulderPositionTransfer = 0.4;
@@ -91,7 +91,7 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        if (opModeIsActive()) {
             driveForward(12);
             strafeLeft(12);
             turnRight(45);
@@ -106,6 +106,15 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
             turnLeft(90);
             ShoulderBasket();
             driveBackward(10.25);
+
+            while (opModeIsActive()) {
+                telemetry.addData("Status", "Holding Position");
+                telemetry.addData("Left Front Position", leftFront.getCurrentPosition());
+                telemetry.addData("Right Front Position", rightFront.getCurrentPosition());
+                telemetry.addData("Left Rear Position", leftRear.getCurrentPosition());
+                telemetry.addData("Right Rear Position", rightRear.getCurrentPosition());
+                telemetry.update();
+            }
 
         }
     }
@@ -327,6 +336,11 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.FORWARD);
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftFrontPos = 0;
         rightFrontPos = 0;
