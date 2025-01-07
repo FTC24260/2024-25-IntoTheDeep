@@ -24,7 +24,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-    private final double ShoulderPositionTransfer = 0.4;
+    private final double ShoulderPositionTransfer = 0.45;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.05;
     private final double ShoulderPositionBasket = 0.85;
@@ -58,7 +58,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
-    private final int MOTOR_TRANSFER_POSITION = 550;
+    private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -96,6 +96,206 @@ public class BasicTeleOp extends LinearOpMode {
             HandleNonChassisMovements();
             TelemetryPrintStatements();
         }
+    }
+
+
+    public void hwMapAndEncodersAndDriveDirections() {
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
+        intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
+        claw = hardwareMap.get(Servo.class, "claw");
+        linearSlideL = hardwareMap.get(DcMotorEx.class, "linearSlideL");
+        linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
+        OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
+        OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+
+        linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
+
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+    public void InitializedPosition() {
+        ShoulderRest();
+        openIntakeClaw();
+    }
+
+    public void HandleDriveControls() {
+        // Drive controls
+        //Using 2 controllers
+        double drive = -gamepad1.left_stick_y;
+        double turn = -gamepad1.right_stick_x;
+        double strafe = -gamepad1.left_stick_x;
+
+        leftFront.setPower((drive + turn + strafe) * speed);
+        rightFront.setPower((drive - turn - strafe) * speed);
+        rightRear.setPower((drive - turn + strafe) * speed);
+        leftRear.setPower((drive + turn - strafe) * speed);
+
+        if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
+        // Update speed based on robot state
+        if (intakeState == IntakeState.POSITIONING) {
+            speed = POSITIONING_SPEED;
+
+        } else {
+            // Handle other speed controls
+            if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
+                speed = 1;
+
+            } else if (gamepad1.a) {
+                speed = 0.25;
+
+            } else if (gamepad1.b) {
+                speed = 0.5;
+
+            } else if (gamepad1.y) {
+                speed = 0.75;
+
+            } else if (gamepad1.x) {
+                speed = 1;
+
+            } else if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
+                speed = 0.5;
+
+            }
+        }
+        //Combined driving and manipulating controls
+//        double drive = -gamepad2.left_stick_y;
+//        double turn = -gamepad2.right_stick_x;
+//        double strafe = -gamepad2.left_stick_x;
+//
+//        leftFront.setPower((drive + turn + strafe) * speed);
+//        rightFront.setPower((drive - turn - strafe) * speed);
+//        rightRear.setPower((drive - turn + strafe) * speed);
+//        leftRear.setPower((drive + turn - strafe) * speed);
+//
+//        if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
+//            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        }
+//
+//        // Update speed based on robot state
+//        if (intakeState == IntakeState.POSITIONING) {
+//            speed = POSITIONING_SPEED;
+//
+//        } else {
+//            // Handle other speed controls
+//            if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
+//                speed = 1;
+//
+//            }  else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
+//                speed = 0.5;
+//
+//            }
+//        }
+//
+//        if (gamepad2.dpad_up) {
+//            leftFront.setPower(0.2);
+//            leftRear.setPower(0.2);
+//            rightFront.setPower(0.2);
+//            rightRear.setPower(0.2);
+//        }
+//        if (gamepad2.dpad_down) {
+//            leftFront.setPower(-0.2);
+//            leftRear.setPower(-0.2);
+//            rightFront.setPower(-0.2);
+//            rightRear.setPower(-0.2);
+//        }
+//        if (gamepad2.dpad_right) {
+//            leftFront.setPower(-0.2);
+//            leftRear.setPower(0.2);
+//            rightFront.setPower(0.2);
+//            rightRear.setPower(-0.2);
+//        }
+//        if (gamepad2.dpad_left) {
+//            leftFront.setPower(0.2);
+//            leftRear.setPower(-0.2);
+//            rightFront.setPower(-0.2);
+//            rightRear.setPower(0.2);
+//        }
+
+    }
+
+    public void HandleNonChassisMovements() {
+
+        if (gamepad2.right_trigger > linearSlidesBufferZone) {
+            linearSlidesUp();
+
+        } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
+            linearSlidesDown();
+
+        } else {
+            linearSlidesStop();
+        }
+
+        if (gamepad2.start) {
+            if (intakeState == IntakeState.INTAKE) {
+                toggleIntakeClaw();
+            } else {
+                toggleOuttakeClaw();
+            }
+        }
+
+        if (gamepad2.b) {
+            goToPositioning();
+            sleep(300);
+            openIntakeClaw();
+
+        }
+        if (gamepad2.y) {
+            goToIntakeFromPositioning();
+        }
+        if (gamepad2.x) {
+            goToPositioningFromIntake();
+            openIntakeClaw();
+        }
+            if (gamepad2.a) {
+                closeIntakeClaw();
+                ShoulderTransfer();
+                openOuttakeClaw();
+                sleep(500);
+                goToTransfer();
+        }
+        if (gamepad2.back) {
+            transferSample();
+            sleep(600);
+            goToFullyBack();
+        }
+        if (gamepad2.left_bumper) {
+            ShoulderBasket();
+
+        } else if (gamepad2.right_bumper) {
+            ShoulderTransfer();
+        }
+    }
+
+    public void TelemetryPrintStatements() {
+        telemetry.addData("Speed", speed);
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Robot State", intakeState.toString());
+        telemetry.update();
     }
 
     public void goToTransfer() {
@@ -248,171 +448,5 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(50);
         openIntakeClaw();
 
-    }
-
-    public void hwMapAndEncodersAndDriveDirections() {
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
-        intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
-        claw = hardwareMap.get(Servo.class, "claw");
-        linearSlideL = hardwareMap.get(DcMotorEx.class, "linearSlideL");
-        linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
-        OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
-        OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
-
-        linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
-
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
-    }
-
-    public void InitializedPosition() {
-        ShoulderRest();
-        openIntakeClaw();
-    }
-
-    public void HandleDriveControls() {
-        // Drive controls
-        double drive = -gamepad2.left_stick_y;
-        double turn = -gamepad2.right_stick_x;
-        double strafe = -gamepad2.left_stick_x;
-
-        leftFront.setPower((drive + turn + strafe) * speed);
-        rightFront.setPower((drive - turn - strafe) * speed);
-        rightRear.setPower((drive - turn + strafe) * speed);
-        leftRear.setPower((drive + turn - strafe) * speed);
-
-        if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
-            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-
-        // Update speed based on robot state
-        if (intakeState == IntakeState.POSITIONING) {
-            speed = POSITIONING_SPEED;
-
-        } else {
-            // Handle other speed controls
-            if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
-                speed = 1;
-
-            } else if (gamepad1.a) {
-                speed = 0.25;
-
-            } else if (gamepad1.b) {
-                speed = 0.5;
-
-            } else if (gamepad1.y) {
-                speed = 0.75;
-
-            } else if (gamepad1.x) {
-                speed = 1;
-
-            } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
-                speed = 0.5;
-
-            }
-        }
-
-        if (gamepad2.dpad_up) {
-            leftFront.setPower(0.2);
-            leftRear.setPower(0.1);
-            rightFront.setPower(0.1);
-            rightRear.setPower(0.1);
-        }
-        if (gamepad2.dpad_down) {
-            leftFront.setPower(-0.2);
-            leftRear.setPower(-0.2);
-            rightFront.setPower(-0.2);
-            rightRear.setPower(-0.2);
-        }
-        if (gamepad2.dpad_right) {
-            leftFront.setPower(-0.2);
-            leftRear.setPower(0.2);
-            rightFront.setPower(0.2);
-            rightRear.setPower(-0.2);
-        }
-        if (gamepad2.dpad_left) {
-            leftFront.setPower(0.2);
-            leftRear.setPower(-0.2);
-            rightFront.setPower(-0.2);
-            rightRear.setPower(0.2);
-        }
-    }
-
-    public void HandleNonChassisMovements() {
-
-        if (gamepad2.right_trigger > linearSlidesBufferZone) {
-            linearSlidesUp();
-
-        } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
-            linearSlidesDown();
-
-        } else {
-            linearSlidesStop();
-        }
-
-        if (gamepad2.start) {
-            if (intakeState == IntakeState.INTAKE) {
-                toggleIntakeClaw();
-            } else {
-                toggleOuttakeClaw();
-            }
-        }
-
-        if (gamepad2.b) {
-            goToPositioning();
-            sleep(300);
-            openIntakeClaw();
-
-        }
-        if (gamepad2.y) {
-            goToIntakeFromPositioning();
-        }
-        if (gamepad2.x) {
-            goToPositioningFromIntake();
-            openIntakeClaw();
-        }
-            if (gamepad2.a) {
-                closeIntakeClaw();
-                ShoulderTransfer();
-                openOuttakeClaw();
-                sleep(500);
-                goToTransfer();
-        }
-        if (gamepad2.back) {
-            transferSample();
-            sleep(600);
-            goToFullyBack();
-        }
-        if (gamepad2.left_bumper) {
-            ShoulderBasket();
-
-        } else if (gamepad2.right_bumper) {
-            ShoulderTransfer();
-        }
-    }
-
-    public void TelemetryPrintStatements() {
-        telemetry.addData("Speed", speed);
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Robot State", intakeState.toString());
-        telemetry.update();
     }
 }
