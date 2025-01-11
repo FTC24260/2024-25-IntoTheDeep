@@ -44,8 +44,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.8;
     private final double R_ELBOW_LOW_POSITIONING = 0.53;
-    private final double L_ELBOW_TRANSFER = 0.29;
-    private final double R_ELBOW_TRANSFER = 0.91;
+    private final double L_ELBOW_TRANSFER = 0.23;
+    private final double R_ELBOW_TRANSFER = 0.97;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
 
@@ -58,7 +58,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
-    private final int MOTOR_TRANSFER_POSITION = 450;
+    private final int MOTOR_TRANSFER_POSITION = 730;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -124,9 +124,9 @@ public class BasicTeleOp extends LinearOpMode {
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void InitializedPosition() {
@@ -138,7 +138,7 @@ public class BasicTeleOp extends LinearOpMode {
         // Drive controls
         //Using 2 controllers
         double drive = -gamepad1.left_stick_y;
-        double turn = -gamepad1.right_stick_x;
+        double turn = gamepad1.right_stick_x;
         double strafe = -gamepad1.left_stick_x;
 
         leftFront.setPower((drive + turn + strafe) * speed);
@@ -274,6 +274,7 @@ public class BasicTeleOp extends LinearOpMode {
             if (gamepad2.a) {
                 closeIntakeClaw();
                 ShoulderTransfer();
+                sleep(300);
                 openOuttakeClaw();
                 sleep(500);
                 goToTransfer();
