@@ -30,7 +30,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionBasket = 0.7;
 
     //Linear Slides
-    private final double linearSlidesPower = 1;
+    private final double linearSlidesPower = 0.5;
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
@@ -42,10 +42,17 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
+<<<<<<< HEAD
     private final double L_ELBOW_LOW_POSITIONING = 0.75;
     private final double R_ELBOW_LOW_POSITIONING = 0.58;
     private final double L_ELBOW_TRANSFER = 0.3;
     private final double R_ELBOW_TRANSFER = 0.9;
+=======
+    private final double L_ELBOW_LOW_POSITIONING = 0.8;
+    private final double R_ELBOW_LOW_POSITIONING = 0.53;
+    private final double L_ELBOW_TRANSFER = 0.28;
+    private final double R_ELBOW_TRANSFER = 0.91;
+>>>>>>> d825651101671eefb3f0a39d46f84e769e175c5e
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
 
@@ -57,7 +64,11 @@ public class BasicTeleOp extends LinearOpMode {
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
+<<<<<<< HEAD
     private final int MOTOR_INTAKE_POSITION = 1050;
+=======
+    private final int MOTOR_INTAKE_POSITION = 975;
+>>>>>>> d825651101671eefb3f0a39d46f84e769e175c5e
     private final int MOTOR_TRANSFER_POSITION = 520;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
@@ -384,10 +395,21 @@ public class BasicTeleOp extends LinearOpMode {
         }
     }
 
+<<<<<<< HEAD
 
     private void linearSlidesDown() {
         linearSlideL.setPower(linearSlidesPower);
         linearSlideR.setPower(-linearSlidesPower);
+=======
+    private void linearSlidesUp() {
+        linearSlideL.setPower(linearSlidesPower);
+        linearSlideR.setPower(-linearSlidesPower);
+    }
+
+    private void linearSlidesDown() {
+        linearSlideL.setPower(-linearSlidesPower);
+        linearSlideR.setPower(linearSlidesPower);
+>>>>>>> d825651101671eefb3f0a39d46f84e769e175c5e
     }
 
     private void linearSlidesUp() {
@@ -443,9 +465,177 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void transferSample() {
-        closeOuttakeClaw();
-        sleep(50);
         openIntakeClaw();
+        sleep(30);
+        closeOuttakeClaw();
 
     }
+<<<<<<< HEAD
+=======
+
+    public void hwMapAndEncodersAndDriveDirections() {
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeElbowR = hardwareMap.get(Servo.class, "intakeElbowR");
+        intakeElbowL = hardwareMap.get(Servo.class, "intakeElbowL");
+        claw = hardwareMap.get(Servo.class, "claw");
+        linearSlideL = hardwareMap.get(DcMotorEx.class, "linearSlideL");
+        linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
+        OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
+        OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+
+        linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
+
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    public void InitializedPosition() {
+        openIntakeClaw();
+    }
+
+    public void HandleDriveControls() {
+        // Drive controls
+        double drive = -gamepad2.left_stick_y;
+        double turn = gamepad2.right_stick_x;
+        double strafe = gamepad2.left_stick_x;
+
+        leftFront.setPower((drive + turn + strafe) * speed);
+        rightFront.setPower((drive - turn - strafe) * speed);
+        rightRear.setPower((drive - turn + strafe) * speed);
+        leftRear.setPower((drive + turn - strafe) * speed);
+
+        if (gamepad1.right_stick_y == 0 || gamepad1.left_stick_x == 0) {
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
+        // Update speed based on robot state
+        if (intakeState == IntakeState.POSITIONING) {
+            speed = POSITIONING_SPEED;
+
+        } else {
+            // Handle other speed controls
+            if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
+                speed = 1;
+
+            } else if (gamepad1.a) {
+                speed = 0.25;
+
+            } else if (gamepad1.b) {
+                speed = 0.5;
+
+            } else if (gamepad1.y) {
+                speed = 0.75;
+
+            } else if (gamepad1.x) {
+                speed = 1;
+
+            } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
+                speed = 0.5;
+
+            }
+        }
+
+        if (gamepad2.dpad_up) {
+            leftFront.setPower(0.2);
+            leftRear.setPower(0.1);
+            rightFront.setPower(0.1);
+            rightRear.setPower(0.1);
+        }
+        if (gamepad2.dpad_down) {
+            leftFront.setPower(-0.2);
+            leftRear.setPower(-0.2);
+            rightFront.setPower(-0.2);
+            rightRear.setPower(-0.2);
+        }
+        if (gamepad2.dpad_right) {
+            leftFront.setPower(-0.2);
+            leftRear.setPower(0.2);
+            rightFront.setPower(0.2);
+            rightRear.setPower(-0.2);
+        }
+        if (gamepad2.dpad_left) {
+            leftFront.setPower(0.2);
+            leftRear.setPower(-0.2);
+            rightFront.setPower(-0.2);
+            rightRear.setPower(0.2);
+        }
+    }
+
+    public void HandleNonChassisMovements() {
+
+        if (gamepad2.right_trigger > linearSlidesBufferZone) {
+            linearSlidesUp();
+
+        } else if (gamepad2.left_trigger > linearSlidesBufferZone) {
+            linearSlidesDown();
+
+        } else {
+            linearSlidesStop();
+        }
+
+        if (gamepad2.start) {
+            if (intakeState == IntakeState.INTAKE) {
+                toggleIntakeClaw();
+            } else {
+                toggleOuttakeClaw();
+            }
+        }
+
+        if (gamepad2.b) {
+            goToPositioning();
+            sleep(300);
+            openIntakeClaw();
+
+        }
+        if (gamepad2.y) {
+            goToIntakeFromPositioning();
+        }
+        if (gamepad2.x) {
+            goToPositioningFromIntake();
+            openIntakeClaw();
+        }
+            if (gamepad2.a) {
+                closeIntakeClaw();
+                ShoulderTransfer();
+                openOuttakeClaw();
+                sleep(500);
+                goToTransfer();
+        }
+        if (gamepad2.back) {
+            transferSample();
+            sleep(600);
+            goToFullyBack();
+        }
+        if (gamepad2.left_bumper) {
+            ShoulderBasket();
+
+        } else if (gamepad2.right_bumper) {
+            ShoulderTransfer();
+        }
+    }
+
+    public void TelemetryPrintStatements() {
+        telemetry.addData("Speed", speed);
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("Robot State", intakeState.toString());
+        telemetry.update();
+    }
+>>>>>>> d825651101671eefb3f0a39d46f84e769e175c5e
 }
