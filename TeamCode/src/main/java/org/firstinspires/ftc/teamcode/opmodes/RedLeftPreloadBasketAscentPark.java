@@ -27,7 +27,7 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     int rightFrontPos;
     int leftRearPos;
     int rightRearPos;
-    private final int ticksPerInch = 20;
+    private final double ticksPerInch = 43.5;
     private final double wheelbase = 16.5;
     private final double robotRotationCircumference = 73.4;
     private final double speed = 1;
@@ -92,20 +92,20 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            driveForward(12);
-            strafeLeft(24);
-            turnRight(45);
+            driveForward(12,0.5);
+            strafeLeft(24,0.5);
+            turnRight(45,0.5);
             linearSlidesUp();
             ShoulderBasket();
             openOuttakeClaw();
             ShoulderTransfer();
             linearSlidesDown();
-            turnLeft(45);
-            strafeRight(96);
-            driveForward(36);
-            turnLeft(90);
+            turnLeft(45,0.5);
+            strafeRight(96,0.5);
+            driveForward(36,0.5);
+            turnLeft(90,0.5);
             ShoulderBasket();
-            driveBackward(10.25);
+            driveBackward(10.25,0.5);
 
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
@@ -125,31 +125,31 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     }
 
     // Drive forward/backward by a specified distance in inches
-    private void driveForward(double inches) {
+    private void driveForward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
         drive(ticks, ticks, ticks, ticks, speed);
     }
 
-    private void driveBackward(double inches) {
+    private void driveBackward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
         drive(-ticks, -ticks, -ticks, -ticks, speed);
     }
 
     // Strafe left/right by a specified distance in inches
-    private void strafeRight(double inches) {
+    private void strafeRight(double inches, double speed) {
         // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
         drive(ticks, -ticks, -ticks, ticks, speed);
     }
 
-    private void strafeLeft(double inches) {
+    private void strafeLeft(double inches, double speed) {
         // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
         drive(-ticks, ticks, ticks, -ticks, speed);
     }
 
     // Turn by a specified distance in inches (measured at wheels)
-    private void turnRight(double degrees) {
+    private void turnRight(double degrees, double speed) {
         // Calculate the distance the robot needs to travel for the given degrees
         double distance = (degrees / 360.0) * robotRotationCircumference;
 
@@ -159,7 +159,7 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         drive(ticks, -ticks, ticks, -ticks, speed);
     }
 
-    private void turnLeft(double degrees) {
+    private void turnLeft(double degrees, double speed) {
         double distance = (degrees / 360.0) * robotRotationCircumference;
 
         // Convert this distance into ticks
@@ -332,10 +332,10 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

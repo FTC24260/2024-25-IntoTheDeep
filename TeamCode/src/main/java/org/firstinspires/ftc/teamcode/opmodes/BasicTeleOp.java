@@ -44,8 +44,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.8;
     private final double R_ELBOW_LOW_POSITIONING = 0.53;
-    private final double L_ELBOW_TRANSFER = 0.28;
-    private final double R_ELBOW_TRANSFER = 0.91;
+    private final double L_ELBOW_TRANSFER = 0.29;
+    private final double R_ELBOW_TRANSFER = 0.9;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
 
@@ -58,7 +58,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 1050;
-    private final int MOTOR_TRANSFER_POSITION = 520;
+    private final int MOTOR_TRANSFER_POSITION = 500;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -183,8 +183,8 @@ public class BasicTeleOp extends LinearOpMode {
 
 
     private void linearSlidesDown() {
-        linearSlideL.setPower(linearSlidesPower);
-        linearSlideR.setPower(-linearSlidesPower);
+        linearSlideL.setPower(-linearSlidesPower);
+        linearSlideR.setPower(linearSlidesPower);
     }
 
     private void linearSlidesUp() {
@@ -200,17 +200,30 @@ public class BasicTeleOp extends LinearOpMode {
     public void ShoulderSpecimen() {
         openOuttakeClaw();
         OuttakeShoulder.setPosition(ShoulderPositionSpecimen);
+        outtakeShoulderState = OuttakeShoulderState.SPECIMEN;
+    }
+
+    public void ToggleShoulder() {
+        if (outtakeShoulderState == OuttakeShoulderState.TRANSFER) {
+            ShoulderBasket();
+        } else {
+            ShoulderTransfer();
+        }
     }
 
     public void ShoulderBasket() {
         closeOuttakeClaw();
         OuttakeShoulder.setPosition(ShoulderPositionBasket);
+        sleep(500);
+        outtakeShoulderState = OuttakeShoulderState.BASKET;
     }
 
     public void ShoulderTransfer() {
         closeOuttakeClaw();
         sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
+        sleep(500);
+        outtakeShoulderState = OuttakeShoulderState.TRANSFER;
     }
 
     public void ShoulderRest() {
@@ -278,6 +291,7 @@ public class BasicTeleOp extends LinearOpMode {
 
         public void InitializedPosition () {
             openIntakeClaw();
+            ShoulderTransfer();
         }
 
         public void HandleDriveControls () {
@@ -397,10 +411,10 @@ public class BasicTeleOp extends LinearOpMode {
                 goToFullyBack();
             }
             if (gamepad2.left_bumper) {
-                ShoulderBasket();
+                ToggleShoulder();
 
             } else if (gamepad2.right_bumper) {
-                ShoulderTransfer();
+                ShoulderSpecimen();
             }
         }
 

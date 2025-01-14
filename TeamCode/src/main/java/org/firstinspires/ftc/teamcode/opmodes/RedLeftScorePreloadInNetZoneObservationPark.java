@@ -27,7 +27,7 @@ public class RedLeftScorePreloadInNetZoneObservationPark extends LinearOpMode {
     int rightFrontPos;
     int leftRearPos;
     int rightRearPos;
-    private final int ticksPerInch = 188;
+    private final double ticksPerInch = 43.5;
     private final double wheelbase = 16.5;
     private final double robotRotationCircumference = 73.4;
     private final double speed = 0.5;
@@ -314,10 +314,10 @@ public class RedLeftScorePreloadInNetZoneObservationPark extends LinearOpMode {
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
 
         leftFrontPos = 0;
         rightFrontPos = 0;
