@@ -36,7 +36,7 @@ public class RedLeftObservationPark extends LinearOpMode {
     private final double ShoulderPositionTransfer = 0.3;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.05;
-    private final double ShoulderPositionBasket = 0.7;
+    private final double ShoulderPositionBasket = 0.75;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -64,11 +64,13 @@ public class RedLeftObservationPark extends LinearOpMode {
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
 
     //Intake Shoulder Motor
-    private final double INTAKE_UP_POWER = 0.7;
+    private final double INTAKE_UP_POWER = 1;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
     private final int MOTOR_TRANSFER_POSITION = 550;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
+
+
 
     private enum ClawState {
         OPEN, CLOSED
@@ -87,97 +89,96 @@ public class RedLeftObservationPark extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            // Pre-load Sample Basket Score
-            strafeLeft(12, 0.5);
-            driveForward(12, 0.5);
-            turnRight(55, 0.5);
-            strafeLeft(6, 0.5);
-            driveBackward(10, 0.5);
+
+            //Pre-load Sample Basket Score
+            strafeLeft(12,0.75);
+            driveForward(12,0.75);
+            turnRight(55,0.25);
+            strafeLeft(6,0.75);
+            driveBackward(13,0.75);
             ShoulderBasket();
-            linearSlideR.setPower(0.75);
-            linearSlideL.setPower(-0.75);
-            sleep(2000);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
             ShoulderTransfer();
-            linearSlideR.setPower(-0.75);
-            linearSlideL.setPower(0.75);
-            sleep(2000);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            // First Neutral Sample Basket Score
-            turnLeft(55, 0.5);
-            driveForward(6, 0.5);
+            //First Neutral Sample Basket Score
+            turnLeft(55,0.25);
+            driveForward(10,0.25);
+            strafeRight(2.5,0.25);
             goToPositioning();
-            strafeRight(2, 0.15);
             goToIntakeFromPositioning();
             closeIntakeClaw();
             ShoulderTransfer();
             openOuttakeClaw();
-            sleep(500);
             goToTransfer();
-            sleep(1000);
+            sleep(400);
             transferSample();
-            driveBackward(6, 0.5);
-            turnRight(55, 0.5);
+            driveBackward(6,0.75);
+            turnRight(55,0.75);
             ShoulderBasket();
-            linearSlideR.setPower(0.75);
-            linearSlideL.setPower(-0.75);
-            sleep(2000);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
             sleep(100);
             closeOuttakeClaw();
             ShoulderTransfer();
-            linearSlideR.setPower(-0.75);
-            linearSlideL.setPower(0.75);
-            sleep(2000);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            // Second Neutral Sample Basket Score
-            turnLeft(55, 0.5);
-            driveForward(6, 0.5);
+            //Second Neutral Sample Basket Score
+            turnLeft(57,0.25);
+            driveForward(6,0.75);
             goToPositioning();
-            strafeLeft(12, 0.25);
+            strafeLeft(12,0.5);
             goToIntakeFromPositioning();
-            closeIntakeClaw();
             closeIntakeClaw();
             ShoulderTransfer();
             openOuttakeClaw();
-            sleep(500);
             goToTransfer();
-            sleep(1000);
+            sleep(400);
             transferSample();
-            strafeRight(12, 0.5);
-            driveBackward(6, 0.5);
-            turnRight(55, 0.5);
+            strafeRight(12,0.75);
+            driveBackward(8,0.75);
+            turnRight(55,0.75);
             ShoulderBasket();
-            linearSlideR.setPower(0.75);
-            linearSlideL.setPower(-0.75);
-            sleep(2000);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
             sleep(100);
             closeOuttakeClaw();
             ShoulderTransfer();
-            linearSlideR.setPower(-0.75);
-            linearSlideL.setPower(0.75);
-            sleep(2000);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
+            goToFullyBack();
 
-            // Stop all motors
+
+
             leftFront.setPower(0);
             rightFront.setPower(0);
             leftRear.setPower(0);
             rightRear.setPower(0);
 
-            // Hold position
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
                 telemetry.addData("Left Front Position", leftFront.getCurrentPosition());
@@ -191,84 +192,48 @@ public class RedLeftObservationPark extends LinearOpMode {
 
     // Convert inches to ticks
     private int inchesToTicks(double inches) {
-        return (int) (inches * ticksPerInch);
-    }
-
-    // Smooth Drive Method (with Acceleration and Deceleration)
-    private void smoothDrive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double startSpeed, double endSpeed, double duration) {
-        int steps = 50; // You can adjust this based on how smooth you want the movement
-        double speedStep = (endSpeed - startSpeed) / steps;
-        double currentSpeed = startSpeed;
-
-        leftFront.setTargetPosition(leftFrontTarget);
-        rightFront.setTargetPosition(rightFrontTarget);
-        leftRear.setTargetPosition(leftBackTarget);
-        rightRear.setTargetPosition(rightBackTarget);
-
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        leftFront.setPower(startSpeed);
-        rightFront.setPower(startSpeed);
-        leftRear.setPower(startSpeed);
-        rightRear.setPower(startSpeed);
-
-        for (int i = 0; i < steps; i++) {
-            if (!opModeIsActive()) break;
-            currentSpeed += speedStep;
-            if (currentSpeed > endSpeed) currentSpeed = endSpeed;
-
-            leftFront.setPower(currentSpeed);
-            rightFront.setPower(currentSpeed);
-            leftRear.setPower(currentSpeed);
-            rightRear.setPower(currentSpeed);
-
-            sleep((long) (duration / steps));
-        }
-
-        while (opModeIsActive() && leftFront.isBusy() && rightFront.isBusy() && leftRear.isBusy() && rightRear.isBusy()) {
-            idle();
-        }
+        return (int)(inches * ticksPerInch);
     }
 
     // Drive forward/backward by a specified distance in inches
     private void driveForward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
-        smoothDrive(leftFrontPos + ticks, rightFrontPos + ticks, leftRearPos + ticks, rightRearPos + ticks, 0.2, speed, 1.0);
+        drive(ticks, ticks, ticks, ticks, speed);
     }
 
     private void driveBackward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
-        smoothDrive(leftFrontPos - ticks, rightFrontPos - ticks, leftRearPos - ticks, rightRearPos - ticks, 0.2, speed, 1.0);
+        drive(-ticks, -ticks, -ticks, -ticks, speed);
     }
 
     // Strafe left/right by a specified distance in inches
     private void strafeRight(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
-        smoothDrive(leftFrontPos + ticks, rightFrontPos - ticks, leftRearPos - ticks, rightRearPos + ticks, 0.2, speed, 1.0);
+        drive(ticks, -ticks, -ticks, ticks, speed);
     }
 
     private void strafeLeft(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
-        smoothDrive(leftFrontPos - ticks, rightFrontPos + ticks, leftRearPos + ticks, rightRearPos - ticks, 0.2, speed, 1.0);
+        drive(-ticks, ticks, ticks, -ticks, speed);
     }
 
     // Turn by a specified distance in inches (measured at wheels)
     private void turnRight(double degrees, double speed) {
-        double distance = (degrees / 360.0) * robotRotationCircumference;
+        double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        smoothDrive(leftFrontPos + ticks, rightFrontPos - ticks, leftRearPos + ticks, rightRearPos - ticks, 0.2, speed, 1.0);
+        drive(ticks, -ticks, ticks, -ticks, speed);
     }
 
     private void turnLeft(double degrees, double speed) {
-        double distance = (degrees / 360.0) * robotRotationCircumference;
+        // Positive inches = turn right, negative = turn left
+        double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        smoothDrive(leftFrontPos - ticks, rightFrontPos + ticks, leftRearPos - ticks, rightRearPos + ticks, 0.2, speed, 1.0);
+        drive(-ticks, ticks, -ticks, ticks, speed);
     }
 
-    // Original drive method (simplified to be used with smoothDrive)
+    // Original drive method modified to be private since we'll use the new methods above
     private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
         rightFrontPos += rightFrontTarget;
@@ -294,15 +259,6 @@ public class RedLeftObservationPark extends LinearOpMode {
             idle();
         }
     }
-
-
-private void turnLeft(double degrees, double speed) {
-        // Positive inches = turn right, negative = turn left
-        double distance = (degrees/360.0) * robotRotationCircumference;
-        int ticks = (int) (distance * ticksPerInch);
-        drive(-ticks, ticks, -ticks, ticks, speed);
-    }
-    // Original drive method modified to be private since we'll use the new methods above
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
@@ -458,7 +414,7 @@ private void turnLeft(double degrees, double speed) {
     }
 
     public void InitializedPosition() {
-        ShoulderRest();
+        ShoulderTransfer();
         openIntakeClaw();
 
     }
