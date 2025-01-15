@@ -51,8 +51,8 @@ public class RedLeftObservationPark extends LinearOpMode {
     private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.8;
-    private final double R_ELBOW_LOW_POSITIONING = 0.53;
+    private final double L_ELBOW_LOW_POSITIONING = 0.77;
+    private final double R_ELBOW_LOW_POSITIONING = 0.56;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -94,26 +94,27 @@ public class RedLeftObservationPark extends LinearOpMode {
             strafeLeft(12,0.75);
             driveForward(12,0.75);
             turnRight(55,0.25);
+            sleep(300);
             strafeLeft(6,0.75);
             driveBackward(13,0.75);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(1000);
+            sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1000);
+            sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnLeft(55,0.25);
-            driveForward(10,0.25);
-            strafeRight(2.5,0.25);
+            turnLeft(54,0.25);
+            driveForward(11,0.25);
+            strafeRight(4.5,0.25);
             goToPositioning();
             goToIntakeFromPositioning();
             closeIntakeClaw();
@@ -122,43 +123,13 @@ public class RedLeftObservationPark extends LinearOpMode {
             goToTransfer();
             sleep(400);
             transferSample();
-            driveBackward(6,0.75);
-            turnRight(55,0.75);
-            ShoulderBasket();
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1000);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            openOuttakeClaw();
-            sleep(100);
-            closeOuttakeClaw();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1000);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //Second Neutral Sample Basket Score
-            turnLeft(57,0.25);
-            driveForward(6,0.75);
-            goToPositioning();
-            strafeLeft(12,0.5);
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            strafeRight(12,0.75);
+            strafeLeft(1.5,0.1);
             driveBackward(8,0.75);
             turnRight(55,0.75);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(1000);
+            sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
@@ -167,10 +138,45 @@ public class RedLeftObservationPark extends LinearOpMode {
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1000);
+            sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
+
+            //Second Neutral Sample Basket Score
+            turnLeft(57,0.25);
+            driveForward(7.5,0.75);
+            goToPositioning();
+            strafeLeft(13,0.5);
+            driveForward(1,0.1);
+            turnRight(1,0.1);
+            strafeRight(1,0.1);
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            ShoulderTransfer();
+            openOuttakeClaw();
+            goToTransfer();
+            sleep(400);
+            transferSample();
+            strafeRight(5,0.75);
+            driveBackward(8,0.75);
+            turnRight(55,0.75);
+            ShoulderBasket();
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+            openOuttakeClaw();
+            sleep(100);
+            closeOuttakeClaw();
+            ShoulderTransfer();
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
             goToFullyBack();
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+
 
 
 
