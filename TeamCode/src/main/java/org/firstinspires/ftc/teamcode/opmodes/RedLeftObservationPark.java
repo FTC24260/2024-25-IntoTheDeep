@@ -91,12 +91,12 @@ public class RedLeftObservationPark extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Pre-load Sample Basket Score
-            strafeLeft(12,0.75);
-            driveForward(12,0.75);
+            strafeLeft(12,0.5);
+            driveForward(12,0.5);
             turnRight(55,0.25);
             sleep(300);
-            strafeLeft(6,0.75);
-            driveBackward(13,0.75);
+            strafeLeft(6,0.5);
+            driveBackward(13,0.5);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -113,8 +113,8 @@ public class RedLeftObservationPark extends LinearOpMode {
 
             //First Neutral Sample Basket Score
             turnLeft(54,0.25);
-            driveForward(11,0.25);
-            strafeRight(4.5,0.25);
+            driveForward(9,0.25);
+            strafeRight(3,0.25);
             goToPositioning();
             goToIntakeFromPositioning();
             closeIntakeClaw();
@@ -124,8 +124,8 @@ public class RedLeftObservationPark extends LinearOpMode {
             sleep(400);
             transferSample();
             strafeLeft(1.5,0.1);
-            driveBackward(8,0.75);
-            turnRight(55,0.75);
+            driveBackward(8,0.5);
+            turnRight(55,0.5);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -144,12 +144,14 @@ public class RedLeftObservationPark extends LinearOpMode {
 
             //Second Neutral Sample Basket Score
             turnLeft(57,0.25);
-            driveForward(7.5,0.75);
-            goToPositioning();
-            strafeLeft(13,0.5);
+            driveForward(6.5,0.5);
+            strafeLeft(9,0.5);
             driveForward(1,0.1);
+            goToPositioning();
             turnRight(1,0.1);
-            strafeRight(1,0.1);
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            goToPositioningFromIntake();
             goToIntakeFromPositioning();
             closeIntakeClaw();
             ShoulderTransfer();
@@ -157,26 +159,17 @@ public class RedLeftObservationPark extends LinearOpMode {
             goToTransfer();
             sleep(400);
             transferSample();
-            strafeRight(5,0.75);
-            driveBackward(8,0.75);
-            turnRight(55,0.75);
+            strafeRight(5,0.5);
+            driveBackward(8,0.5);
+            turnRight(55,0.5);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(1500);
+            goToFullyBack();
+            sleep(1000);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
             openOuttakeClaw();
-            sleep(100);
-            closeOuttakeClaw();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            goToFullyBack();
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
 
 
 
@@ -298,6 +291,7 @@ public class RedLeftObservationPark extends LinearOpMode {
     public void goToPositioningFromIntake() {
         intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
+        openIntakeClaw();
     }
 
     public void goToFullyBack() {
