@@ -91,12 +91,12 @@ public class RedLeftObservationPark extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Pre-load Sample Basket Score
-            strafeLeft(12,0.5);
-            driveForward(12,0.5);
+            strafeLeft(12,0.3);
+            driveForward(12,0.3);
             turnRight(55,0.25);
             sleep(300);
-            strafeLeft(6,0.5);
-            driveBackward(13,0.5);
+            strafeLeft(6,0.3);
+            driveBackward(13,0.3);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -123,9 +123,7 @@ public class RedLeftObservationPark extends LinearOpMode {
             goToTransfer();
             sleep(400);
             transferSample();
-            strafeLeft(1.5,0.1);
-            driveBackward(8,0.5);
-            turnRight(55,0.5);
+            driveBackward(8,0.3);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -142,34 +140,46 @@ public class RedLeftObservationPark extends LinearOpMode {
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            //Second Neutral Sample Basket Score
-            turnLeft(57,0.25);
-            driveForward(6.5,0.5);
-            strafeLeft(9,0.5);
-            driveForward(1,0.1);
-            goToPositioning();
-            turnRight(1,0.1);
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            goToPositioningFromIntake();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
+//            //Second Neutral Sample Basket Score
+//            turnLeft(57,0.25);
+//            driveForward(6.5,0.5);
+//            strafeLeft(9,0.5);
+//            driveForward(1,0.1);
+//            goToPositioning();
+//            turnRight(1,0.1);
+//            goToIntakeFromPositioning();
+//            closeIntakeClaw();
+//            goToPositioningFromIntake();
+//            goToIntakeFromPositioning();
+//            closeIntakeClaw();
+//            ShoulderTransfer();
+//            openOuttakeClaw();
+//            goToTransfer();
+//            sleep(400);
+//            transferSample();
+//            strafeRight(5,0.5);
+//            driveBackward(8,0.5);
+//            turnRight(55,0.5);
+//            ShoulderBasket();
+//            linearSlideR.setPower(1);
+//            linearSlideL.setPower(-1);
+//            goToFullyBack();
+//            sleep(1000);
+//            linearSlideR.setPower(0);
+//            linearSlideL.setPower(0);
+//            openOuttakeClaw();
+
+            //Park Ascent Level 1
+            strafeRight(24,0.75);
+            driveForward(48,0.75);
+            turnLeft(90,0.5);
+            driveBackward(6,0.3);
             ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            strafeRight(5,0.5);
-            driveBackward(8,0.5);
-            turnRight(55,0.5);
-            ShoulderBasket();
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            goToFullyBack();
-            sleep(1000);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            openOuttakeClaw();
+            linearSlideR.setPower(0.5);
+            linearSlideL.setPower(-0.5);
+            sleep(500);
+            linearSlideR.setPower(-0.5);
+            linearSlideL.setPower(0.5);
 
 
 

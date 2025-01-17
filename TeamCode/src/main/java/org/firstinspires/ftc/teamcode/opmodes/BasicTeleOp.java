@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.Date;
+
 @TeleOp(name="Basic: Teleop", group="Linear OpMode")
 public class BasicTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -34,8 +36,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.39;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.15;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 0.9;
@@ -48,6 +50,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_TRANSFER = 0.9;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
+    private final double R_ELBOW_SPECIMEN_INTAKE = 0.73;
+    private final double L_ELBOW_SPECIMEN_INTAKE = 0.6;
 
     //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -156,6 +160,31 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setPower(-INTAKE_UP_POWER);
     }
 
+    public void intakeSpecimen() {
+        intakeElbowR.setPosition(R_ELBOW_SPECIMEN_INTAKE);
+        intakeElbowL.setPosition(L_ELBOW_SPECIMEN_INTAKE);
+        openIntakeClaw();
+        sleep(500);
+        intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeMotor.setPower(INTAKE_DOWN_POWER);
+
+        intakeState = IntakeState.INTAKE;
+
+    }
+
+    public void scoreSpecimen() {
+        intakeElbowR.setPosition(R_ELBOW_INTAKE);
+        intakeElbowL.setPosition(L_ELBOW_INTAKE);
+        sleep(500);
+        intakeMotor.setTargetPosition(MOTOR_FULLY_BACK_POSITION);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        intakeMotor.setPower(-INTAKE_UP_POWER);
+
+        intakeState = IntakeState.INTAKE;
+
+    }
+
     public void openIntakeClaw() {
         claw.setPosition(INTAKE_CLAW_OPEN_POSITION);
         clawState = ClawState.OPEN;
@@ -257,6 +286,18 @@ public class BasicTeleOp extends LinearOpMode {
         sleep(30);
         closeOuttakeClaw();
 
+    }
+
+    public static void sleep(int timeInMS) {
+        long beginTimeInMS = System.currentTimeMillis();
+        long currentTimeInMS;
+        do {
+            currentTimeInMS = System.currentTimeMillis();
+        } while (currentTimeInMS-beginTimeInMS < timeInMS);
+    }
+
+    public static void main(String[] str){
+        BasicTeleOp.sleep(50000);
     }
 
         public void hwMapAndEncodersAndDriveDirections () {
@@ -414,7 +455,8 @@ public class BasicTeleOp extends LinearOpMode {
                 ToggleShoulder();
 
             } else if (gamepad2.right_bumper) {
-                ShoulderSpecimen();
+                intakeSpecimen();
+                scoreSpecimen();
             }
         }
 
