@@ -29,15 +29,15 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionTransfer = 0.3;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.15;
-    private final double ShoulderPositionBasket = 0.7;
+    private final double ShoulderPositionBasket = 0.77;
 
     //Linear Slides
     private final double linearSlidesPower = 0.5;
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.39;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.15;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.15;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 0.9;
@@ -326,20 +326,19 @@ public class BasicTeleOp extends LinearOpMode {
 
             leftFront.setDirection(DcMotor.Direction.REVERSE);
             rightRear.setDirection(DcMotor.Direction.FORWARD);
-            rightFront.setDirection(DcMotor.Direction.REVERSE);
+            rightFront.setDirection(DcMotor.Direction.FORWARD);
             leftRear.setDirection(DcMotor.Direction.REVERSE);
         }
 
         public void InitializedPosition () {
             openIntakeClaw();
-            ShoulderTransfer();
         }
 
         public void HandleDriveControls () {
             // Drive controls
-            double drive = -gamepad2.left_stick_y;
-            double turn = gamepad2.right_stick_x;
-            double strafe = gamepad2.left_stick_x;
+            double drive = -gamepad1.left_stick_y;
+            double turn = gamepad1.right_stick_x;
+            double strafe = gamepad1.left_stick_x;
 
             leftFront.setPower((drive + turn + strafe) * speed);
             rightFront.setPower((drive - turn - strafe) * speed);
@@ -456,6 +455,8 @@ public class BasicTeleOp extends LinearOpMode {
 
             } else if (gamepad2.right_bumper) {
                 intakeSpecimen();
+            }
+            if (gamepad2.left_stick_button) {
                 scoreSpecimen();
             }
         }
