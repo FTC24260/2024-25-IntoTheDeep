@@ -36,7 +36,7 @@ public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
     private final double ShoulderPositionTransfer = 0.3;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.15;
-    private final double ShoulderPositionBasket = 0.77;
+    private final double ShoulderPositionBasket = 0.85;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -91,12 +91,12 @@ public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Pre-load Sample Basket Score
-            strafeLeft(12,0.3);
-            driveForward(12,0.3);
+            driveForward(12,0.75);
+            strafeLeft(12,0.75);
             turnRight(55,0.25);
             sleep(300);
-            strafeLeft(6,0.3);
-            driveBackward(13,0.3);
+            strafeLeft(6,0.75);
+            driveBackward(16,0.75);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -107,14 +107,14 @@ public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
+            driveForward(3,0.25);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
             turnLeft(54,0.25);
-            driveForward(9,0.25);
-            strafeRight(3,0.25);
+            driveForward(6,0.25);
             goToPositioning();
             goToIntakeFromPositioning();
             closeIntakeClaw();
@@ -123,7 +123,7 @@ public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
             goToTransfer();
             sleep(400);
             transferSample();
-            driveBackward(8,0.3);
+            driveBackward(8,0.75);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -173,8 +173,8 @@ public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
             //Untested
             strafeRight(24,0.75);
             driveForward(48,0.75);
-            turnLeft(90,0.5);
-            driveBackward(6,0.3);
+            turnLeft(90,0.25);
+            driveBackward(6,0.75);
             ShoulderTransfer();
             linearSlideR.setPower(0.5);
             linearSlideL.setPower(-0.5);

@@ -37,7 +37,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.15;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 0.9;
@@ -62,7 +62,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 1050;
-    private final int MOTOR_TRANSFER_POSITION = 500;
+    private final int MOTOR_TRANSFER_POSITION = 700;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -283,7 +283,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         openIntakeClaw();
-        sleep(30);
+        sleep(500);
         closeOuttakeClaw();
 
     }
@@ -358,10 +358,7 @@ public class BasicTeleOp extends LinearOpMode {
 
             } else {
                 // Handle other speed controls
-                if (gamepad2.left_stick_button || gamepad2.right_stick_button) {
-                    speed = 1;
-
-                } else if (gamepad1.a) {
+                if (gamepad1.a) {
                     speed = 0.25;
 
                 } else if (gamepad1.b) {
@@ -372,9 +369,6 @@ public class BasicTeleOp extends LinearOpMode {
 
                 } else if (gamepad1.x) {
                     speed = 1;
-
-                } else if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
-                    speed = 0.5;
 
                 }
             }
@@ -447,7 +441,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
             if (gamepad2.back) {
                 transferSample();
-                sleep(600);
+                sleep(10000);
                 goToFullyBack();
             }
             if (gamepad2.left_bumper) {
