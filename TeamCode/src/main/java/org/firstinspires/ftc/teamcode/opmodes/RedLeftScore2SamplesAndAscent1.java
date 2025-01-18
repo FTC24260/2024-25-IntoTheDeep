@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedLeftPreloadBasketAscentPark",  group = "Qualifiers" )
-public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
+@Autonomous (name = "RedLeftScore2SamplesAndAscent1",  group = "Qualifiers" )
+public class RedLeftScore2SamplesAndAscent1 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -30,13 +30,13 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     private final double ticksPerInch = 43.5;
     private final double wheelbase = 16.5;
     private final double robotRotationCircumference = 73.4;
-    private final double speed = 1;
+    private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.4;
+    private final double ShoulderPositionTransfer = 0.3;
     private final double ShoulderPositionSpecimen = 1;
-    private final double ShoulderPositionRest = 0.05;
-    private final double ShoulderPositionBasket = 0.85;
+    private final double ShoulderPositionRest = 0.15;
+    private final double ShoulderPositionBasket = 0.77;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -51,8 +51,8 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.8;
-    private final double R_ELBOW_LOW_POSITIONING = 0.53;
+    private final double L_ELBOW_LOW_POSITIONING = 0.77;
+    private final double R_ELBOW_LOW_POSITIONING = 0.56;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -64,7 +64,7 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
 
     //Intake Shoulder Motor
-    private final double INTAKE_UP_POWER = 0.7;
+    private final double INTAKE_UP_POWER = 1;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 975;
     private final int MOTOR_TRANSFER_POSITION = 550;
@@ -82,30 +82,112 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
         hwMapAndEncodersAndDriveDirections();
-
         runtime.reset();
 
         waitForStart();
+        InitializedPosition();
 
         if (opModeIsActive()) {
-            driveForward(12,0.5);
-            strafeLeft(24,0.5);
-            turnRight(45,0.5);
-            linearSlidesUp();
+
+            //Pre-load Sample Basket Score
+            strafeLeft(12,0.3);
+            driveForward(12,0.3);
+            turnRight(55,0.25);
+            sleep(300);
+            strafeLeft(6,0.3);
+            driveBackward(13,0.3);
             ShoulderBasket();
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
             openOuttakeClaw();
             ShoulderTransfer();
-            linearSlidesDown();
-            turnLeft(45,0.5);
-            strafeRight(96,0.5);
-            driveForward(36,0.5);
-            turnLeft(90,0.5);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+
+            //First Neutral Sample Basket Score
+            turnLeft(54,0.25);
+            driveForward(9,0.25);
+            strafeRight(3,0.25);
+            goToPositioning();
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            ShoulderTransfer();
+            openOuttakeClaw();
+            goToTransfer();
+            sleep(400);
+            transferSample();
+            driveBackward(8,0.3);
             ShoulderBasket();
-            driveBackward(10.25,0.5);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+            openOuttakeClaw();
+            sleep(100);
+            closeOuttakeClaw();
+            ShoulderTransfer();
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1500);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+
+//            //Second Neutral Sample Basket Score
+//            turnLeft(57,0.25);
+//            driveForward(6.5,0.5);
+//            strafeLeft(9,0.5);
+//            driveForward(1,0.1);
+//            goToPositioning();
+//            turnRight(1,0.1);
+//            goToIntakeFromPositioning();
+//            closeIntakeClaw();
+//            goToPositioningFromIntake();
+//            goToIntakeFromPositioning();
+//            closeIntakeClaw();
+//            ShoulderTransfer();
+//            openOuttakeClaw();
+//            goToTransfer();
+//            sleep(400);
+//            transferSample();
+//            strafeRight(5,0.5);
+//            driveBackward(8,0.5);
+//            turnRight(55,0.5);
+//            ShoulderBasket();
+//            linearSlideR.setPower(1);
+//            linearSlideL.setPower(-1);
+//            goToFullyBack();
+//            sleep(1000);
+//            linearSlideR.setPower(0);
+//            linearSlideL.setPower(0);
+//            openOuttakeClaw();
+
+            //Park Ascent Level 1
+            //Untested
+            strafeRight(24,0.75);
+            driveForward(48,0.75);
+            turnLeft(90,0.5);
+            driveBackward(6,0.3);
+            ShoulderTransfer();
+            linearSlideR.setPower(0.5);
+            linearSlideL.setPower(-0.5);
+            sleep(500);
+            linearSlideR.setPower(-0.5);
+            linearSlideL.setPower(0.5);
+
+
+
+            leftFront.setPower(0);
+            rightFront.setPower(0);
+            leftRear.setPower(0);
+            rightRear.setPower(0);
 
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
@@ -115,13 +197,12 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
                 telemetry.addData("Right Rear Position", rightRear.getCurrentPosition());
                 telemetry.update();
             }
-
         }
     }
 
     // Convert inches to ticks
     private int inchesToTicks(double inches) {
-        return (int) (inches * ticksPerInch);
+        return (int)(inches * ticksPerInch);
     }
 
     // Drive forward/backward by a specified distance in inches
@@ -150,24 +231,17 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
 
     // Turn by a specified distance in inches (measured at wheels)
     private void turnRight(double degrees, double speed) {
-        // Calculate the distance the robot needs to travel for the given degrees
-        double distance = (degrees / 360.0) * robotRotationCircumference;
-
-        // Convert this distance into ticks
+        double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-
         drive(ticks, -ticks, ticks, -ticks, speed);
     }
 
     private void turnLeft(double degrees, double speed) {
-        double distance = (degrees / 360.0) * robotRotationCircumference;
-
-        // Convert this distance into ticks
+        // Positive inches = turn right, negative = turn left
+        double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-
         drive(-ticks, ticks, -ticks, ticks, speed);
     }
-
 
     // Original drive method modified to be private since we'll use the new methods above
     private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
@@ -195,7 +269,6 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
             idle();
         }
     }
-
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
@@ -229,6 +302,7 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     public void goToPositioningFromIntake() {
         intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
+        openIntakeClaw();
     }
 
     public void goToFullyBack() {
@@ -259,9 +333,9 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         linearSlidesStop();
     }
 
-    private void linearSlidesDown() {
-        linearSlideL.setPower(-linearSlidesPower);
-        linearSlideR.setPower(linearSlidesPower);
+    private void linearSlidesDonw() {
+        linearSlideL.setPower(linearSlidesPower);
+        linearSlideR.setPower(-linearSlidesPower);
         sleep(500);
         linearSlidesStop();
     }
@@ -270,6 +344,8 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         linearSlideL.setPower(0);
         linearSlideR.setPower(0);
     }
+
+
 
     public void ShoulderSpecimen() {
         closeOuttakeClaw();
@@ -329,6 +405,11 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 
@@ -337,11 +418,6 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
 
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         leftFrontPos = 0;
         rightFrontPos = 0;
         leftRearPos = 0;
@@ -349,7 +425,6 @@ public class RedLeftPreloadBasketAscentPark extends LinearOpMode {
     }
 
     public void InitializedPosition() {
-        ShoulderRest();
         openIntakeClaw();
 
     }
