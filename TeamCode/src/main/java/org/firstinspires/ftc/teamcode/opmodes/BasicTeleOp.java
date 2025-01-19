@@ -29,10 +29,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionTransfer = 0.3;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.15;
-    private final double ShoulderPositionBasket = 0.77;
+    private final double ShoulderPositionBasket = 0.7;
 
     //Linear Slides
-    private final double linearSlidesPower = 0.5;
+    private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
@@ -44,14 +44,14 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.8;
-    private final double R_ELBOW_LOW_POSITIONING = 0.53;
+    private final double L_ELBOW_LOW_POSITIONING = 0.73;
+    private final double R_ELBOW_LOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.9;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
-    private final double R_ELBOW_SPECIMEN_INTAKE = 0.73;
-    private final double L_ELBOW_SPECIMEN_INTAKE = 0.6;
+    private final double R_ELBOW_SPECIMEN_INTAKE = 0.76;
+    private final double L_ELBOW_SPECIMEN_INTAKE = 0.57;
 
     //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
@@ -62,7 +62,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
     private final int MOTOR_INTAKE_POSITION = 1050;
-    private final int MOTOR_TRANSFER_POSITION = 700;
+    private final int MOTOR_TRANSFER_POSITION = 600;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -161,25 +161,29 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void intakeSpecimen() {
-        intakeElbowR.setPosition(R_ELBOW_SPECIMEN_INTAKE);
-        intakeElbowL.setPosition(L_ELBOW_SPECIMEN_INTAKE);
-        openIntakeClaw();
-        sleep(500);
         intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
+        sleep(700);
+
+        intakeElbowR.setPosition(R_ELBOW_SPECIMEN_INTAKE);
+        intakeElbowL.setPosition(L_ELBOW_SPECIMEN_INTAKE);
 
         intakeState = IntakeState.INTAKE;
 
     }
 
     public void scoreSpecimen() {
-        intakeElbowR.setPosition(R_ELBOW_INTAKE);
-        intakeElbowL.setPosition(L_ELBOW_INTAKE);
+        intakeElbowR.setPosition(R_ELBOW_FULLY_BACK);
+        intakeElbowL.setPosition(L_ELBOW_FULLY_BACK);
         sleep(500);
         intakeMotor.setTargetPosition(MOTOR_FULLY_BACK_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(-INTAKE_UP_POWER);
+        OuttakeShoulder.setPosition(ShoulderPositionRest);
+        sleep(100);
+        intakeElbowR.setPosition(R_ELBOW_INTAKE);
+        intakeElbowL.setPosition(L_ELBOW_INTAKE);
 
         intakeState = IntakeState.INTAKE;
 
@@ -420,10 +424,15 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.b) {
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
                 goToPositioning();
                 sleep(300);
                 openIntakeClaw();
 
+                HandleDriveControls();
             }
             if (gamepad2.y) {
                 goToIntakeFromPositioning();
@@ -433,16 +442,28 @@ public class BasicTeleOp extends LinearOpMode {
                 openIntakeClaw();
             }
             if (gamepad2.a) {
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
                 closeIntakeClaw();
                 ShoulderTransfer();
                 openOuttakeClaw();
                 sleep(500);
                 goToTransfer();
+
+                HandleDriveControls();
             }
             if (gamepad2.back) {
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
                 transferSample();
-                sleep(10000);
+                sleep(1000);
                 goToFullyBack();
+
+                HandleDriveControls();
             }
             if (gamepad2.left_bumper) {
                 ToggleShoulder();
@@ -450,7 +471,7 @@ public class BasicTeleOp extends LinearOpMode {
             } else if (gamepad2.right_bumper) {
                 intakeSpecimen();
             }
-            if (gamepad2.left_stick_button) {
+            if (gamepad2.left_stick_y < -0.1) {
                 scoreSpecimen();
             }
         }
