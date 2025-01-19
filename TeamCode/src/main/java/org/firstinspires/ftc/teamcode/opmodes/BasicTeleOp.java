@@ -26,10 +26,10 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-    private final double ShoulderPositionTransfer = 0.3;
+    private final double ShoulderPositionTransfer = 0.18;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.15;
-    private final double ShoulderPositionBasket = 0.7;
+    private final double ShoulderPositionBasket = 0.6;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -114,15 +114,15 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         closeLooselyIntakeClaw();
         sleep(1000);
-        intakeMotor.setTargetPosition(MOTOR_TRANSFER_POSITION);
+        intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setPower(-INTAKE_UP_POWER);
+        intakeMotor.setPower(INTAKE_UP_POWER);
 
         intakeState = IntakeState.TRANSFER;
     }
 
     public void goToPositioning() {
-        intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
+        intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
         openOuttakeClaw();
@@ -161,7 +161,7 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void intakeSpecimen() {
-        intakeMotor.setTargetPosition(MOTOR_INTAKE_POSITION);
+        intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
         sleep(700);
@@ -336,6 +336,7 @@ public class BasicTeleOp extends LinearOpMode {
 
         public void InitializedPosition () {
             openIntakeClaw();
+            ShoulderTransfer();
         }
 
         public void HandleDriveControls () {
