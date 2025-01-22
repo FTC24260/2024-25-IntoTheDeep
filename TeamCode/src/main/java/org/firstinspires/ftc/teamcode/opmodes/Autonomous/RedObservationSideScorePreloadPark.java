@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "BlueNetScore3Samples",  group = "Qualifiers" )
-public class BlueNetScore3Samples extends LinearOpMode {
+@Autonomous (name = "RedObservationSideScorePreloadPark",  group = "Qualifiers" )
+public class RedObservationSideScorePreloadPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -33,11 +33,10 @@ public class BlueNetScore3Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.47;
+    private final double ShoulderPositionTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
-
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
@@ -47,12 +46,12 @@ public class BlueNetScore3Samples extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.9;
-    private final double R_ELBOW_INTAKE = 0.4;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE = 0.3;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.73;
-    private final double R_ELBOW_LOW_POSITIONING = 0.6;
+    private final double L_ELBOW_LOW_POSITIONING = 0.77;
+    private final double R_ELBOW_LOW_POSITIONING = 0.56;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -92,19 +91,21 @@ public class BlueNetScore3Samples extends LinearOpMode {
 
             //Pre-load Sample Basket Score
             driveForward(12,0.75);
-            strafeRight(12,0.75);
-            turnLeft(55,0.25);
+            strafeLeft(50,1);
+            turnRight(55,0.25);
             sleep(300);
-            strafeRight(6,0.75);
-            driveBackward(16,0.75);
+            strafeLeft(6,0.75);
+            driveBackward(19.5,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
+            strafeLeft(4,0.3);
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
+            driveForward(5,0.5);
             sleep(1000);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
@@ -113,63 +114,9 @@ public class BlueNetScore3Samples extends LinearOpMode {
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            //First Neutral Sample Basket Score
-            turnRight(54,0.25);
-            driveForward(6,0.25);
-            goToPositioning();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            driveBackward(5,0.75);
-            turnRight(55,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            driveBackward(4,0.25);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            sleep(100);
-            closeOuttakeClaw();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //Second Neutral Sample Basket Score
-            turnRight(57,0.25);
-            driveForward(6.5,0.5);
-            strafeRight(9,0.5);
-            driveForward(1,0.1);
-            goToPositioning();
-            turnLeft(1,0.1);
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            goToPositioningFromIntake();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            strafeLeft(5,0.5);
-            driveBackward(8,0.5);
             turnLeft(55,0.5);
-            ShoulderBasket();
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            goToFullyBack();
-            sleep(1000);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            openOuttakeClaw();
+            strafeRight(50,1);
+            driveBackward(17,0.75);
 
 
 
@@ -272,7 +219,6 @@ public class BlueNetScore3Samples extends LinearOpMode {
         intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
-        openOuttakeClaw();
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);

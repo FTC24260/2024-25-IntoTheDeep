@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedObservationSidePushSpecimensPark",  group = "Qualifiers" )
-public class RedObservationSidePushSpecimensPark extends LinearOpMode {
+@Autonomous (name = "RedObservationSidePark",  group = "Qualifiers" )
+public class RedObservationSidePark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -37,7 +37,6 @@ public class RedObservationSidePushSpecimensPark extends LinearOpMode {
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
-
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
@@ -89,13 +88,7 @@ public class RedObservationSidePushSpecimensPark extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            strafeRight(6,0.5);
-            driveForward(50,0.5);
-            strafeRight(20,0.5);
-            driveBackward(45,0.5);
-            driveForward(45,0.5);
-            strafeRight(10,0.5);
-            driveBackward(45,0.5);
+            strafeRight(35,0.5);
 
 
             leftFront.setPower(0);

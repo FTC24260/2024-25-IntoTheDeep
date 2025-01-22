@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedNetScore3Samples",  group = "Qualifiers" )
-public class RedNetScore3Samples extends LinearOpMode {
+@Autonomous (name = "RedObservationSidePushSpecimensPark",  group = "Qualifiers" )
+public class RedObservationSidePushSpecimensPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -47,8 +47,8 @@ public class RedNetScore3Samples extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.93;
-    private final double R_ELBOW_INTAKE = 0.37;
+    private final double L_ELBOW_INTAKE = 0.9;
+    private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.73;
@@ -89,88 +89,13 @@ public class RedNetScore3Samples extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-
-            //Pre-load Sample Basket Score
-            driveForward(12,0.75);
-            strafeLeft(12,0.75);
-            turnRight(55,0.25);
-            sleep(300);
-            strafeLeft(6,0.75);
-            driveBackward(16,0.75);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1250);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            //ShoulderBasket();
-            sleep(500);
-            ShoulderTransfer();
-            sleep(1000);
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            driveForward(3,0.25);
-            sleep(1250);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //First Neutral Sample Basket Score
-            turnLeft(54,0.25);
-            driveForward(6,0.25);
-            goToPositioning();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            driveBackward(5,0.75);
-            turnRight(55,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            driveBackward(4,0.25);
-            sleep(1250);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            //ShoulderBasket();
-            sleep(100);
-            closeOuttakeClaw();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1250);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //Second Neutral Sample Basket Score
-            turnLeft(54,0.25);
-            driveForward(6.5,0.5);
-            strafeLeft(9,0.5);
-            driveForward(1,0.1);
-            goToPositioning();
-            turnRight(1,0.1);
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            goToPositioningFromIntake();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            strafeRight(5,0.5);
-            driveBackward(8,0.5);
-            turnRight(55,0.5);
-            //ShoulderBasket();
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            goToFullyBack();
-            sleep(1000);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            openOuttakeClaw();
-
+            strafeRight(6,0.5);
+            driveForward(50,0.5);
+            strafeRight(20,0.5);
+            driveBackward(45,0.5);
+            driveForward(45,0.5);
+            strafeRight(10,0.5);
+            driveBackward(45,0.5);
 
 
             leftFront.setPower(0);

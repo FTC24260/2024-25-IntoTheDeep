@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "BlueObservationSidePushSpecimensPark",  group = "Qualifiers" )
-public class BlueObservationSidePushSpecimensPark extends LinearOpMode {
+@Autonomous (name = "BlueObservationSidePark",  group = "Qualifiers" )
+public class BlueObservationSidePark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -89,13 +89,7 @@ public class BlueObservationSidePushSpecimensPark extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            strafeLeft(6,0.5);
-            driveForward(50,0.5);
-            strafeLeft(20,0.5);
-            driveBackward(45,0.5);
-            driveForward(45,0.5);
-            strafeLeft(10,0.5);
-            driveBackward(45,0.5);
+            strafeLeft(35,0.5);
 
 
             leftFront.setPower(0);
