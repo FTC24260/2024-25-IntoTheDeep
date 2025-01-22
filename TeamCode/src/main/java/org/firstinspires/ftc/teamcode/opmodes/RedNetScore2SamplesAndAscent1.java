@@ -33,7 +33,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.47;
+    private final double ShoulderPositionTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -95,7 +95,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             turnRight(55,0.25);
             sleep(300);
             strafeLeft(6,0.75);
-            driveBackward(20,0.75);
+            driveBackward(19.5,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
@@ -105,6 +105,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
+            driveForward(5,0.5);
             sleep(1000);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
@@ -115,9 +116,10 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
 
             //First Neutral Sample Basket Score
             turnLeft(52,0.25);
-            driveForward(5,0.25);
-            strafeRight(4.5,0.1);
+            driveForward(4,0.25);
+            strafeRight(3,0.25);
             goToPositioning();
+            openIntakeClaw();
             goToIntakeFromPositioning();
             closeIntakeClaw();
             ShoulderTransfer();
@@ -126,6 +128,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             sleep(400);
             transferSample();
             driveBackward(8,0.75);
+            goToFullyBack();
             turnRight(55,0.5);
             strafeLeft(4,0.25);
             linearSlideR.setPower(1);
@@ -149,7 +152,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             //Untested
             turnLeft(55,0.5);
             strafeRight(14,0.75);
-            driveForward(35,0.75);
+            driveForward(39,0.75);
             turnLeft(90,0.25);
             driveBackward(8,0.75);
 
@@ -254,7 +257,6 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
         intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
-        openOuttakeClaw();
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
