@@ -89,7 +89,9 @@ public class BlueObservationSidePark extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            strafeLeft(35,0.5);
+            driveForward(10,0.5);
+            strafeRight(35,0.5);
+            driveBackward(10,0.5);
 
 
             leftFront.setPower(0);

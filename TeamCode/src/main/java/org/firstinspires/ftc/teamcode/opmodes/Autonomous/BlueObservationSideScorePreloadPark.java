@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "BlueNetScore2SamplesAndAscent1",  group = "Qualifiers" )
-public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
+@Autonomous (name = "BlueObservationSideScorePreloadPark",  group = "Qualifiers" )
+public class BlueObservationSideScorePreloadPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -33,11 +33,10 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.47;
+    private final double ShoulderPositionTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
-
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
@@ -47,12 +46,12 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.9;
-    private final double R_ELBOW_INTAKE = 0.4;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE = 0.3;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.73;
-    private final double R_ELBOW_LOW_POSITIONING = 0.6;
+    private final double L_ELBOW_LOW_POSITIONING = 0.77;
+    private final double R_ELBOW_LOW_POSITIONING = 0.56;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -90,13 +89,17 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+            //Wait for alliance to complete auto
+            sleep(15000);
+
             //Pre-load Sample Basket Score
-            driveForward(12,0.25);
-            strafeRight(12,0.25);
-            turnLeft(55,0.25);
+            driveForward(12,1);
+            turnLeft(3,0.25);
+            strafeRight(60,1);
+            turnLeft(55,0.75);
             sleep(300);
-            strafeRight(7,0.25);
-            driveBackward(17,0.25);
+            strafeRight(10,0.75);
+            driveBackward(18,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
@@ -105,54 +108,20 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
-            driveForward(7.5,0.25);
+            driveForward(5,0.75);
+            sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             driveForward(3,0.25);
             sleep(1500);
+            turnRight(48,1);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            //First Neutral Sample Basket Score
-            turnRight(55,0.25);
-            strafeRight(3,0.25);
-            driveForward(2,0.25);
-            goToPositioning();
-            openIntakeClaw();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            sleep(300);
-            driveBackward(10,0.25);
-            goToFullyBack();
-            turnLeft(55,0.25);
-            strafeRight(5,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            driveBackward(4,0.25);
-            sleep(1200);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            driveForward(5,0.25);
-            strafeRight(4,0.25);
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1400);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
+            strafeLeft(100,1);
+            driveBackward(20,1);
 
-            //Park level 1 ascent
-            turnRight(45,1);
-            driveForward(40,1);
-            turnRight(123,1);
-            ShoulderBasket();
-            driveBackward(20,0.75);
+
 
             leftFront.setPower(0);
             rightFront.setPower(0);
@@ -253,7 +222,6 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
         intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
-        openOuttakeClaw();
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
@@ -372,9 +340,15 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
         linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
         linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
