@@ -88,7 +88,9 @@ public class RedObservationSidePark extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
+            driveForward(10,0.5);
             strafeRight(35,0.5);
+            driveBackward(10,0.5);
 
 
             leftFront.setPower(0);
@@ -318,6 +320,10 @@ public class RedObservationSidePark extends LinearOpMode {
         leftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 

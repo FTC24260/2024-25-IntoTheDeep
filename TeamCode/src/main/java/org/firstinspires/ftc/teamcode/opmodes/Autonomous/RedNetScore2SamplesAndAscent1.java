@@ -125,6 +125,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             goToTransfer();
             sleep(400);
             transferSample();
+            sleep(300);
             driveBackward(10,0.25);
             goToFullyBack();
             turnRight(55,0.25);
@@ -146,11 +147,11 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //Park level 1 ascent
-            turnLeft(50,1);
+            turnLeft(45,1);
             driveForward(40,1);
-            turnLeft(115,1);
-            driveBackward(20,1);
+            turnLeft(123,1);
             ShoulderBasket();
+            driveBackward(20,0.75);
 
 
             leftFront.setPower(0);
@@ -378,6 +379,11 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
         rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);

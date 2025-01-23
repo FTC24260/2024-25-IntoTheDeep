@@ -119,7 +119,7 @@ public class RedObservationSideScorePreloadPark extends LinearOpMode {
             linearSlideL.setPower(0);
 
             strafeRight(100,1);
-            driveBackward(10,0.5);
+            driveBackward(20,1);
 
 
 
@@ -340,9 +340,15 @@ public class RedObservationSideScorePreloadPark extends LinearOpMode {
         linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
         linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
