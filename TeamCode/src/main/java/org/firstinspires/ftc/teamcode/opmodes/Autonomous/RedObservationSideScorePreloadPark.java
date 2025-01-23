@@ -89,34 +89,37 @@ public class RedObservationSideScorePreloadPark extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+            //Wait for alliance to complete auto
+            sleep(15000);
+
             //Pre-load Sample Basket Score
-            driveForward(12,0.75);
-            strafeLeft(50,1);
-            turnRight(55,0.25);
+            driveForward(12,1);
+            turnRight(3,0.25);
+            strafeLeft(60,1);
+            turnRight(55,0.75);
             sleep(300);
-            strafeLeft(6,0.75);
-            driveBackward(19.5,0.75);
+            strafeLeft(10,0.75);
+            driveBackward(18,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
-            strafeLeft(4,0.3);
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
-            driveForward(5,0.5);
-            sleep(1000);
+            driveForward(5,0.75);
+            sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             driveForward(3,0.25);
             sleep(1500);
+            turnLeft(48,1);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            turnLeft(55,0.5);
-            strafeRight(50,1);
-            driveBackward(17,0.75);
+            strafeRight(100,1);
+            driveBackward(10,0.5);
 
 
 
