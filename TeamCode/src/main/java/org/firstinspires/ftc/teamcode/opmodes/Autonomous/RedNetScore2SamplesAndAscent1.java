@@ -113,9 +113,9 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnLeft(52,0.25);
+            turnLeft(55,0.25);
             strafeLeft(3,0.25);
-            driveForward(4,0.1);
+            driveForward(2,0.25);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
@@ -128,6 +128,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             driveBackward(10,0.25);
             goToFullyBack();
             turnRight(55,0.25);
+            strafeLeft(5,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             driveBackward(4,0.25);
@@ -145,11 +146,11 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //Park level 1 ascent
-            turnLeft(55,0.5);
+            turnLeft(50,1);
             driveForward(40,1);
             turnLeft(115,1);
+            driveBackward(20,1);
             ShoulderBasket();
-            driveBackward(20,0.5);
 
 
             leftFront.setPower(0);
