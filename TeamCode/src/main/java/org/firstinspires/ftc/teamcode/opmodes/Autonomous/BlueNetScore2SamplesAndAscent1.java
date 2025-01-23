@@ -92,10 +92,10 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
 
             //Pre-load Sample Basket Score
             driveForward(12,0.25);
-            strafeRight(12,0.25);
-            turnLeft(55,0.25);
+            strafeLeft(12,0.25);
+            turnRight(55,0.25);
             sleep(300);
-            strafeRight(7,0.25);
+            strafeLeft(7,0.25);
             driveBackward(17,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -114,8 +114,8 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnRight(55,0.25);
-            strafeRight(3,0.25);
+            turnLeft(55,0.25);
+            strafeLeft(3,0.25);
             driveForward(2,0.25);
             goToPositioning();
             openIntakeClaw();
@@ -129,8 +129,8 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
             sleep(300);
             driveBackward(10,0.25);
             goToFullyBack();
-            turnLeft(55,0.25);
-            strafeRight(5,0.5);
+            turnRight(55,0.25);
+            strafeLeft(5,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             driveBackward(4,0.25);
@@ -139,7 +139,7 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
             ShoulderBasket();
             driveForward(5,0.25);
-            strafeRight(4,0.25);
+            strafeLeft(4,0.25);
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
@@ -148,11 +148,12 @@ public class BlueNetScore2SamplesAndAscent1 extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //Park level 1 ascent
-            turnRight(45,1);
+            turnLeft(45,1);
             driveForward(40,1);
-            turnRight(123,1);
+            turnLeft(123,1);
             ShoulderBasket();
             driveBackward(20,0.75);
+
 
             leftFront.setPower(0);
             rightFront.setPower(0);

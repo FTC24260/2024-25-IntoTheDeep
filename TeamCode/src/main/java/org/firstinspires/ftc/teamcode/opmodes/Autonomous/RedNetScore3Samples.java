@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "BlueObservationSideScorePreloadPark",  group = "Qualifiers" )
-public class BlueObservationSideScorePreloadPark extends LinearOpMode {
+@Autonomous (name = "RedNetScore3Samples",  group = "Qualifiers" )
+public class RedNetScore3Samples extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -33,7 +33,7 @@ public class BlueObservationSideScorePreloadPark extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.5;
+    private final double ShoulderPositionTransfer = 0.49;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -89,17 +89,14 @@ public class BlueObservationSideScorePreloadPark extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            //Wait for alliance to complete auto
-            sleep(15000);
-
             //Pre-load Sample Basket Score
-            driveForward(12,1);
-            turnRight(3,0.25);
-            strafeLeft(60,1);
-            turnRight(55,0.75);
+            driveForward(12,0.75);
+            strafeLeft(12,0.75);
+            turnRight(55,0.5);
             sleep(300);
-            strafeLeft(10,0.75);
-            driveBackward(18,0.75);
+            strafeLeft(7,0.75);
+            driveBackward(17,0.75);
+            strafeLeft(4,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
@@ -108,19 +105,74 @@ public class BlueObservationSideScorePreloadPark extends LinearOpMode {
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
-            driveForward(5,0.75);
-            sleep(500);
+            driveForward(7.5,0.75);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            driveForward(3,0.25);
+            driveForward(3,0.75);
             sleep(1500);
-            turnLeft(48,1);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            strafeRight(100,1);
-            driveBackward(20,1);
+            //First Neutral Sample Basket Score
+            turnLeft(55,0.5);
+            strafeLeft(2,0.75);
+            driveForward(2,0.5);
+            goToPositioning();
+            openIntakeClaw();
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            ShoulderTransfer();
+            openOuttakeClaw();
+            goToTransfer();
+            sleep(400);
+            transferSample();
+            sleep(300);
+            driveBackward(10,0.75);
+            goToFullyBack();
+            turnRight(55,0.5);
+            strafeLeft(5,0.75);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1200);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+            driveBackward(6,0.75);
+            ShoulderBasket();
+            driveForward(5,0.75);
+            strafeLeft(4,0.75);
+            ShoulderTransfer();
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1400);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
 
+            //Score 2ns neutral sample basket score
+            turnLeft(45,0.5);
+            driveForward(4,0.75);
+            strafeLeft(8.5,0.75);
+            goToPositioning();
+            goToIntakeFromPositioning();
+            closeIntakeClaw();
+            ShoulderTransfer();
+            openOuttakeClaw();
+            goToTransfer();
+            sleep(400);
+            transferSample();
+            sleep(300);
+            driveBackward(3,0.75);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(1200);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+            ShoulderBasket();
+            ShoulderTransfer();
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(1400);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
 
 
             leftFront.setPower(0);
@@ -340,20 +392,19 @@ public class BlueObservationSideScorePreloadPark extends LinearOpMode {
         linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
         linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
