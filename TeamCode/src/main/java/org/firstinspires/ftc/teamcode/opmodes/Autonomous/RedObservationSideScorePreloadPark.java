@@ -98,7 +98,7 @@ public class RedObservationSideScorePreloadPark extends LinearOpMode {
             strafeLeft(60,1);
             turnRight(55,0.75);
             sleep(300);
-            strafeLeft(10,0.75);
+            strafeLeft(7,0.75);
             driveBackward(18,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -109,17 +109,17 @@ public class RedObservationSideScorePreloadPark extends LinearOpMode {
             sleep(500);
             ShoulderTransfer();
             driveForward(5,0.75);
+            driveForward(3,0.25);
             sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            driveForward(3,0.25);
             sleep(1500);
-            turnLeft(48,1);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
-
+            
+            turnLeft(48,1);
             strafeRight(100,1);
-            driveBackward(20,1);
+            driveBackward(10,0.5);
 
 
 

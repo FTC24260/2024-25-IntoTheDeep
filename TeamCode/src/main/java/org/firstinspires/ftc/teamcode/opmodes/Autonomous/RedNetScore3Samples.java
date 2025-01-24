@@ -94,14 +94,14 @@ public class RedNetScore3Samples extends LinearOpMode {
             strafeLeft(12,0.75);
             turnRight(55,0.5);
             sleep(300);
-            strafeLeft(7,0.75);
-            driveBackward(17,0.75);
-            strafeLeft(4,0.75);
+            strafeLeft(11,0.75);
+            driveBackward(12,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
+            driveBackward(5,0.75);
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
@@ -116,7 +116,7 @@ public class RedNetScore3Samples extends LinearOpMode {
             //First Neutral Sample Basket Score
             turnLeft(55,0.5);
             strafeLeft(2,0.75);
-            driveForward(2,0.5);
+            driveForward(2,0.75);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
@@ -147,10 +147,11 @@ public class RedNetScore3Samples extends LinearOpMode {
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            //Score 2ns neutral sample basket score
+            //Score 2nd neutral sample basket score
             turnLeft(45,0.5);
             driveForward(4,0.75);
-            strafeLeft(8.5,0.75);
+            strafeLeft(5,0.75);
+            strafeLeft(3.5,0.25);
             goToPositioning();
             goToIntakeFromPositioning();
             closeIntakeClaw();
