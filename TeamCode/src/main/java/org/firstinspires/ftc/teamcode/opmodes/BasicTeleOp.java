@@ -34,6 +34,8 @@ public class BasicTeleOp extends LinearOpMode {
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
+    private final int LINEAR_SLIDES_MAX_POSITION = 2700;  // Adjust this to your specific max height
+    private final int LINEAR_SLIDES_MIN_POSITION = 0;   // Adjust this to your specific bottom limit
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
@@ -242,13 +244,27 @@ public class BasicTeleOp extends LinearOpMode {
 
 
     private void linearSlidesUp() {
-        linearSlideL.setPower(-linearSlidesPower);
-        linearSlideR.setPower(linearSlidesPower);
+        int currentLeftPosition = linearSlideL.getCurrentPosition();
+        int currentRightPosition = linearSlideR.getCurrentPosition();
+
+        if (currentLeftPosition > -LINEAR_SLIDES_MAX_POSITION && currentRightPosition < LINEAR_SLIDES_MAX_POSITION) {
+            linearSlideL.setPower(-linearSlidesPower);
+            linearSlideR.setPower(linearSlidesPower);
+        } else {
+            linearSlidesStop();
+        }
     }
 
     private void linearSlidesDown() {
-        linearSlideL.setPower(linearSlidesPower);
-        linearSlideR.setPower(-linearSlidesPower);
+        int currentLeftPosition = linearSlideL.getCurrentPosition();
+        int currentRightPosition = linearSlideR.getCurrentPosition();
+
+        if (currentLeftPosition < LINEAR_SLIDES_MIN_POSITION && currentRightPosition > LINEAR_SLIDES_MIN_POSITION) {
+            linearSlideL.setPower(linearSlidesPower);
+            linearSlideR.setPower(-linearSlidesPower);
+        } else {
+            linearSlidesStop();
+        }
     }
 
     private void linearSlidesStop() {
@@ -344,15 +360,23 @@ public class BasicTeleOp extends LinearOpMode {
             OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
             OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
 
+            intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            linearSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            linearSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
             linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             intakeMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
             linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
+            claw.setPosition(INTAKE_CLAW_OPEN_POSITION);
             OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
+            OuttakeShoulder.setPosition(ShoulderPositionTransfer);
+            OuttakeClaw.setPosition(OUTTAKE_CLAW_DEFAULT_OPEN_POSITION);
+
 
             leftFront.setDirection(DcMotor.Direction.REVERSE);
             rightRear.setDirection(DcMotor.Direction.FORWARD);
@@ -404,33 +428,7 @@ public class BasicTeleOp extends LinearOpMode {
 
                 }
             }
-
-            if (gamepad2.dpad_up) {
-                leftFront.setPower(0.2);
-                leftRear.setPower(0.1);
-                rightFront.setPower(0.1);
-                rightRear.setPower(0.1);
-            }
-            if (gamepad2.dpad_down) {
-                leftFront.setPower(-0.2);
-                leftRear.setPower(-0.2);
-                rightFront.setPower(-0.2);
-                rightRear.setPower(-0.2);
-            }
-            if (gamepad2.dpad_right) {
-                leftFront.setPower(-0.2);
-                leftRear.setPower(0.2);
-                rightFront.setPower(0.2);
-                rightRear.setPower(-0.2);
-            }
-            if (gamepad2.dpad_left) {
-                leftFront.setPower(0.2);
-                leftRear.setPower(-0.2);
-                rightFront.setPower(-0.2);
-                rightRear.setPower(0.2);
-            }
         }
-
         public void HandleNonChassisMovements () {
 
             if (gamepad2.right_trigger > linearSlidesBufferZone) {
@@ -513,10 +511,13 @@ public class BasicTeleOp extends LinearOpMode {
                 HandleDriveControls();
 
             } else if (gamepad2.right_bumper) {
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
                 intakeSpecimen();
-            }
-            if (gamepad2.left_stick_y < -0.1) {
-                scoreSpecimen();
+
+                HandleDriveControls();
             }
         }
 
