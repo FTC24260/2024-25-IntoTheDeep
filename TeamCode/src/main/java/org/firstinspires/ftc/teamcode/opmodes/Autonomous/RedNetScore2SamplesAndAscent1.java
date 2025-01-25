@@ -42,8 +42,8 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
@@ -115,7 +115,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
             //First Neutral Sample Basket Score
             turnLeft(55,0.25);
             strafeLeft(3,0.25);
-            driveForward(2,0.25);
+            driveForward(2,0.5);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
