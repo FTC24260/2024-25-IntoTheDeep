@@ -26,7 +26,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-    private final double ShoulderPositionTransfer = 0.47;
+    private final double ShoulderPositionTransfer = 0.48;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -36,7 +36,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.39;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
 
     //Intake Elbows
@@ -98,15 +98,39 @@ public class BasicTeleOp extends LinearOpMode {
 
 
         waitForStart();
+//        double linearSlideRPosition = 0;
+//        double linearSlideLPosition = 0;
+
         InitializedPosition();
 
         runtime.reset();
 
         while (opModeIsActive()) {
+//            telemetry.addData("Right Slide Position:", linearSlideRPosition);
+//            telemetry.addData("Left Slide Position:", linearSlideLPosition);
+//            telemetry.update();
+//
+//            linearSlideRPosition = linearSlideR.getCurrentPosition();
+//            linearSlideLPosition = linearSlideL.getCurrentPosition();
+//
+//            if (linearSlideRPosition <= 130) {
+//                linearSlideR.setPower(0);
+//            }
+//            else {
+//                HandleNonChassisMovements();
+//            }
+//            if (linearSlideLPosition >= -10) {
+//                linearSlideL.setPower(0);
+//            }
+//            else {
+//                HandleNonChassisMovements();
+//            }
             HandleDriveControls();
             HandleNonChassisMovements();
             TelemetryPrintStatements();
+
         }
+
     }
 
 
@@ -339,6 +363,7 @@ public class BasicTeleOp extends LinearOpMode {
         public void InitializedPosition () {
             openIntakeClaw();
             ShoulderTransfer();
+            openOuttakeClaw();
         }
 
         public void HandleDriveControls () {
@@ -432,8 +457,6 @@ public class BasicTeleOp extends LinearOpMode {
                 leftFront.setPower(0);
                 leftRear.setPower(0);
                 goToPositioning();
-                ShoulderTransfer();
-                openOuttakeClaw();
                 openIntakeClaw();
 
                 HandleDriveControls();
@@ -501,6 +524,9 @@ public class BasicTeleOp extends LinearOpMode {
             telemetry.addData("Speed", speed);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Robot State", intakeState.toString());
+
+            telemetry.addData("Right Slide Position:", linearSlideR.getCurrentPosition());
+            telemetry.addData("Left Slide Position:", linearSlideL.getCurrentPosition());
             telemetry.update();
         }
     }
