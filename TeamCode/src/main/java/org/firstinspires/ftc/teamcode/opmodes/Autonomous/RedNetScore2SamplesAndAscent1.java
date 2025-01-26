@@ -148,9 +148,8 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
 
             //Park level 1 ascent
             turnLeft(45,1);
-            driveForward(40,1);
+            driveForward(35,1);
             turnLeft(123,1);
-            ShoulderBasket();
             driveBackward(20,0.75);
 
 
