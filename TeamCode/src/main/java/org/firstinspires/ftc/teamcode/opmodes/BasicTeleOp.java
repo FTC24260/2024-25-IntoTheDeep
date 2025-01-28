@@ -72,7 +72,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Drive Speeds
     private double speed = 0.5;
-    private final double POSITIONING_SPEED = 0.4;
+    private final double POSITIONING_SPEED = 0.1;
 
 
     private enum ClawState {
@@ -299,7 +299,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         openIntakeClaw();
-        sleep(400);
+        sleep(100);
         closeOuttakeClaw();
 
     }
@@ -421,6 +421,7 @@ public class BasicTeleOp extends LinearOpMode {
                 leftRear.setPower(0);
                 goToPositioning();
                 openIntakeClaw();
+                ShoulderTransfer();
 
                 HandleDriveControls();
             }
@@ -461,8 +462,6 @@ public class BasicTeleOp extends LinearOpMode {
                 leftFront.setPower(0);
                 leftRear.setPower(0);
                 transferSample();
-                sleep(1000);
-                goToFullyBack();
 
                 HandleDriveControls();
             }
@@ -483,6 +482,10 @@ public class BasicTeleOp extends LinearOpMode {
                 intakeSpecimen();
 
                 HandleDriveControls();
+            }
+
+            if (gamepad2.dpad_up) {
+                goToFullyBack();
             }
         }
 
