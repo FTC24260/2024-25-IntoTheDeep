@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedNetScore2SamplesAndAscent1",  group = "Qualifiers" )
-public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
+@Autonomous (name = "ObservationPark",  group = "Qualifiers" )
+public class ObservationPark extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -33,7 +33,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.49;
+    private final double ShoulderPositionTransfer = 0.47;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -46,12 +46,12 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 1;
-    private final double R_ELBOW_INTAKE = 0.3;
+    private final double L_ELBOW_INTAKE = 0.9;
+    private final double R_ELBOW_INTAKE = 0.4;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.77;
-    private final double R_ELBOW_LOW_POSITIONING = 0.56;
+    private final double L_ELBOW_LOW_POSITIONING = 0.73;
+    private final double R_ELBOW_LOW_POSITIONING = 0.6;
     private final double L_ELBOW_TRANSFER = 0.29;
     private final double R_ELBOW_TRANSFER = 0.91;
     private final double R_ELBOW_FULLY_BACK = 1;
@@ -88,69 +88,9 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-
-            //Pre-load Sample Basket Score
-            driveForward(12,0.25);
-            strafeLeft(12,0.25);
-            turnRight(55,0.25);
-            sleep(300);
-            strafeLeft(7,0.25);
-            driveBackward(17,0.25);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            sleep(500);
-            ShoulderTransfer();
-            driveForward(7.5,0.25);
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            driveForward(3,0.25);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //First Neutral Sample Basket Score
-            turnLeft(55,0.25);
-            strafeLeft(3,0.25);
-            driveForward(2,0.5);
-            goToPositioning();
-            openIntakeClaw();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            sleep(300);
-            driveBackward(10,0.25);
-            goToFullyBack();
-            turnRight(55,0.25);
-            strafeLeft(5,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            driveBackward(4,0.25);
-            sleep(1200);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            driveForward(5,0.25);
-            strafeLeft(4,0.25);
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1400);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //Park level 1 ascent
-            turnLeft(45,1);
-            driveForward(35,1);
-            turnLeft(123,1);
-            driveBackward(20,0.75);
+            driveForward(10,0.5);
+            strafeRight(35,0.5);
+            driveBackward(10,0.5);
 
 
             leftFront.setPower(0);
@@ -252,6 +192,7 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
         intakeMotor.setTargetPosition(-MOTOR_INTAKE_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
+        openOuttakeClaw();
         sleep(1000);
         intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
@@ -383,7 +324,6 @@ public class RedNetScore2SamplesAndAscent1 extends LinearOpMode {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
 
         OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
 

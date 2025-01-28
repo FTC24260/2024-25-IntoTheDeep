@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "RedNetScore3Samples",  group = "Qualifiers" )
-public class RedNetScore3Samples extends LinearOpMode {
+@Autonomous (name = "NetScore2Samples",  group = "Qualifiers" )
+public class NetScore2Samples extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -42,8 +42,8 @@ public class RedNetScore3Samples extends LinearOpMode {
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
@@ -52,8 +52,8 @@ public class RedNetScore3Samples extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.77;
     private final double R_ELBOW_LOW_POSITIONING = 0.56;
-    private final double L_ELBOW_TRANSFER = 0.29;
-    private final double R_ELBOW_TRANSFER = 0.91;
+    private final double L_ELBOW_TRANSFER = 0.32;
+    private final double R_ELBOW_TRANSFER = 0.93;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
 
@@ -90,33 +90,32 @@ public class RedNetScore3Samples extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Pre-load Sample Basket Score
-            driveForward(12,0.75);
-            strafeLeft(12,0.75);
-            turnRight(55,0.5);
+            driveForward(12,0.25);
+            strafeLeft(12,0.25);
+            turnRight(55,0.25);
             sleep(300);
-            strafeLeft(11,0.75);
-            driveBackward(12,0.75);
+            strafeLeft(7,0.25);
+            driveBackward(17,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
-            driveBackward(5,0.75);
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
-            driveForward(7.5,0.75);
+            driveForward(7.5,0.25);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            driveForward(3,0.75);
+            driveForward(3,0.25);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnLeft(55,0.5);
-            strafeLeft(2,0.75);
-            driveForward(2,0.75);
+            turnLeft(55,0.25);
+            strafeLeft(3,0.25);
+            driveForward(2,0.5);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
@@ -127,19 +126,19 @@ public class RedNetScore3Samples extends LinearOpMode {
             sleep(400);
             transferSample();
             sleep(300);
-            driveBackward(10,0.75);
+            driveBackward(10,0.25);
             goToFullyBack();
-            turnRight(55,0.5);
-            strafeLeft(5,0.75);
+            turnRight(55,0.25);
+            strafeLeft(5,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
+            driveBackward(4,0.25);
             sleep(1200);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
-            driveBackward(6,0.75);
             ShoulderBasket();
-            driveForward(5,0.75);
-            strafeLeft(4,0.75);
+            driveForward(5,0.25);
+            strafeLeft(4,0.25);
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
@@ -147,33 +146,11 @@ public class RedNetScore3Samples extends LinearOpMode {
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
-            //Score 2nd neutral sample basket score
-            turnLeft(45,0.5);
-            driveForward(4,0.75);
-            strafeLeft(5,0.75);
-            strafeLeft(3.5,0.25);
-            goToPositioning();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            sleep(300);
-            driveBackward(3,0.75);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1200);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1400);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
+//            //Park level 1 ascent
+//            turnLeft(45,1);
+//            driveForward(35,1);
+//            turnLeft(123,1);
+//            driveBackward(20,0.75);
 
 
             leftFront.setPower(0);

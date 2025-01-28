@@ -34,12 +34,12 @@ public class BasicTeleOp extends LinearOpMode {
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
-    private final int LINEAR_SLIDES_MAX_POSITION = 2700;  // Adjust this to your specific max height
-    private final int LINEAR_SLIDES_MIN_POSITION = 0;   // Adjust this to your specific bottom limit
+    private final int LINEAR_SLIDES_MAX_POSITION = 2700;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
+    private final int LINEAR_SLIDES_MIN_POSITION = 0;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.55;
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
@@ -100,33 +100,12 @@ public class BasicTeleOp extends LinearOpMode {
 
 
         waitForStart();
-//        double linearSlideRPosition = 0;
-//        double linearSlideLPosition = 0;
 
         InitializedPosition();
 
         runtime.reset();
 
         while (opModeIsActive()) {
-//            telemetry.addData("Right Slide Position:", linearSlideRPosition);
-//            telemetry.addData("Left Slide Position:", linearSlideLPosition);
-//            telemetry.update();
-//
-//            linearSlideRPosition = linearSlideR.getCurrentPosition();
-//            linearSlideLPosition = linearSlideL.getCurrentPosition();
-//
-//            if (linearSlideRPosition <= 130) {
-//                linearSlideR.setPower(0);
-//            }
-//            else {
-//                HandleNonChassisMovements();
-//            }
-//            if (linearSlideLPosition >= -10) {
-//                linearSlideL.setPower(0);
-//            }
-//            else {
-//                HandleNonChassisMovements();
-//            }
             HandleDriveControls();
             HandleNonChassisMovements();
             TelemetryPrintStatements();
@@ -256,15 +235,8 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     private void linearSlidesDown() {
-        int currentLeftPosition = linearSlideL.getCurrentPosition();
-        int currentRightPosition = linearSlideR.getCurrentPosition();
-
-        if (currentLeftPosition < LINEAR_SLIDES_MIN_POSITION && currentRightPosition > LINEAR_SLIDES_MIN_POSITION) {
             linearSlideL.setPower(linearSlidesPower);
             linearSlideR.setPower(-linearSlidesPower);
-        } else {
-            linearSlidesStop();
-        }
     }
 
     private void linearSlidesStop() {
@@ -289,15 +261,11 @@ public class BasicTeleOp extends LinearOpMode {
     public void ShoulderBasket() {
         closeOuttakeClaw();
         OuttakeShoulder.setPosition(ShoulderPositionBasket);
-        sleep(500);
         outtakeShoulderState = OuttakeShoulderState.BASKET;
     }
 
     public void ShoulderTransfer() {
-        closeOuttakeClaw();
-        sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
-        sleep(500);
         outtakeShoulderState = OuttakeShoulderState.TRANSFER;
     }
 
