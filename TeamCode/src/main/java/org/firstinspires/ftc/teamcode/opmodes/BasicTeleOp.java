@@ -299,7 +299,6 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         openIntakeClaw();
-        sleep(100);
         closeOuttakeClaw();
 
     }
@@ -457,13 +456,7 @@ public class BasicTeleOp extends LinearOpMode {
                 HandleDriveControls();
             }
             if (gamepad2.back) {
-                rightFront.setPower(0);
-                rightRear.setPower(0);
-                leftFront.setPower(0);
-                leftRear.setPower(0);
                 transferSample();
-
-                HandleDriveControls();
             }
             if (gamepad2.left_bumper) {
                 rightFront.setPower(0);
@@ -484,7 +477,7 @@ public class BasicTeleOp extends LinearOpMode {
                 HandleDriveControls();
             }
 
-            if (gamepad2.dpad_up) {
+            if (gamepad2.dpad_down) {
                 goToFullyBack();
             }
         }
