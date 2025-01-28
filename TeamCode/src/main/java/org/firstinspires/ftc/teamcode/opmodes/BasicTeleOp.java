@@ -35,11 +35,13 @@ public class BasicTeleOp extends LinearOpMode {
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
     private final int LINEAR_SLIDES_MAX_POSITION = 2700;
+
+
+    //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
     private final int LINEAR_SLIDES_MIN_POSITION = 0;
 
-    //Outtake Claw
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.6;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
@@ -101,7 +103,7 @@ public class BasicTeleOp extends LinearOpMode {
 
         waitForStart();
 
-        InitializedPosition();
+        //InitializedPosition();
 
         runtime.reset();
 
@@ -339,11 +341,6 @@ public class BasicTeleOp extends LinearOpMode {
             linearSlideL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-            claw.setPosition(INTAKE_CLAW_OPEN_POSITION);
-            OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
-            OuttakeShoulder.setPosition(ShoulderPositionTransfer);
-            OuttakeClaw.setPosition(OUTTAKE_CLAW_DEFAULT_OPEN_POSITION);
 
 
             leftFront.setDirection(DcMotor.Direction.REVERSE);
