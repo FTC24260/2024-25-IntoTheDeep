@@ -33,10 +33,10 @@ public class ObservationPark extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.47;
-    private final double ShoulderPositionSpecimen = 1;
-    private final double ShoulderPositionRest = 0.6;
-    private final double ShoulderPositionBasket = 0;
+    private final double ShoulderPositionBasket = 0.3;
+    private final double ShoulderPositionTransfer = 0.78;
+    private final double ShoulderPositionSpecimen = 0;
+
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
@@ -271,12 +271,6 @@ public class ObservationPark extends LinearOpMode {
         closeOuttakeClaw();
         sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
-    }
-
-    public void ShoulderRest() {
-        closeOuttakeClaw();
-        sleep(200);
-        OuttakeShoulder.setPosition(ShoulderPositionRest);
     }
 
     public void openOuttakeClaw() {
