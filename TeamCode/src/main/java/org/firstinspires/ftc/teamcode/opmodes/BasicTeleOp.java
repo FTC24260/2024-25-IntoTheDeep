@@ -22,6 +22,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo intakeElbowR;
     private Servo intakeElbowL;
     private Servo claw;
+    private Servo intakeWrist;
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
@@ -59,6 +60,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
     private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.31;
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
+
+    //Intake Wrist
+    private final double INTAKE_WRIST_STRAIGHT = 0.3;
+    private final int INTAKE_WRIST_MAX = 1;
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 0.7;
@@ -327,6 +332,7 @@ public class BasicTeleOp extends LinearOpMode {
             linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
             OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
             OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+            intakeWrist = hardwareMap.get(Servo.class, "intakeWrist");
 
             intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             linearSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -415,6 +421,14 @@ public class BasicTeleOp extends LinearOpMode {
                 } else {
                     toggleOuttakeClaw();
                 }
+            }
+
+            while (gamepad2.dpad_left) {
+                intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
+            }
+
+            while (gamepad2.dpad_right) {
+                intakeWrist.setPosition(INTAKE_WRIST_MAX);
             }
 
             if (gamepad2.b) {
