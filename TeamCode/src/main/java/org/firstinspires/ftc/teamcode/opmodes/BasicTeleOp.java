@@ -26,7 +26,7 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-    private final double ShoulderPositionTransfer = 0.48;
+    private final double ShoulderPositionTransfer = 0.52;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -38,7 +38,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final int LINEAR_SLIDES_MIN_POSITION = 0;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
 
     //Intake Elbows

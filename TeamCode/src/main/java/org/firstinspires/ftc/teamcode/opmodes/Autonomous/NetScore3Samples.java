@@ -33,7 +33,7 @@ public class NetScore3Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.49;
+    private final double ShoulderPositionTransfer = 0.55;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -44,8 +44,8 @@ public class NetScore3Samples extends LinearOpMode {
     private final int linearSlidesMin = 0;
 
     //Outtake Claw
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
@@ -104,6 +104,7 @@ public class NetScore3Samples extends LinearOpMode {
 
 
             turnLeft(45,0.25);
+            driveForward(1,0.25);
             goToIntake();
             closeIntakeClaw();
             sleep(500);
@@ -111,14 +112,17 @@ public class NetScore3Samples extends LinearOpMode {
             sleep(50);
             goToTransfer();
             transferSample();
-            strafeLeft(14,0.25);
+            turnRight(50,0.5);
+            driveBackward(7,0.5);
             linearSlidesTarget(linearSlidesHighBucket);
             driveBackward(5,0.25);
             ShoulderBasket();
             openOuttakeClaw();
             sleep(1000);
+            driveForward(7,0.5);
+            turnLeft(50,0.5);
             driveForward(5,0.25);
-            strafeRight(6,0.5);
+            strafeLeft(6,0.5);
             goToIntake();
             closeIntakeClaw();
             ShoulderTransfer();
