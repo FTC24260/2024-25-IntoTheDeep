@@ -35,10 +35,10 @@ public class BasicTeleOp extends LinearOpMode {
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
     private final int LINEAR_SLIDES_MAX_POSITION = 2700;
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
     private final int LINEAR_SLIDES_MIN_POSITION = 0;
 
     //Outtake Claw
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
 
     //Intake Elbows
@@ -70,7 +70,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Drive Speeds
     private double speed = 0.5;
-    private final double POSITIONING_SPEED = 0.4;
+    private final double POSITIONING_SPEED = 0.1;
 
 
     private enum ClawState {

@@ -101,6 +101,8 @@ public class NetScore3Samples extends LinearOpMode {
             driveForward(8,0.5);
             ShoulderTransfer();
             linearSlidesTarget(linearSlidesMin);
+
+
             turnLeft(45,0.25);
             goToIntake();
             closeIntakeClaw();
@@ -122,13 +124,13 @@ public class NetScore3Samples extends LinearOpMode {
             ShoulderTransfer();
             linearSlidesTarget(linearSlidesMin);
             openOuttakeClaw();
+
+
             sleep(50);
             goToTransfer();
             transferSample();
-            driveForward(7,0.5);
             linearSlidesTarget(linearSlidesHighBucket);
             strafeLeft(6,0.5);
-            driveBackward(7,0.5);
             goToFullyBack();
             ShoulderBasket();
             openOuttakeClaw();
