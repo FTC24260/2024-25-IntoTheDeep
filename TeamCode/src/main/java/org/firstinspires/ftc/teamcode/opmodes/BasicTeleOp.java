@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+
 import java.util.Date;
 
 @TeleOp(name="Basic: Teleop", group="Linear OpMode")
@@ -62,8 +64,11 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
 
     //Intake Wrist
-    private final double INTAKE_WRIST_STRAIGHT = 0.3;
-    private final int INTAKE_WRIST_MAX = 1;
+    private final double INTAKE_WRIST_STRAIGHT = 0.49;
+    private final double INTAKE_WRIST_90_CC = 0.84;
+    private final double INTAKE_WRIST_45_CC = 0.625;
+    private final double INTAKE_WRIST_90_C = 0.14;
+    private final double INTAKE_WRIST_45_C = 0.365;
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 0.7;
@@ -95,6 +100,11 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     private OuttakeShoulderState outtakeShoulderState = OuttakeShoulderState.TRANSFER;
+
+    private enum IntakeWristState {
+        STRAIGHT, DIAGONALCC, DIAGONALC, HORIZONTALC, HORIZONTALCC
+    }
+    private IntakeWristState intakeWristState = IntakeWristState.STRAIGHT;
 
     @Override
     public void runOpMode() {
@@ -300,6 +310,69 @@ public class BasicTeleOp extends LinearOpMode {
         }
     }
 
+    public void intakeWristStraight() {
+        intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
+        intakeWristState = IntakeWristState.STRAIGHT;
+    }
+
+    public void intakeWrist45CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_CC);
+        intakeWristState = IntakeWristState.DIAGONALCC;
+    }
+
+    public void intakeWrist90CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_90_CC);
+        intakeWristState = IntakeWristState.HORIZONTALCC;
+    }
+
+    public void intakeWrist45C() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_C);
+        intakeWristState = IntakeWristState.DIAGONALC;
+    }
+
+    public void intakeWrist90C() {
+        intakeWrist.setPosition(INTAKE_WRIST_90_C);
+        intakeWristState = IntakeWristState.HORIZONTALC;
+    }
+
+    public void toggleIntakeWristC() {
+        if (intakeWristState == IntakeWristState.STRAIGHT) {
+            intakeWrist45C();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALC) {
+            intakeWrist90C();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
+            intakeWristStraight();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
+            intakeWrist45CC();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
+            intakeWristStraight();
+
+        }
+    }
+
+    public void toggleIntakeWristCC() {
+        if (intakeWristState == IntakeWristState.STRAIGHT) {
+            intakeWrist45CC();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
+            intakeWrist90CC();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
+            intakeWristStraight();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
+            intakeWrist45C();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALC) {
+            intakeWristStraight();
+
+        }
+    }
+
     public void transferSample() {
         openIntakeClaw();
         sleep(400);
@@ -424,11 +497,11 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             while (gamepad2.dpad_left) {
-                intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
+                toggleIntakeWristCC();
             }
 
             while (gamepad2.dpad_right) {
-                intakeWrist.setPosition(INTAKE_WRIST_MAX);
+                toggleIntakeWristC();
             }
 
             if (gamepad2.b) {
@@ -469,6 +542,7 @@ public class BasicTeleOp extends LinearOpMode {
                 closeIntakeClaw();
                 sleep(100);
                 goToTransfer();
+                intakeWristStraight();
 
                 HandleDriveControls();
             }
