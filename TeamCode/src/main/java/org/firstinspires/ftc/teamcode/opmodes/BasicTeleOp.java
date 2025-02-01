@@ -45,8 +45,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.97;
-    private final double R_ELBOW_INTAKE = 0.33;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE = 0.3;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
@@ -71,8 +71,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_WRIST_45_C = 0.365;
 
     //Intake Shoulder Motor
-    private final double INTAKE_UP_POWER = 0.7;
-    private final double INTAKE_DOWN_POWER = 0.5;
+    private final double INTAKE_UP_POWER = 1;
+    private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 975;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1150;
     private final int MOTOR_TRANSFER_POSITION = 500;
@@ -134,7 +134,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         closeLooselyIntakeClaw();
-        sleep(1000);
+        sleep(500);
         intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_UP_POWER);
@@ -147,10 +147,10 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
         openOuttakeClaw();
-        sleep(1000);
+        sleep(500);
         intakeElbowR.setPosition(R_ELBOW_HIGH_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_HIGH_POSITIONING);
-        sleep(500);
+        sleep(200);
         intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
 
@@ -338,18 +338,23 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45C();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWrist90C();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWristStraight();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWrist45CC();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWristStraight();
+            sleep(100);
 
         }
     }
@@ -357,18 +362,23 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristCC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45CC();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWrist90CC();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWristStraight();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWrist45C();
+            sleep(100);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWristStraight();
+            sleep(100);
 
         }
     }
