@@ -51,8 +51,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.3;
-    private final double R_ELBOW_TRANSFER = 0.95;
+    private final double L_ELBOW_TRANSFER = 0.31;
+    private final double R_ELBOW_TRANSFER = 0.94;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.78;
@@ -160,7 +160,6 @@ public class BasicTeleOp extends LinearOpMode {
     public void goToIntakeFromPositioning() {
         intakeElbowR.setPosition(R_ELBOW_INTAKE);
         intakeElbowL.setPosition(L_ELBOW_INTAKE);
-        sleep(1000);
 
         intakeState = IntakeState.INTAKE;
     }
@@ -338,23 +337,23 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45C();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWrist90C();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWristStraight();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWrist45CC();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWristStraight();
-            sleep(100);
+            sleep(300);
 
         }
     }
@@ -362,23 +361,23 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristCC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45CC();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWrist90CC();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWristStraight();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWrist45C();
-            sleep(100);
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWristStraight();
-            sleep(100);
+            sleep(300);
 
         }
     }
@@ -560,13 +559,8 @@ public class BasicTeleOp extends LinearOpMode {
                 HandleDriveControls();
             }
             if (gamepad2.back) {
-                rightFront.setPower(0);
-                rightRear.setPower(0);
-                leftFront.setPower(0);
-                leftRear.setPower(0);
                 transferSample();
 
-                HandleDriveControls();
             }
             if (gamepad2.left_bumper) {
                 rightFront.setPower(0);
