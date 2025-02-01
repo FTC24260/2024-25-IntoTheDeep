@@ -51,8 +51,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.29;
-    private final double R_ELBOW_TRANSFER = 0.96;
+    private final double L_ELBOW_TRANSFER = 0.3;
+    private final double R_ELBOW_TRANSFER = 0.95;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.78;
@@ -73,9 +73,9 @@ public class BasicTeleOp extends LinearOpMode {
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 0.7;
     private final double INTAKE_DOWN_POWER = 0.5;
-    private final int MOTOR_INTAKE_POSITION = 1050;
+    private final int MOTOR_INTAKE_POSITION = 975;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1150;
-    private final int MOTOR_TRANSFER_POSITION = 430;
+    private final int MOTOR_TRANSFER_POSITION = 500;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -419,11 +419,6 @@ public class BasicTeleOp extends LinearOpMode {
             linearSlideR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            claw.setPosition(INTAKE_CLAW_OPEN_POSITION);
-            OuttakeClaw.setPosition(OUTTAKE_CLAW_CLOSED_POSITION);
-            OuttakeShoulder.setPosition(ShoulderPositionTransfer);
-            OuttakeClaw.setPosition(OUTTAKE_CLAW_DEFAULT_OPEN_POSITION);
-
 
             leftFront.setDirection(DcMotor.Direction.REVERSE);
             rightRear.setDirection(DcMotor.Direction.FORWARD);
@@ -568,7 +563,7 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                ToggleShoulder();
+                ShoulderBasket();
 
                 HandleDriveControls();
 
@@ -577,7 +572,7 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                intakeSpecimen();
+                ShoulderTransfer();
 
                 HandleDriveControls();
             }
