@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+
 import java.util.Date;
 
 @TeleOp(name="Basic: Teleop", group="Linear OpMode")
@@ -22,13 +24,19 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo intakeElbowR;
     private Servo intakeElbowL;
     private Servo claw;
+    private Servo intakeWrist;
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-    private final double ShoulderPositionBasket = 0.3;
-    private final double ShoulderPositionTransfer = 0.78;
-    private final double ShoulderPositionSpecimen = 0;
+//    private final double ShoulderPositionBasket = 0.3;
+//    private final double ShoulderPositionTransfer = 0.78;
+//    private final double ShoulderPositionSpecimen = 0;
+
+    private final double ShoulderPositionTransfer = 0.53;
+    private final double ShoulderPositionSpecimen = 1;
+    private final double ShoulderPositionRest = 0.6;
+    private final double ShoulderPositionBasket = 0.1;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -41,15 +49,18 @@ public class BasicTeleOp extends LinearOpMode {
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.6;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.55;
 
+//    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
+//    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
+
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 1;
-    private final double R_ELBOW_INTAKE = 0.3;
+    private final double L_ELBOW_INTAKE = 0.97;
+    private final double R_ELBOW_INTAKE = 0.33;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
-    private final double L_ELBOW_LOW_POSITIONING = 0.73;
-    private final double R_ELBOW_LOW_POSITIONING = 0.6;
-    private final double L_ELBOW_TRANSFER = 0.32;
-    private final double R_ELBOW_TRANSFER = 0.93;
+    private final double L_ELBOW_LOW_POSITIONING = 0.67;
+    private final double R_ELBOW_LOW_POSITIONING = 0.66;
+    private final double L_ELBOW_TRANSFER = 0.29;
+    private final double R_ELBOW_TRANSFER = 0.96;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.78;
@@ -57,8 +68,15 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0;
-    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.31;
-    private final double INTAKE_CLAW_CLOSED_POSITION = 0.33;
+    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.23;
+    private final double INTAKE_CLAW_CLOSED_POSITION = 0.25;
+
+    //Intake Wrist
+    private final double INTAKE_WRIST_STRAIGHT = 0.48;
+    private final double INTAKE_WRIST_90_CC = 0.82;
+    private final double INTAKE_WRIST_45_CC = 0.625;
+    private final double INTAKE_WRIST_90_C = 0.16;
+    private final double INTAKE_WRIST_45_C = 0.365;
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 1;
@@ -66,11 +84,12 @@ public class BasicTeleOp extends LinearOpMode {
     private final int MOTOR_INTAKE_POSITION = 1050;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1150;
     private final int MOTOR_TRANSFER_POSITION = 550 ;
+//    private final int MOTOR_TRANSFER_POSITION = 430;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
     private double speed = 0.5;
-    private final double POSITIONING_SPEED = 0.1;
+    private final double POSITIONING_SPEED = 0.25;
 
 
     private enum ClawState {
@@ -90,6 +109,11 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     private OuttakeShoulderState outtakeShoulderState = OuttakeShoulderState.TRANSFER;
+
+    private enum IntakeWristState {
+        STRAIGHT, DIAGONALCC, DIAGONALC, HORIZONTALC, HORIZONTALCC
+    }
+    private IntakeWristState intakeWristState = IntakeWristState.STRAIGHT;
 
     @Override
     public void runOpMode() {
@@ -273,9 +297,73 @@ public class BasicTeleOp extends LinearOpMode {
         }
     }
 
+    public void intakeWristStraight() {
+        intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
+        intakeWristState = IntakeWristState.STRAIGHT;
+    }
+
+    public void intakeWrist45CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_CC);
+        intakeWristState = IntakeWristState.DIAGONALCC;
+    }
+
+    public void intakeWrist90CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_90_CC);
+        intakeWristState = IntakeWristState.HORIZONTALCC;
+    }
+
+    public void intakeWrist45C() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_C);
+        intakeWristState = IntakeWristState.DIAGONALC;
+    }
+
+    public void intakeWrist90C() {
+        intakeWrist.setPosition(INTAKE_WRIST_90_C);
+        intakeWristState = IntakeWristState.HORIZONTALC;
+    }
+
+    public void toggleIntakeWristC() {
+        if (intakeWristState == IntakeWristState.STRAIGHT) {
+            intakeWrist45C();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALC) {
+            intakeWrist90C();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
+            intakeWristStraight();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
+            intakeWrist45CC();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
+            intakeWristStraight();
+
+        }
+    }
+
+    public void toggleIntakeWristCC() {
+        if (intakeWristState == IntakeWristState.STRAIGHT) {
+            intakeWrist45CC();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
+            intakeWrist90CC();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
+            intakeWristStraight();
+
+        } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
+            intakeWrist45C();
+
+        } else if (intakeWristState == IntakeWristState.DIAGONALC) {
+            intakeWristStraight();
+
+        }
+    }
+
     public void transferSample() {
-        openIntakeClaw();
         closeOuttakeClaw();
+        sleep(200);
+        openIntakeClaw();
 
     }
 
@@ -304,6 +392,7 @@ public class BasicTeleOp extends LinearOpMode {
             linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
             OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
             OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+            intakeWrist = hardwareMap.get(Servo.class, "intakeWrist");
 
             intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             linearSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -389,6 +478,22 @@ public class BasicTeleOp extends LinearOpMode {
                 }
             }
 
+            if (gamepad2.dpad_left) {
+                toggleIntakeWristCC();
+            }
+
+            if (gamepad2.dpad_right) {
+                toggleIntakeWristC();
+            }
+
+            if (gamepad2.dpad_up) {
+                intakeWristStraight();
+            }
+
+            if (gamepad2.dpad_down) {
+                goToFullyBack();
+            }
+
             if (gamepad2.b) {
                 rightFront.setPower(0);
                 rightRear.setPower(0);
@@ -427,12 +532,14 @@ public class BasicTeleOp extends LinearOpMode {
                 leftRear.setPower(0);
                 closeIntakeClaw();
                 sleep(100);
+                intakeWristStraight();
                 goToTransfer();
 
                 HandleDriveControls();
             }
             if (gamepad2.back) {
                 transferSample();
+                
             }
             if (gamepad2.left_bumper) {
                 rightFront.setPower(0);

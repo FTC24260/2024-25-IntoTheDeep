@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "NetScore3Samples",  group = "Qualifiers" )
-public class NetScore3Samples extends LinearOpMode {
+@Autonomous (name = "TestSlidesSync",  group = "Qualifiers" )
+public class TestSlidesSync extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -32,10 +32,6 @@ public class NetScore3Samples extends LinearOpMode {
     private final double robotRotationCircumference = 73.4;
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
-
-//    private final double ShoulderPositionBasket = 0.3;
-//    private final double ShoulderPositionTransfer = 0.78;
-//    private final double ShoulderPositionSpecimen = 0;
 
     private final double ShoulderPositionTransfer = 0.55;
     private final double ShoulderPositionSpecimen = 1;
@@ -94,71 +90,13 @@ public class NetScore3Samples extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveForward(14,0.5);
-            strafeLeft(11,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1500);
             linearSlidesStop();
-            turnRight(45,0.5);
-            driveBackward(8,0.25);
-            ShoulderBasket();
+
             sleep(1000);
-            openOuttakeClaw();
-            driveForward(8,0.5);
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1500);
-            linearSlidesStop();
 
-
-            turnLeft(45,0.25);
-            driveForward(1,0.25);
-            goToIntake();
-            closeIntakeClaw();
-            sleep(500);
-            openOuttakeClaw();
-            sleep(50);
-            goToTransfer();
-            transferSample();
-            turnRight(50,0.5);
-            driveBackward(7,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1500);
-            linearSlidesStop();
-            driveBackward(5,0.25);
-            ShoulderBasket();
-            openOuttakeClaw();
-            sleep(1000);
-            driveForward(7,0.5);
-            turnLeft(50,0.5);
-            driveForward(5,0.25);
-            strafeLeft(6,0.5);
-            goToIntake();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1500);
-            linearSlidesStop();
-            openOuttakeClaw();
-
-
-            sleep(50);
-            goToTransfer();
-            transferSample();
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1500);
-            linearSlidesStop();
-            turnRight(50,0.5);
-            driveBackward(7,0.5);
-            goToFullyBack();
-            ShoulderBasket();
-            openOuttakeClaw();
-            ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             sleep(1500);
@@ -343,6 +281,13 @@ public class NetScore3Samples extends LinearOpMode {
         sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
     }
+
+    public void ShoulderRest() {
+        closeOuttakeClaw();
+        sleep(200);
+        OuttakeShoulder.setPosition(ShoulderPositionRest);
+    }
+
     public void openOuttakeClaw() {
         OuttakeClaw.setPosition(OUTTAKE_CLAW_DEFAULT_OPEN_POSITION);
     }

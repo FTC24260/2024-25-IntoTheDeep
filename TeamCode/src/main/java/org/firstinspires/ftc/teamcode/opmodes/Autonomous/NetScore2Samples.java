@@ -33,17 +33,23 @@ public class NetScore2Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionBasket = 0.3;
-    private final double ShoulderPositionTransfer = 0.78;
-    private final double ShoulderPositionSpecimen = 0;
+//    private final double ShoulderPositionBasket = 0.3;
+//    private final double ShoulderPositionTransfer = 0.78;
+//    private final double ShoulderPositionSpecimen = 0;
+
+
+    private final double ShoulderPositionTransfer = 0.52;
+    private final double ShoulderPositionSpecimen = 1;
+    private final double ShoulderPositionRest = 0.6;
+    private final double ShoulderPositionBasket = 0;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
 
     //Outtake Claw
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
     private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
 
     //Intake Elbows
     private final double L_ELBOW_INTAKE = 1;
