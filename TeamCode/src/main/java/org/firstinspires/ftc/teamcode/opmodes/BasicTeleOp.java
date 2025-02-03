@@ -500,8 +500,8 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up) {
-                openOuttakeClaw();
-                intakeSpecimen();
+                goToPositioning();
+                intakeWristUpsideDown();
             }
 
             if (gamepad2.dpad_down) {
