@@ -29,11 +29,8 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeClaw;
 
     //Outtake Shoulder
-//    private final double ShoulderPositionBasket = 0.3;
-//    private final double ShoulderPositionTransfer = 0.78;
-//    private final double ShoulderPositionSpecimen = 0;
 
-    private final double ShoulderPositionTransfer = 0.53;
+    private final double ShoulderPositionTransfer = 0.51;
     private final double ShoulderPositionSpecimen = 1;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0.1;
@@ -46,21 +43,19 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.6;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.67;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.55;
 
-//    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
-//    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.97;
-    private final double R_ELBOW_INTAKE = 0.33;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE = 0.3;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.29;
-    private final double R_ELBOW_TRANSFER = 0.96;
+    private final double L_ELBOW_TRANSFER = 0.33;
+    private final double R_ELBOW_TRANSFER = 0.92;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.78;
@@ -82,9 +77,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_UP_POWER = 1;
     private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
-    private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1150;
-    private final int MOTOR_TRANSFER_POSITION = 550 ;
-//    private final int MOTOR_TRANSFER_POSITION = 430;
+    private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1100;
+    private final int MOTOR_TRANSFER_POSITION = 400;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -143,7 +137,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         closeLooselyIntakeClaw();
-        sleep(600);
+        sleep(500);
         intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_UP_POWER);
@@ -265,6 +259,7 @@ public class BasicTeleOp extends LinearOpMode {
     public void ShoulderBasket() {
         closeOuttakeClaw();
         OuttakeShoulder.setPosition(ShoulderPositionBasket);
+        goToFullyBack();
         outtakeShoulderState = OuttakeShoulderState.BASKET;
     }
 
@@ -290,10 +285,10 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleOuttakeClaw() {
         if (clawState == ClawState.CLOSED) {
             openOuttakeClaw();
-            sleep(500);
+            sleep(300);
         } else {
             closeOuttakeClawLoosely();
-            sleep(500);
+            sleep(300);
         }
     }
 
@@ -325,18 +320,23 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45C();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWrist90C();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWristStraight();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWrist45CC();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWristStraight();
+            sleep(300);
 
         }
     }
@@ -344,25 +344,30 @@ public class BasicTeleOp extends LinearOpMode {
     public void toggleIntakeWristCC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
             intakeWrist45CC();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
             intakeWrist90CC();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALCC) {
             intakeWristStraight();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.HORIZONTALC) {
             intakeWrist45C();
+            sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALC) {
             intakeWristStraight();
+            sleep(300);
 
         }
     }
 
     public void transferSample() {
         closeOuttakeClaw();
-        sleep(200);
+        sleep(100);
         openIntakeClaw();
 
     }
@@ -539,25 +544,27 @@ public class BasicTeleOp extends LinearOpMode {
             }
             if (gamepad2.back) {
                 transferSample();
-                
             }
             if (gamepad2.left_bumper) {
                 rightFront.setPower(0);
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                ToggleShoulder();
+                ShoulderBasket();
 
                 HandleDriveControls();
 
             } else if (gamepad2.right_bumper) {
-                ShoulderSpecimen();
-            }
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
+                ShoulderTransfer();
 
-            if (gamepad2.dpad_down) {
-                goToFullyBack();
-            }
-        }
+                if (gamepad2.dpad_down) {
+                    goToFullyBack();
+                }
+            }}
 
         public void TelemetryPrintStatements () {
             telemetry.addData("Speed", speed);
