@@ -31,7 +31,7 @@ public class BasicTeleOp extends LinearOpMode {
     //Outtake Shoulder
 
     private final double ShoulderPositionTransfer = 0.51;
-    private final double ShoulderPositionSpecimen = 1;
+    private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0.1;
 
@@ -267,6 +267,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void ShoulderTransfer() {
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
+        sleep(300);
         openOuttakeClaw();
         outtakeShoulderState = OuttakeShoulderState.TRANSFER;
     }
@@ -573,6 +574,9 @@ public class BasicTeleOp extends LinearOpMode {
 
                 if (gamepad2.dpad_down) {
                     goToFullyBack();
+                }
+                if (gamepad2.left_stick_button) {
+                    ShoulderSpecimen();
                 }
 
             }
