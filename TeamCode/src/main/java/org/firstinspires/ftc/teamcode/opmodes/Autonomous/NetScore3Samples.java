@@ -33,11 +33,11 @@ public class NetScore3Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.55;
-
-    private final double ShoulderPositionSpecimen = 1;
+    private final double ShoulderPositionTransfer = 0.59;
+    private final double ShoulderPositionHighTransfer = 0.45;
+    private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
-    private final double ShoulderPositionBasket = 0.1;
+    private final double ShoulderPositionBasket = 0;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -46,42 +46,45 @@ public class NetScore3Samples extends LinearOpMode {
     private final int LINEAR_SLIDES_MIN_POSITION = 0;
 
     //Outtake Claw
-    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.1;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.65;
+    private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.4;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.79;
+    private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.6;
+
 
     //Intake Elbows
-    private final double L_ELBOW_INTAKE = 0.97;
-    private final double R_ELBOW_INTAKE = 0.33;
+    private final double L_ELBOW_INTAKE = 1;
+    private final double R_ELBOW_INTAKE = 0.3;
     private final double L_ELBOW_HIGH_POSITIONING = 0.68;
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.3;
-    private final double R_ELBOW_TRANSFER = 0.95;
+    private final double L_ELBOW_TRANSFER = 0.33;
+    private final double R_ELBOW_TRANSFER = 0.92;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
-    private final double R_ELBOW_SPECIMEN_INTAKE = 0.78;
-    private final double L_ELBOW_SPECIMEN_INTAKE = 0.55;
+    private final double R_ELBOW_SPECIMEN_INTAKE = 0.82;
+    private final double L_ELBOW_SPECIMEN_INTAKE = 0.51;
 
     //Intake Claw
-    private final double INTAKE_CLAW_OPEN_POSITION = 0;
-    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.23;
-    private final double INTAKE_CLAW_CLOSED_POSITION = 0.25;
+    private final double INTAKE_CLAW_OPEN_POSITION = 0.5;
+    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.9;
+    private final double INTAKE_CLAW_CLOSED_POSITION = 1;
 
     //Intake Wrist
-    private final double INTAKE_WRIST_STRAIGHT = 0.48;
-    private final double INTAKE_WRIST_90_CC = 0.82;
-    private final double INTAKE_WRIST_45_CC = 0.625;
-    private final double INTAKE_WRIST_90_C = 0.16;
-    private final double INTAKE_WRIST_45_C = 0.365;
+    private final double INTAKE_WRIST_90_CC = 0.5;
+    private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
+    private final double INTAKE_WRIST_135_CC = 0.625;
+    private final double INTAKE_WRIST_STRAIGHT = 0.16;
+    private final double INTAKE_WRIST_45_CC = 0.365;
 
     //Intake Shoulder Motor
-    private final double INTAKE_UP_POWER = 0.7;
-    private final double INTAKE_DOWN_POWER = 0.5;
+    private final double INTAKE_UP_POWER = 1;
+    private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
-    private final int MOTOR_SPECIMEN_INTAKE_POSITION = 1150;
-    private final int MOTOR_TRANSFER_POSITION = 500;
+    private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
+    private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
+
 
 
     private enum ClawState {

@@ -457,18 +457,28 @@ public class BasicTeleOp extends LinearOpMode {
 
             } else {
                 // Handle other speed controls
-                if (gamepad1.a) {
-                    speed = 0.25;
+//                if (gamepad1.a) {
+//                    speed = 0.25;
+//
+//                } else if (gamepad1.b) {
+//                    speed = 0.5;
+//
+//                } else if (gamepad1.y) {
+//                    speed = 0.75;
+//
+//                } else if (gamepad1.x) {
+//                    speed = 1;
+//
+//                }
 
-                } else if (gamepad1.b) {
-                    speed = 0.5;
-
-                } else if (gamepad1.y) {
-                    speed = 0.75;
-
-                } else if (gamepad1.x) {
+                if (gamepad1.left_trigger > 0.05) {
                     speed = 1;
 
+                } else if (gamepad1.right_trigger > 0.05) {
+                    speed = 0.25;
+                }
+                else {
+                    speed = 0.5;
                 }
             }
         }
@@ -552,7 +562,7 @@ public class BasicTeleOp extends LinearOpMode {
                 leftFront.setPower(0);
                 leftRear.setPower(0);
                 ShoulderTransfer();
-                closeIntakeClaw();
+                closeLooselyIntakeClaw();
                 sleep(100);
                 intakeWristStraight();
                 goToTransfer();

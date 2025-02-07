@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous (name = "NetScore2Samples",  group = "Qualifiers" )
-public class NetScore2Samples extends LinearOpMode {
+@Autonomous (name = "ObservationPreloadSpecimen",  group = "Qualifiers" )
+public class ObservationPreloadSpecimen extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -38,6 +38,7 @@ public class NetScore2Samples extends LinearOpMode {
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
+    private final double ShoulderPositionSpecimenPull = 0.1;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -104,64 +105,27 @@ public class NetScore2Samples extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-
-            //Pre-load Sample Basket Score
-            driveForward(12,0.25);
-            strafeLeft(12,0.25);
-            turnRight(55,0.25);
-            sleep(300);
-            strafeLeft(7,0.25);
-            driveBackward(13,0.25);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1600);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
+            driveBackward(25,0.5);
+            strafeRight(13,0.5);
             driveBackward(5,0.5);
-            ShoulderBasket();
             sleep(500);
-            ShoulderTransfer();
-            driveForward(7.5,0.25);
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
+            ShoulderBasket();
             driveForward(3,0.25);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //First Neutral Sample Basket Score
-            turnLeft(60,0.25);
-            driveForward(5,0.5);
-            goToPositioning();
-            openIntakeClaw();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            sleep(300);
-            driveBackward(10,0.25);
-            goToFullyBack();
-            turnRight(55,0.25);
-            strafeLeft(5,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            driveBackward(4,0.25);
-            sleep(1200);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            sleep(700);
-            driveForward(5,0.25);
-            strafeLeft(4,0.25);
-            ShoulderTransfer();
+            sleep(600);
+            linearSlidesStop();
+            sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1400);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
+            sleep(600);
+            linearSlidesStop();
+            driveForward(2,0.25);
+            sleep(1000);
+            openOuttakeClaw();
+            ShoulderTransfer();
+            driveForward(25,0.5);
+            strafeLeft(40,0.5);
 
 
             leftFront.setPower(0);
@@ -312,7 +276,7 @@ public class NetScore2Samples extends LinearOpMode {
         linearSlidesStop();
     }
 
-    private void linearSlidesDonw() {
+    private void linearSlidesDown() {
         linearSlideL.setPower(linearSlidesPower);
         linearSlideR.setPower(-linearSlidesPower);
         sleep(500);
@@ -333,16 +297,16 @@ public class NetScore2Samples extends LinearOpMode {
 
     public void ShoulderBasket() {
         OuttakeShoulder.setPosition(ShoulderPositionBasket);
-        sleep(1200);
-        openOuttakeClaw();
     }
+
+    public void ShoulderSpecimenPull() {
+        OuttakeShoulder.setPosition(ShoulderPositionSpecimenPull);
+    }
+
 
     public void ShoulderTransfer() {
-        closeOuttakeClaw();
-        sleep(500);
         OuttakeShoulder.setPosition(ShoulderPositionTransfer);
     }
-
     public void openOuttakeClaw() {
         OuttakeClaw.setPosition(OUTTAKE_CLAW_DEFAULT_OPEN_POSITION);
     }
@@ -356,6 +320,22 @@ public class NetScore2Samples extends LinearOpMode {
         sleep(50);
         openIntakeClaw();
 
+    }
+
+    public void linearSlidesTarget(int linearSlideHeight) {
+        linearSlideL.setTargetPosition(-linearSlideHeight);
+        linearSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlideL.setPower(-linearSlidesPower);
+
+        linearSlideR.setTargetPosition(linearSlideHeight);
+        linearSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlideR.setPower(-linearSlidesPower);
+
+    }
+
+    public void goToIntake() {
+        goToPositioning();
+        goToIntakeFromPositioning();
     }
 
     public void hwMapAndEncodersAndDriveDirections() {
