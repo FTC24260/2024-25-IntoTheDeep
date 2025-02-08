@@ -105,9 +105,9 @@ public class ObservationPreloadSpecimen extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveBackward(25,0.5);
-            strafeRight(13,0.5);
-            driveBackward(5,0.5);
+            driveBackward(23,0.75);
+            strafeRight(13,0.75);
+            driveBackward(5,0.25);
             sleep(500);
             ShoulderBasket();
             driveForward(3,0.25);
@@ -120,12 +120,10 @@ public class ObservationPreloadSpecimen extends LinearOpMode {
             linearSlideL.setPower(1);
             sleep(600);
             linearSlidesStop();
-            driveForward(2,0.25);
-            sleep(1000);
             openOuttakeClaw();
             ShoulderTransfer();
-            driveForward(25,0.5);
-            strafeLeft(40,0.5);
+            driveForward(20,1);
+            strafeLeft(40,1);
 
 
             leftFront.setPower(0);
