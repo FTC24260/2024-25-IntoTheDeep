@@ -33,8 +33,10 @@ public class NetScore2Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.59;
-    private final double ShoulderPositionHighTransfer = 0.45;
+    //Outtake Shoulder
+
+    private final double ShoulderPositionTransfer = 0.7;
+    private final double ShoulderPositionHighTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -67,15 +69,16 @@ public class NetScore2Samples extends LinearOpMode {
 
     //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0.5;
-    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.9;
+    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.68;
     private final double INTAKE_CLAW_CLOSED_POSITION = 1;
 
     //Intake Wrist
-    private final double INTAKE_WRIST_90_CC = 0.5;
+    private final double INTAKE_WRIST_90_CC = 0.44;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
-    private final double INTAKE_WRIST_135_CC = 0.625;
-    private final double INTAKE_WRIST_STRAIGHT = 0.16;
-    private final double INTAKE_WRIST_45_CC = 0.365;
+    private final double INTAKE_WRIST_135_CC = 0.6;
+    private final double INTAKE_WRIST_STRAIGHT = 0.14;
+    private final double INTAKE_WRIST_45_CC = 0.32;
+    private final double INTAKE_WRIST_45_C = 0;
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 1;
@@ -84,8 +87,6 @@ public class NetScore2Samples extends LinearOpMode {
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
     private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
-
-
 
     private enum ClawState {
         OPEN, CLOSED

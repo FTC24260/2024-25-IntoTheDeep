@@ -36,11 +36,12 @@ public class Observation2Specimens extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.59;
-    private final double ShoulderPositionHighTransfer = 0.45;
+    private final double ShoulderPositionTransfer = 0.7;
+    private final double ShoulderPositionHighTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
+
 
     //Intake Wrist
     private final double INTAKE_WRIST_90_CC = 0.5;
@@ -110,45 +111,48 @@ public class Observation2Specimens extends LinearOpMode {
         if (opModeIsActive()) {
             driveBackward(23,0.75);
             strafeRight(13,0.75);
-            driveBackward(5,0.25);
+            driveBackward(7,0.25);
             sleep(500);
             ShoulderBasket();
-            driveForward(3,0.25);
+            driveForward(5,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(600);
-            linearSlidesStop();
             sleep(500);
+            linearSlidesStop();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(600);
+            sleep(500);
             linearSlidesStop();
+            driveForward(1.5,0.25);
             openOuttakeClaw();
             ShoulderTransfer();
-            driveForward(20,1);
-            strafeLeft(50,1);
-            xdriveForward(10,0.5);
-            strafeLeft(50,0.5);
+            driveForward(5,1);
+            strafeLeft(40,1);
+            strafeLeft(10,0.5);
+            driveForward(22,1);
+            sleep(500);
+            driveBackward(15,0.5);
             intakeSpecimen();
+            openIntakeClaw();
             driveForward(5,0.5);
             closeIntakeClaw();
+            sleep(1000);
             goToRaisedIntake();
             goToTransfer();
             transferSample();
-            strafeRight(50,0.5);
-            driveBackward(11,0.5);
+            driveBackward(5,0.5);
+            strafeRight(50,1);
+            driveBackward(10,1);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(600);
             linearSlidesStop();
-            sleep(500);
-            driveBackward(1,0.5);
+            driveBackward(6,0.5);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             sleep(600);
             linearSlidesStop();
-            sleep(1000);
             openOuttakeClaw();
             sleep(500);
             ShoulderTransfer();
@@ -244,6 +248,7 @@ public class Observation2Specimens extends LinearOpMode {
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
+        intakeWristStraight();
         closeLooselyIntakeClaw();
         sleep(1000);
         intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
@@ -294,6 +299,10 @@ public class Observation2Specimens extends LinearOpMode {
 
     public void intakeWristUpsideDown() {
         intakeWrist.setPosition(INTAKE_WRIST_UPSIDE_DOWN);
+    }
+
+    public void intakeWristStraight() {
+        intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
     }
 
     public void goToFullyBack() {
