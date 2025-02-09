@@ -547,9 +547,11 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                openIntakeClaw();
-                sleep(50);
-                goToIntakeFromPositioning();
+                if (intakeState == IntakeState.POSITIONING) {
+                    openIntakeClaw();
+                    sleep(50);
+                    goToIntakeFromPositioning();
+                }
 
                 HandleDriveControls();
             }
@@ -558,12 +560,13 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                if (intakeState == IntakeState.INTAKE) {
+                if (intakeState == IntakeState.INTAKE){
                     goToPositioningFromIntake();
-                } else if (intakeState == IntakeState.SPECIMEN){
-                    goToRaisedIntake();
-                }
 
+                } else if (intakeState == IntakeState.SPECIMEN) {
+                    goToRaisedIntake();
+
+                }
                 HandleDriveControls();
             }
             if (gamepad2.a) {
@@ -571,11 +574,21 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                ShoulderTransfer();
-                closeLooselyIntakeClaw();
-                sleep(100);
-                intakeWristStraight();
-                goToTransfer();
+                if (intakeState == IntakeState.INTAKE || intakeState == IntakeState.POSITIONING) {
+                    ShoulderTransfer();
+                    closeLooselyIntakeClaw();
+                    sleep(100);
+                    intakeWristStraight();
+                    goToTransfer();
+
+                } else if (intakeState == IntakeState.SPECIMEN){
+                    goToRaisedIntake();
+                    ShoulderTransfer();
+                    closeLooselyIntakeClaw();
+                    sleep(100);
+                    intakeWristStraight();
+                    goToTransfer();
+                }
 
                 HandleDriveControls();
             }

@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.opmodes.BasicTeleOp;
+
 @Autonomous (name = "NetScore3Samples",  group = "Qualifiers" )
 public class NetScore3Samples extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,6 +24,7 @@ public class NetScore3Samples extends LinearOpMode {
     private Servo claw;
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
+    private Servo intakeWrist;
 
     int leftFrontPos;
     int rightFrontPos;
@@ -33,8 +36,10 @@ public class NetScore3Samples extends LinearOpMode {
     private final double speed = 0.5;
     private final double POSITIONING_SPEED = 0.2;
 
-    private final double ShoulderPositionTransfer = 0.59;
-    private final double ShoulderPositionHighTransfer = 0.45;
+    //Outtake Shoulder
+
+    private final double ShoulderPositionTransfer = 0.7;
+    private final double ShoulderPositionHighTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
@@ -67,15 +72,16 @@ public class NetScore3Samples extends LinearOpMode {
 
     //Intake Claw
     private final double INTAKE_CLAW_OPEN_POSITION = 0.5;
-    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.9;
+    private final double INTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.68;
     private final double INTAKE_CLAW_CLOSED_POSITION = 1;
 
     //Intake Wrist
-    private final double INTAKE_WRIST_90_CC = 0.5;
+    private final double INTAKE_WRIST_90_CC = 0.44;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
-    private final double INTAKE_WRIST_135_CC = 0.625;
-    private final double INTAKE_WRIST_STRAIGHT = 0.16;
-    private final double INTAKE_WRIST_45_CC = 0.365;
+    private final double INTAKE_WRIST_135_CC = 0.6;
+    private final double INTAKE_WRIST_STRAIGHT = 0.14;
+    private final double INTAKE_WRIST_45_CC = 0.32;
+    private final double INTAKE_WRIST_45_C = 0;
 
     //Intake Shoulder Motor
     private final double INTAKE_UP_POWER = 1;
@@ -86,7 +92,6 @@ public class NetScore3Samples extends LinearOpMode {
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
 
-
     private enum ClawState {
         OPEN, CLOSED
     }
@@ -94,7 +99,9 @@ public class NetScore3Samples extends LinearOpMode {
     private enum IntakeState {
         POSITIONING, INTAKE, TRANSFER
     }
-
+    private enum IntakeWristState {
+        STRAIGHT, DIAGONALCC, DIAGONALC, HORIZONTALC, HORIZONTALCC, UPSIDEDOWN
+    }
     @Override
     public void runOpMode() {
         hwMapAndEncodersAndDriveDirections();
@@ -104,78 +111,74 @@ public class NetScore3Samples extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveForward(14,0.5);
-            strafeLeft(11,0.5);
-            turnRight(45,0.5);
+            //Pre-load Sample Basket Score
+            driveForward(12,1);
+            strafeLeft(12,1);
+            turnRight(55,1);
+            sleep(300);
+            strafeLeft(7,1);
+            driveBackward(13,1);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(1570);
-            linearSlidesStop();
-            driveBackward(10,0.25);
-            strafeLeft(4,0.5);
+            sleep(1600);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+            driveBackward(5,1);
             ShoulderBasket();
-            sleep(1000);
-            openOuttakeClaw();
-            driveForward(8,0.5);
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1570);
-            linearSlidesStop();
-
-
-            turnLeft(47,0.25);
-            driveForward(3,0.25);
-            goToIntake();
-            closeIntakeClaw();
             sleep(500);
-            openOuttakeClaw();
-            sleep(50);
-            goToTransfer();
-            transferSample();
-            turnRight(50,0.5);
-            driveBackward(7,0.5);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
+            ShoulderTransfer();
+            driveForward(7.5,1);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            driveForward(3,1);
             sleep(1500);
-            linearSlidesStop();
-            driveBackward(5,0.25);
-            ShoulderBasket();
-            openOuttakeClaw();
-            sleep(1000);
-            driveForward(7,0.5);
-            turnLeft(50,0.5);
-            driveForward(5,0.25);
-            strafeLeft(6,0.5);
-            goToIntake();
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+
+            //First Neutral Sample Basket Score
+            turnLeft(60,1);
+            driveForward(5,1);
+            strafeLeft(3,1);
+            goToPositioning();
+            openIntakeClaw();
+            goToIntakeFromPositioning();
             closeIntakeClaw();
             ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1500);
-            linearSlidesStop();
             openOuttakeClaw();
-
-
-            sleep(50);
             goToTransfer();
+            sleep(400);
             transferSample();
+            sleep(300);
+            driveBackward(10,1);
+            goToFullyBack();
+            turnRight(55,1);
+            strafeLeft(8,1);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(1500);
-            linearSlidesStop();
-            turnRight(50,0.5);
-            strafeRight(6,0.5);
-            driveBackward(7,0.5);
-            goToFullyBack();
+            driveBackward(6,1);
+            sleep(1200);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
             ShoulderBasket();
-            openOuttakeClaw();
+            sleep(700);
+            driveForward(5,1);
+            strafeLeft(4,1);
             ShoulderTransfer();
-            driveForward(7,0.5);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1500);
-            linearSlidesStop();
+            sleep(1400);
+            linearSlideR.setPower(0);
+            linearSlideL.setPower(0);
+
+
+            turnLeft(50,1);
+            driveForward(8,1);
+            strafeLeft(5,1);
+            openIntakeClaw();
+            goToIntake();
+            closeIntakeClaw();
+            goToTransfer();
+            transferSample();
 
 
             leftFront.setPower(0);
@@ -338,7 +341,29 @@ public class NetScore3Samples extends LinearOpMode {
         linearSlideR.setPower(0);
     }
 
+    public void intakeWristStraight() {
+        intakeWrist.setPosition(INTAKE_WRIST_STRAIGHT);
+    }
 
+    public void intakeWrist45CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_CC);
+    }
+
+    public void intakeWrist90CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_90_CC);
+    }
+
+    public void intakeWrist135CC() {
+        intakeWrist.setPosition(INTAKE_WRIST_135_CC);
+    }
+
+    public void intakeWrist45C() {
+        intakeWrist.setPosition(INTAKE_WRIST_45_C);
+    }
+
+    public void intakeWristUpsideDown() {
+        intakeWrist.setPosition(INTAKE_WRIST_UPSIDE_DOWN);
+    }
 
     public void ShoulderSpecimen() {
         closeOuttakeClaw();
@@ -400,6 +425,7 @@ public class NetScore3Samples extends LinearOpMode {
         linearSlideR = hardwareMap.get(DcMotorEx.class, "linearSlideR");
         OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
         OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
+        intakeWrist = hardwareMap.get(Servo.class, "intakeWrist");
 
         linearSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -435,6 +461,7 @@ public class NetScore3Samples extends LinearOpMode {
     public void InitializedPosition() {
         ShoulderTransfer();
         closeOuttakeClaw();
+        intakeWristStraight();
 
     }
 }
