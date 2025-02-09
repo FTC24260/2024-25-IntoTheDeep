@@ -458,10 +458,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             // Update speed based on robot state
-            if (intakeState == IntakeState.POSITIONING) {
-                speed = POSITIONING_SPEED;
-
-            } else {
+            else {
                 // Handle other speed controls
 //                if (gamepad1.a) {
 //                    speed = 0.25;
@@ -517,9 +514,16 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up) {
+                rightFront.setPower(0);
+                rightRear.setPower(0);
+                leftFront.setPower(0);
+                leftRear.setPower(0);
+
                 ShoulderHighTransfer();
                 intakeSpecimen();
                 ShoulderTransfer();
+
+                HandleDriveControls();
             }
 
             if (gamepad2.dpad_down) {
