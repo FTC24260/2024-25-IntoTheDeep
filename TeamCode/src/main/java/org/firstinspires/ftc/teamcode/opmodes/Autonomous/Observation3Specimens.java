@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.opmodes.BasicTeleOp;
 
-@Autonomous (name = "Observation2Specimens",  group = "Qualifiers" )
-public class Observation2Specimens extends LinearOpMode {
+@Autonomous (name = "Observation3Specimens",  group = "Qualifiers" )
+public class Observation3Specimens extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -58,7 +58,7 @@ public class Observation2Specimens extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.4;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.86;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.79;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.6;
 
 
@@ -109,12 +109,12 @@ public class Observation2Specimens extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveBackward(23,0.25);
-            strafeRight(13,0.25);
-            driveBackward(10,0.25);
+            driveBackward(23,0.75);
+            strafeRight(13,0.75);
+            driveBackward(5,0.25);
             sleep(500);
             ShoulderBasket();
-            driveForward(4.5,0.25);
+            driveForward(3,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(600);
@@ -128,28 +128,28 @@ public class Observation2Specimens extends LinearOpMode {
             ShoulderTransfer();
 
 
-            driveForward(15,0.25);
-            driveForward(12,0.25);
-            strafeLeft(50,1);
-            driveBackward(20,0.25);
+            driveForward(15,1);
+            strafeLeft(45,1);
+            driveBackward(30,1);
+            strafeLeft(7,1);
             intakeSpecimenMotor();
-            openIntakeClaw();
-            driveForward(15,0.25);
-            sleep(1000);
-            intakeSpecimenServos();
+            driveForward(30,1);
+            driveForward(10,0.5);
+            driveForward(5,0.25);
+            sleep(500);
             driveBackward(2,0.25);
+            intakeSpecimenServos();
+
             sleep(500);
             closeIntakeClaw();
             sleep(500);
             goToRaisedIntake();
             goToTransfer();
             transferSample();
-            strafeRight(45,0.25);
-            driveBackward(24,0.25);
-            driveBackward(10,0.25);
-            sleep(500);
+            strafeRight(65,1);
+            driveBackward(24,1);
             ShoulderBasket();
-            driveForward(4.5,0.25);
+            driveForward(3,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(600);
@@ -159,12 +159,43 @@ public class Observation2Specimens extends LinearOpMode {
             linearSlideL.setPower(1);
             sleep(600);
             linearSlidesStop();
-            driveForward(1.5,0.25);
             openOuttakeClaw();
             ShoulderTransfer();
-            goToFullyBack();
-            driveForward(17,1);
-            strafeLeft(40,1);
+
+            driveForward(15,1);
+            strafeLeft(45,1);
+            driveBackward(30,1);
+            strafeLeft(15,1);
+            intakeSpecimenMotor();
+            driveForward(30,1);
+            driveForward(10,0.5);
+            driveForward(5,0.25);
+            sleep(500);
+            driveBackward(2,0.25);
+            intakeSpecimenServos();
+
+            sleep(500);
+            closeIntakeClaw();
+            sleep(500);
+            goToRaisedIntake();
+            goToTransfer();
+            transferSample();
+            strafeRight(65,1);
+            driveBackward(24,1);
+            ShoulderBasket();
+            driveForward(3,0.25);
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(600);
+            linearSlidesStop();
+            sleep(500);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(600);
+            linearSlidesStop();
+            openOuttakeClaw();
+            ShoulderTransfer();
+
 
 
 
@@ -368,7 +399,6 @@ public class Observation2Specimens extends LinearOpMode {
     }
 
     public void ShoulderBasket() {
-        closeOuttakeClaw();
         OuttakeShoulder.setPosition(ShoulderPositionBasket);
     }
 

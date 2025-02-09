@@ -556,19 +556,13 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                if (intakeState == IntakeState.INTAKE) {
+                if (intakeState == IntakeState.INTAKE){
                     goToPositioningFromIntake();
 
-                } else if (intakeState == IntakeState.SPECIMEN){
+                } else if (intakeState == IntakeState.SPECIMEN) {
                     goToRaisedIntake();
 
-                } else if (intakeState == IntakeState.POSITIONING){
-                    intakeElbowR.setPosition(R_ELBOW_FULLY_BACK);
-                    intakeElbowL.setPosition(L_ELBOW_FULLY_BACK);
-
-                    speed = 0.5;
                 }
-
                 HandleDriveControls();
             }
             if (gamepad2.a) {
