@@ -131,8 +131,9 @@ public class NetScore2Samples extends LinearOpMode {
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnLeft(60,0.25);
-            driveForward(5,0.5);
+            turnLeft(55,0.25);
+            driveForward(4,0.5);
+            strafeLeft(2,0.25);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
@@ -160,7 +161,7 @@ public class NetScore2Samples extends LinearOpMode {
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1400);
+            sleep(1600);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 

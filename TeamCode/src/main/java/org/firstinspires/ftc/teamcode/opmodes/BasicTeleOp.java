@@ -28,6 +28,8 @@ public class BasicTeleOp extends LinearOpMode {
     private Servo OuttakeShoulder;
     private Servo OuttakeClaw;
 
+    private Servo specimenClaw;
+
     //Outtake Shoulder
 
     private final double ShoulderPositionTransfer = 0.7;
@@ -35,6 +37,9 @@ public class BasicTeleOp extends LinearOpMode {
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
+
+    private final double SpecimenClawOpen = 0.4;
+    private final double SpecimenClawClosed = 1;
 
     //Linear Slides
     private final double linearSlidesPower = 1;
@@ -44,7 +49,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.4;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.79;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 1;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.6;
 
 
@@ -411,6 +416,7 @@ public class BasicTeleOp extends LinearOpMode {
             OuttakeClaw = hardwareMap.get(Servo.class, "OuttakeClaw");
             OuttakeShoulder = hardwareMap.get(Servo.class, "OuttakeShoulder");
             intakeWrist = hardwareMap.get(Servo.class, "intakeWrist");
+            specimenClaw = hardwareMap.get(Servo.class, "specimenClaw");
 
             intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             linearSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -458,7 +464,9 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             // Update speed based on robot state
-            else {
+            if (intakeState == IntakeState.POSITIONING) {
+                speed = 0.25;
+            } else {
                 // Handle other speed controls
 //                if (gamepad1.a) {
 //                    speed = 0.25;
@@ -479,8 +487,7 @@ public class BasicTeleOp extends LinearOpMode {
 
                 } else if (gamepad1.right_trigger > 0.05) {
                     speed = 0.25;
-                }
-                else {
+                } else {
                     speed = 0.5;
                 }
             }
@@ -514,20 +521,11 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up) {
-                rightFront.setPower(0);
-                rightRear.setPower(0);
-                leftFront.setPower(0);
-                leftRear.setPower(0);
-
-                ShoulderHighTransfer();
-                intakeSpecimen();
-                ShoulderTransfer();
-
-                HandleDriveControls();
+                specimenClaw.setPosition(SpecimenClawClosed);
             }
 
             if (gamepad2.dpad_down) {
-                goToFullyBack();
+                specimenClaw.setPosition(SpecimenClawOpen);
             }
 
             if (gamepad2.b) {
