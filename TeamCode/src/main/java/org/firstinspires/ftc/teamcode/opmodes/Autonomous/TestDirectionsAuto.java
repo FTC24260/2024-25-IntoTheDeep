@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.opmodes.BasicTeleOp;
 
-@Autonomous (name = "NetScore3Samples",  group = "Qualifiers" )
-public class NetScore3Samples extends LinearOpMode {
+@Autonomous (name = "TestDirectionsAuto",  group = "Qualifiers" )
+public class TestDirectionsAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
@@ -111,80 +111,7 @@ public class NetScore3Samples extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            //Pre-load Sample Basket Score
-            driveForward(12,1);
-            strafeLeft(6,1);
-            turnRight(55,1);
-            sleep(300);
-            strafeLeft(7,1);
-            driveBackward(13,1);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            sleep(1600);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            driveBackward(5,1);
-            ShoulderBasket();
-            sleep(500);
-            ShoulderTransfer();
-            driveForward(7.5,1);
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            driveForward(3,1);
-            sleep(1500);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-            //First Neutral Sample Basket Score
-            turnLeft(60,1);
-            driveForward(5,1);
-            strafeLeft(3,1);
-            goToPositioning();
-            openIntakeClaw();
-            goToIntakeFromPositioning();
-            closeIntakeClaw();
-            ShoulderTransfer();
-            openOuttakeClaw();
-            goToTransfer();
-            sleep(400);
-            transferSample();
-            sleep(300);
-            driveBackward(10,1);
-            goToFullyBack();
-            turnRight(55,1);
-            strafeLeft(8,1);
-            linearSlideR.setPower(1);
-            linearSlideL.setPower(-1);
-            driveBackward(6,1);
-            sleep(1200);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-            ShoulderBasket();
-            sleep(700);
-            driveForward(5,1);
-            strafeLeft(4,1);
-            ShoulderTransfer();
-            linearSlideR.setPower(-1);
-            linearSlideL.setPower(1);
-            sleep(1400);
-            linearSlideR.setPower(0);
-            linearSlideL.setPower(0);
-
-
-            turnLeft(50,1);
-            driveForward(8,1);
-            strafeLeft(5,1);
-            openIntakeClaw();
-            goToIntake();
-            closeIntakeClaw();
-            goToTransfer();
-            transferSample();
-
-
-            leftFront.setPower(0);
-            rightFront.setPower(0);
-            leftRear.setPower(0);
-            rightRear.setPower(0);
+            driveDeceleration(20, 0.5);
 
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
@@ -240,7 +167,63 @@ public class NetScore3Samples extends LinearOpMode {
         drive(-ticks, ticks, -ticks, ticks, speed);
     }
 
-    // Original drive method modified to be private since we'll use the new methods above
+    private void driveAngledRF(int inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        leftFront.setTargetPosition(ticks);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setPower(speed);
+
+        rightRear.setTargetPosition(ticks);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setPower(speed);
+
+        while (opModeIsActive() && leftFront.isBusy() && rightRear.isBusy()) {
+            idle();
+        }
+    }
+
+    private void driveAngledLF(int inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        leftRear.setTargetPosition(ticks);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setPower(speed);
+
+        rightFront.setTargetPosition(ticks);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setPower(speed);
+
+        while (opModeIsActive() && rightFront.isBusy() && leftRear.isBusy()) {
+            idle();
+        }
+    }
+
+    private void driveForwardConstantDirection(int inches, double speed) {
+        driveForward(inches, speed);
+        sleep(1000);
+        turnLeft(45, speed);
+        sleep(1000);
+        driveAngledRF(inches,speed);
+        sleep(1000);
+        turnLeft(45,speed);
+        sleep(1000);
+        strafeRight(inches,speed);
+
+
+
+    }
+
+    private void driveDeceleration(int inches, double speed) {
+        while (speed != -0.5) {
+            speed -= 0.1;
+        }
+       leftFront.setPower(speed);
+       leftRear.setPower(speed);
+       rightFront.setPower(speed);
+       rightRear.setPower(speed);
+
+
+
+    }
     private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
         rightFrontPos += rightFrontTarget;
