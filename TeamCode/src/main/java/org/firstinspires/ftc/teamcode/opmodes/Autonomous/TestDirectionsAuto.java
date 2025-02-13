@@ -111,6 +111,12 @@ public class TestDirectionsAuto extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
+            driveForwardAccelDecel(10,0.5);
+            waitForMotors();
+            strafeRightAccelDecel(35,0.5);
+            waitForMotors();
+            driveBackwardAccelDecel(10,0.5);
+            waitForMotors();
 
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
@@ -126,6 +132,20 @@ public class TestDirectionsAuto extends LinearOpMode {
     // Convert inches to ticks
     private int inchesToTicks(double inches) {
         return (int)(inches * ticksPerInch);
+    }
+
+    private void waitForMotors() {
+        while (opModeIsActive() &&
+                (leftFront.isBusy() || rightFront.isBusy() ||
+                        leftRear.isBusy() || rightRear.isBusy())) {
+            telemetry.addData("Status", "Moving...");
+            telemetry.addData("Left Front", leftFront.getCurrentPosition());
+            telemetry.addData("Right Front", rightFront.getCurrentPosition());
+            telemetry.addData("Left Rear", leftRear.getCurrentPosition());
+            telemetry.addData("Right Rear", rightRear.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
     }
 
     // Drive forward/backward with acceleration/deceleration
