@@ -188,43 +188,108 @@ public class NetScore2Samples extends LinearOpMode {
     }
 
     // Drive forward/backward by a specified distance in inches
-    private void driveForward(double inches, double speed) {
+    private void driveForward(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(ticks, ticks, ticks, ticks, speed);
+        driveAccelDecel(ticks, ticks, ticks, ticks, maxSpeed);
     }
 
-    private void driveBackward(double inches, double speed) {
+    private void driveBackward(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(-ticks, -ticks, -ticks, -ticks, speed);
+        driveAccelDecel(-ticks, -ticks, -ticks, -ticks, maxSpeed);
     }
 
-    // Strafe left/right by a specified distance in inches
-    private void strafeRight(double inches, double speed) {
-        // Positive inches = strafe right, negative = strafe left
+    // Strafe with acceleration/deceleration
+    private void strafeRight(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(ticks, -ticks, -ticks, ticks, speed);
+        driveAccelDecel(ticks, -ticks, -ticks, ticks, maxSpeed);
     }
 
-    private void strafeLeft(double inches, double speed) {
-        // Positive inches = strafe right, negative = strafe left
+    private void strafeLeft(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(-ticks, ticks, ticks, -ticks, speed);
+        driveAccelDecel(-ticks, ticks, ticks, -ticks, maxSpeed);
     }
 
-    // Turn by a specified distance in inches (measured at wheels)
-    private void turnRight(double degrees, double speed) {
+    // Turn with acceleration/deceleration
+    private void turnRight(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(ticks, -ticks, ticks, -ticks, speed);
+        driveAccelDecel(ticks, -ticks, ticks, -ticks, maxSpeed);
     }
 
-    private void turnLeft(double degrees, double speed) {
-        // Positive inches = turn right, negative = turn left
+    private void turnLeft(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(-ticks, ticks, -ticks, ticks, speed);
+        driveAccelDecel(-ticks, ticks, -ticks, ticks, maxSpeed);
     }
 
+    // Modified driveAccelDecel to accept individual motor ticks
+    private void driveAccelDecel(int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
+        // Set target positions
+        leftFront.setTargetPosition(leftFrontPos + leftFrontTicks);
+        rightFront.setTargetPosition(rightFrontPos + rightFrontTicks);
+        leftRear.setTargetPosition(leftRearPos + leftRearTicks);
+        rightRear.setTargetPosition(rightRearPos + rightRearTicks);
+
+        // Switch to RUN_TO_POSITION mode
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Start at zero speed
+        double currentSpeed = 0;
+
+        // Calculate total movement distance (use average of absolute ticks)
+        int totalTicks = (Math.abs(leftFrontTicks) + Math.abs(rightFrontTicks) +
+                Math.abs(leftRearTicks) + Math.abs(rightRearTicks)) / 4;
+
+        // Calculate midpoint for acceleration/deceleration
+        int midpoint = totalTicks / 2;
+
+        while (opModeIsActive() &&
+                (leftFront.isBusy() || rightFront.isBusy() ||
+                        leftRear.isBusy() || rightRear.isBusy())) {
+
+            // Calculate progress (average of all motors)
+            int currentProgress = (Math.abs(leftFront.getCurrentPosition() - leftFrontPos) +
+                    Math.abs(rightFront.getCurrentPosition() - rightFrontPos) +
+                    Math.abs(leftRear.getCurrentPosition() - leftRearPos) +
+                    Math.abs(rightRear.getCurrentPosition() - rightRearPos)) / 4;
+
+            // Acceleration phase until halfway
+            if (currentProgress < midpoint) {
+                currentSpeed = Math.min(currentSpeed + 0.01, maxSpeed);
+            }
+            // Deceleration phase after halfway
+            else {
+                currentSpeed = Math.max(currentSpeed - 0.01, 0);
+            }
+
+            // Apply power to all motors
+            leftFront.setPower(currentSpeed);
+            rightFront.setPower(currentSpeed);
+            leftRear.setPower(currentSpeed);
+            rightRear.setPower(currentSpeed);
+
+            sleep(20); // Small delay for smooth acceleration/deceleration
+
+            telemetry.addData("Current Speed", currentSpeed);
+            telemetry.addData("Progress", "%d / %d", currentProgress, totalTicks);
+            telemetry.update();
+        }
+
+        // Update stored positions
+        leftFrontPos = leftFront.getCurrentPosition();
+        rightFrontPos = rightFront.getCurrentPosition();
+        leftRearPos = leftRear.getCurrentPosition();
+        rightRearPos = rightRear.getCurrentPosition();
+
+        // Stop all motors
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftRear.setPower(0);
+        rightRear.setPower(0);
+    }
     // Original drive method modified to be private since we'll use the new methods above
     private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;

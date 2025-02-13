@@ -49,7 +49,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.4;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 1;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.8;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.6;
 
 
@@ -305,7 +305,7 @@ public class BasicTeleOp extends LinearOpMode {
             openOuttakeClaw();
             sleep(300);
         } else {
-            closeOuttakeClawLoosely();
+            closeOuttakeClaw();
             sleep(300);
         }
     }

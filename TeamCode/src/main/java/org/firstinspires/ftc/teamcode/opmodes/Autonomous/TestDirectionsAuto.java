@@ -111,7 +111,6 @@ public class TestDirectionsAuto extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveDeceleration(20, 0.5);
 
             while (opModeIsActive()) {
                 telemetry.addData("Status", "Holding Position");
@@ -129,100 +128,108 @@ public class TestDirectionsAuto extends LinearOpMode {
         return (int)(inches * ticksPerInch);
     }
 
-    // Drive forward/backward by a specified distance in inches
-    private void driveForward(double inches, double speed) {
+    // Drive forward/backward with acceleration/deceleration
+    private void driveForwardAccelDecel(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(ticks, ticks, ticks, ticks, speed);
+        driveAccelDecel(ticks, ticks, ticks, ticks, maxSpeed);
     }
 
-    private void driveBackward(double inches, double speed) {
+    private void driveBackwardAccelDecel(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(-ticks, -ticks, -ticks, -ticks, speed);
+        driveAccelDecel(-ticks, -ticks, -ticks, -ticks, maxSpeed);
     }
 
-    // Strafe left/right by a specified distance in inches
-    private void strafeRight(double inches, double speed) {
-        // Positive inches = strafe right, negative = strafe left
+    // Strafe with acceleration/deceleration
+    private void strafeRightAccelDecel(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(ticks, -ticks, -ticks, ticks, speed);
+        driveAccelDecel(ticks, -ticks, -ticks, ticks, maxSpeed);
     }
 
-    private void strafeLeft(double inches, double speed) {
-        // Positive inches = strafe right, negative = strafe left
+    private void strafeLeftAccelDecel(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        drive(-ticks, ticks, ticks, -ticks, speed);
+        driveAccelDecel(-ticks, ticks, ticks, -ticks, maxSpeed);
     }
 
-    // Turn by a specified distance in inches (measured at wheels)
-    private void turnRight(double degrees, double speed) {
+    // Turn with acceleration/deceleration
+    private void turnRightAccelDecel(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(ticks, -ticks, ticks, -ticks, speed);
+        driveAccelDecel(ticks, -ticks, ticks, -ticks, maxSpeed);
     }
 
-    private void turnLeft(double degrees, double speed) {
-        // Positive inches = turn right, negative = turn left
+    private void turnLeftAccelDecel(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(-ticks, ticks, -ticks, ticks, speed);
+        driveAccelDecel(-ticks, ticks, -ticks, ticks, maxSpeed);
     }
 
-    private void driveAngledRF(int inches, double speed) {
-        int ticks = inchesToTicks(inches);
-        leftFront.setTargetPosition(ticks);
+    // Modified driveAccelDecel to accept individual motor ticks
+    private void driveAccelDecel(int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
+        // Set target positions
+        leftFront.setTargetPosition(leftFrontPos + leftFrontTicks);
+        rightFront.setTargetPosition(rightFrontPos + rightFrontTicks);
+        leftRear.setTargetPosition(leftRearPos + leftRearTicks);
+        rightRear.setTargetPosition(rightRearPos + rightRearTicks);
+
+        // Switch to RUN_TO_POSITION mode
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFront.setPower(speed);
-
-        rightRear.setTargetPosition(ticks);
-        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightRear.setPower(speed);
-
-        while (opModeIsActive() && leftFront.isBusy() && rightRear.isBusy()) {
-            idle();
-        }
-    }
-
-    private void driveAngledLF(int inches, double speed) {
-        int ticks = inchesToTicks(inches);
-        leftRear.setTargetPosition(ticks);
-        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftRear.setPower(speed);
-
-        rightFront.setTargetPosition(ticks);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setPower(speed);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (opModeIsActive() && rightFront.isBusy() && leftRear.isBusy()) {
-            idle();
+        // Start at zero speed
+        double currentSpeed = 0;
+
+        // Calculate total movement distance (use average of absolute ticks)
+        int totalTicks = (Math.abs(leftFrontTicks) + Math.abs(rightFrontTicks) +
+                Math.abs(leftRearTicks) + Math.abs(rightRearTicks)) / 4;
+
+        // Calculate midpoint for acceleration/deceleration
+        int midpoint = totalTicks / 2;
+
+        while (opModeIsActive() &&
+                (leftFront.isBusy() || rightFront.isBusy() ||
+                        leftRear.isBusy() || rightRear.isBusy())) {
+
+            // Calculate progress (average of all motors)
+            int currentProgress = (Math.abs(leftFront.getCurrentPosition() - leftFrontPos) +
+                    Math.abs(rightFront.getCurrentPosition() - rightFrontPos) +
+                    Math.abs(leftRear.getCurrentPosition() - leftRearPos) +
+                    Math.abs(rightRear.getCurrentPosition() - rightRearPos)) / 4;
+
+            // Acceleration phase until halfway
+            if (currentProgress < midpoint) {
+                currentSpeed = Math.min(currentSpeed + 0.01, maxSpeed);
+            }
+            // Deceleration phase after halfway
+            else {
+                currentSpeed = Math.max(currentSpeed - 0.01, 0);
+            }
+
+            // Apply power to all motors
+            leftFront.setPower(currentSpeed);
+            rightFront.setPower(currentSpeed);
+            leftRear.setPower(currentSpeed);
+            rightRear.setPower(currentSpeed);
+
+            sleep(20); // Small delay for smooth acceleration/deceleration
+
+            telemetry.addData("Current Speed", currentSpeed);
+            telemetry.addData("Progress", "%d / %d", currentProgress, totalTicks);
+            telemetry.update();
         }
-    }
 
-    private void driveForwardConstantDirection(int inches, double speed) {
-        driveForward(inches, speed);
-        sleep(1000);
-        turnLeft(45, speed);
-        sleep(1000);
-        driveAngledRF(inches,speed);
-        sleep(1000);
-        turnLeft(45,speed);
-        sleep(1000);
-        strafeRight(inches,speed);
+        // Update stored positions
+        leftFrontPos = leftFront.getCurrentPosition();
+        rightFrontPos = rightFront.getCurrentPosition();
+        leftRearPos = leftRear.getCurrentPosition();
+        rightRearPos = rightRear.getCurrentPosition();
 
-
-
-    }
-
-    private void driveDeceleration(int inches, double speed) {
-        while (speed != -0.5) {
-            speed -= 0.1;
-        }
-       leftFront.setPower(speed);
-       leftRear.setPower(speed);
-       rightFront.setPower(speed);
-       rightRear.setPower(speed);
-
-
-
+        // Stop all motors
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftRear.setPower(0);
+        rightRear.setPower(0);
     }
     private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
