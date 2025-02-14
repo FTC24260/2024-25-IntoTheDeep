@@ -109,17 +109,17 @@ public class Observation2Specimens extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveBackward(23,0.25);
-            strafeRight(13,0.25);
-            driveBackward(10,0.25);
+            driveBackward(23,0.75);
+            strafeRight(13,0.75);
+            driveBackward(5,0.25);
             sleep(500);
-            driveForward(4.5,0.25);
+            ShoulderBasket();
+            driveForward(3,0.25);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(600);
             linearSlidesStop();
-            ShoulderBasket();
-            sleep(800);
+            sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             sleep(600);
@@ -128,13 +128,13 @@ public class Observation2Specimens extends LinearOpMode {
             ShoulderTransfer();
 
 
-            driveForward(15,0.25);
-            driveForward(12,0.25);
+            driveForward(19,0.75);
+            driveForward(6,0.25);
             strafeLeft(50,1);
             driveBackward(20,0.25);
             intakeSpecimenMotor();
             openIntakeClaw();
-            driveForward(15,0.25);
+            driveForward(20,0.25);
             sleep(1000);
             intakeSpecimenServos();
             driveBackward(3,0.25);
@@ -145,27 +145,29 @@ public class Observation2Specimens extends LinearOpMode {
             goToTransfer();
             sleep(700);
             transferSample();
-            strafeRight(45,0.25);
-            driveBackward(24,0.25);
-            driveBackward(10,0.25);
-            sleep(500);
-            driveForward(4.5,0.25);
+            driveBackward(5,0.25);
+            goToFullyBack();
+            strafeRight(50,0.75);
+            driveForward(12,0.25);
+            driveBackward(28,0.5);
+            driveBackward(8,0.25);
+            driveForward(5,0.25);
+            sleep(1000);
+            ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(600);
+            sleep(500);
             linearSlidesStop();
-            ShoulderBasket();
-            sleep(800);
+            sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(600);
+            sleep(500);
             linearSlidesStop();
-            driveForward(1.5,0.25);
             openOuttakeClaw();
             ShoulderTransfer();
             goToFullyBack();
-            driveForward(17,1);
-            strafeLeft(40,1);
+            driveForward(19,1);
+            strafeLeft(50,1);
 
 
 
