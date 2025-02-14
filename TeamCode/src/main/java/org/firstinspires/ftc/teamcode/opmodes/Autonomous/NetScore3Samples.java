@@ -112,11 +112,10 @@ public class NetScore3Samples extends LinearOpMode {
 
         if (opModeIsActive()) {
             //Pre-load Sample Basket Score
-            driveForward(12,1);
-            strafeLeft(6,1);
-            turnRight(55,1);
+            driveForward(12,0.5);
+            strafeLeft(6,0.5);
             sleep(300);
-            strafeLeft(7,1);
+            turnRight(55,1);
             driveBackward(13,1);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -238,6 +237,38 @@ public class NetScore3Samples extends LinearOpMode {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
         drive(-ticks, ticks, -ticks, ticks, speed);
+    }
+
+    private void driveAngledRF(int inches, double speed) {
+        int ticks = inchesToTicks(inches);
+
+        leftFront.setTargetPosition(ticks);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setPower(speed);
+
+        rightRear.setTargetPosition(ticks);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setPower(speed);
+
+        while (opModeIsActive() && leftFront.isBusy() && rightRear.isBusy()) {
+            idle();
+        }
+    }
+
+    private void driveAngledLF(int inches, double speed) {
+        int ticks = inchesToTicks(inches);
+
+        leftRear.setTargetPosition(ticks);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setPower(speed);
+
+        rightFront.setTargetPosition(ticks);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setPower(speed);
+
+        while (opModeIsActive() && rightFront.isBusy() && leftRear.isBusy()) {
+            idle();
+        }
     }
 
     // Original drive method modified to be private since we'll use the new methods above
