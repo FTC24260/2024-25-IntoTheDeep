@@ -161,7 +161,7 @@ public class NetScore2Samples extends LinearOpMode {
             ShoulderTransfer();
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(1600);
+            sleep(1400);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
@@ -190,36 +190,36 @@ public class NetScore2Samples extends LinearOpMode {
     // Drive forward/backward by a specified distance in inches
     private void driveForward(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        driveAccelDecel(ticks, ticks, ticks, ticks, maxSpeed);
+        drive(ticks, ticks, ticks, ticks, maxSpeed);
     }
 
     private void driveBackward(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        driveAccelDecel(-ticks, -ticks, -ticks, -ticks, maxSpeed);
+        drive(-ticks, -ticks, -ticks, -ticks, maxSpeed);
     }
 
     // Strafe with acceleration/deceleration
     private void strafeRight(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        driveAccelDecel(ticks, -ticks, -ticks, ticks, maxSpeed);
+        drive(ticks, -ticks, -ticks, ticks, maxSpeed);
     }
 
     private void strafeLeft(double inches, double maxSpeed) {
         int ticks = inchesToTicks(inches);
-        driveAccelDecel(-ticks, ticks, ticks, -ticks, maxSpeed);
+        drive(-ticks, ticks, ticks, -ticks, maxSpeed);
     }
 
     // Turn with acceleration/deceleration
     private void turnRight(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        driveAccelDecel(ticks, -ticks, ticks, -ticks, maxSpeed);
+        drive(ticks, -ticks, ticks, -ticks, maxSpeed);
     }
 
     private void turnLeft(double degrees, double maxSpeed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        driveAccelDecel(-ticks, ticks, -ticks, ticks, maxSpeed);
+        drive(-ticks, ticks, -ticks, ticks, maxSpeed);
     }
 
     // Modified driveAccelDecel to accept individual motor ticks
