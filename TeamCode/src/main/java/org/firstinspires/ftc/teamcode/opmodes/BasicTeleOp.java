@@ -521,11 +521,11 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up) {
-                specimenClaw.setPosition(SpecimenClawClosed);
+                intakeWristStraight();
             }
 
             if (gamepad2.dpad_down) {
-                specimenClaw.setPosition(SpecimenClawOpen);
+                goToFullyBack();
             }
 
             if (gamepad2.b) {
