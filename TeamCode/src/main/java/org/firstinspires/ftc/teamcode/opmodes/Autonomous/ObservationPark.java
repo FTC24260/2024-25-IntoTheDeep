@@ -153,7 +153,7 @@ public class ObservationPark extends LinearOpMode {
     }
 
     // Original drive method modified to be private since we'll use the new methods above
-    private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
+    private void driveOld (int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
         rightFrontPos += rightFrontTarget;
         leftRearPos += leftBackTarget;
@@ -177,6 +177,79 @@ public class ObservationPark extends LinearOpMode {
         while (opModeIsActive() && leftFront.isBusy() && rightFront.isBusy() && leftRear.isBusy() && rightRear.isBusy()) {
             idle();
         }
+    }
+
+    private void drive(int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
+        // Set target positions
+        int targetLF = leftFrontPos + leftFrontTicks;
+        int targetRF = rightFrontPos + rightFrontTicks;
+        int targetLR = leftRearPos + leftRearTicks;
+        int targetRR = rightRearPos + rightRearTicks;
+
+        leftFront.setTargetPosition(targetLF);
+        rightFront.setTargetPosition(targetRF);
+        leftRear.setTargetPosition(targetLR);
+        rightRear.setTargetPosition(targetRR);
+
+        // Switch to RUN_TO_POSITION mode
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        double currentSpeed = 0.1;
+        int totalTicks = Math.max(Math.max(
+                        Math.abs(leftFrontTicks),
+                        Math.abs(rightFrontTicks)),
+                Math.max(
+                        Math.abs(leftRearTicks),
+                        Math.abs(rightRearTicks)
+                )
+        );
+
+        while (opModeIsActive() &&
+                (Math.abs(targetLF - leftFront.getCurrentPosition()) > 25 ||
+                        Math.abs(targetRF - rightFront.getCurrentPosition()) > 25 ||
+                        Math.abs(targetLR - leftRear.getCurrentPosition()) > 25 ||
+                        Math.abs(targetRR - rightRear.getCurrentPosition()) > 25)) {
+
+            // Calculate remaining distance
+            int remainingLF = Math.abs(targetLF - leftFront.getCurrentPosition());
+            int remainingRF = Math.abs(targetRF - rightFront.getCurrentPosition());
+            int remainingLR = Math.abs(targetLR - leftRear.getCurrentPosition());
+            int remainingRR = Math.abs(targetRR - rightRear.getCurrentPosition());
+
+            int remainingDistance = Math.max(Math.max(remainingLF, remainingRF),
+                    Math.max(remainingLR, remainingRR));
+
+            // Acceleration phase
+            if (remainingDistance > totalTicks * 0.7) {
+                currentSpeed = Math.min(currentSpeed + 0.08, maxSpeed);
+            }
+            // Cruise phase
+            else if (remainingDistance > totalTicks * 0.3) {
+                currentSpeed = maxSpeed;
+            }
+            // Deceleration phase
+            else {
+                currentSpeed = Math.max(0.15,
+                        maxSpeed * (remainingDistance / (totalTicks * 0.3)));
+            }
+
+            // Apply power to all motors
+            leftFront.setPower(currentSpeed);
+            rightFront.setPower(currentSpeed);
+            leftRear.setPower(currentSpeed);
+            rightRear.setPower(currentSpeed);
+
+            idle();
+        }
+
+        // Update stored positions
+        leftFrontPos = targetLF;
+        rightFrontPos = targetRF;
+        leftRearPos = targetLR;
+        rightRearPos = targetRR;
     }
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);

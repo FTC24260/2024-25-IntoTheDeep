@@ -35,7 +35,7 @@ public class NetScore2Samples extends LinearOpMode {
 
     //Outtake Shoulder
 
-    private final double ShoulderPositionTransfer = 0.7;
+    private final double ShoulderPositionTransfer = 0.64;
     private final double ShoulderPositionHighTransfer = 0.5;
     private final double ShoulderPositionSpecimen = 0.05;
     private final double ShoulderPositionRest = 0.6;
@@ -85,7 +85,7 @@ public class NetScore2Samples extends LinearOpMode {
     private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
-    private final int MOTOR_TRANSFER_POSITION = 450;
+    private final int MOTOR_TRANSFER_POSITION = 400;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     private enum ClawState {
