@@ -87,7 +87,7 @@ public class Observation2Specimens extends LinearOpMode {
     private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
-    private final int MOTOR_TRANSFER_POSITION = 400;
+    private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
 
@@ -134,7 +134,7 @@ public class Observation2Specimens extends LinearOpMode {
             sleep(200);
             intakeSpecimenMotor();
             openIntakeClaw();
-            driveForward(6,1);
+            driveForward(8,1);
             driveForward(10,0.25);
             sleep(1000);
             intakeSpecimenServos();
@@ -149,9 +149,10 @@ public class Observation2Specimens extends LinearOpMode {
             sleep(1000);
             driveBackward(5,0.25);
             goToFullyBack();
-            strafeRight(47,1);
+            strafeRight(41,1);
             driveBackward(14,1);
             driveBackward(5,0.25);
+//            strafeLeft(5,0.5);
             driveForward(3,0.25);
             sleep(1000);
             ShoulderBasket();
