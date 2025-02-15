@@ -128,14 +128,17 @@ public class Observation3Specimens extends LinearOpMode {
             ShoulderTransfer();
 
 
-            driveForward(10,1);
-            strafeLeft(50,1);
-//            driveBackward(20,1);
-            sleep(200);
+            driveForward(6,1);
+            strafeLeft(43,1);
+//            driveBackward(35,1);
+//            strafeLeft(15,1);
+//            strafeLeft(10,0.25);
+//            strafeRight(15,1);
             intakeSpecimenMotor();
+            sleep(200);
+            driveForward(12,0.75);
             openIntakeClaw();
-            driveForward(8,1);
-            driveForward(7,0.25);
+            driveForward(9,0.25);
             sleep(300);
             intakeSpecimenServos();
             driveBackward(3,0.25);
@@ -152,16 +155,16 @@ public class Observation3Specimens extends LinearOpMode {
 
             strafeRight(41,1);
             driveBackward(11,1);
-            driveBackward(5,0.25);
+            driveBackward(8,0.25);
 //            strafeLeft(5,0.5);
-            driveForward(5,0.25);
+            driveForward(4,0.25);
 //            sleep(1000);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(500);
             linearSlidesStop();
-//            sleep(500);
+            sleep(400);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             sleep(500);
@@ -170,7 +173,10 @@ public class Observation3Specimens extends LinearOpMode {
             ShoulderTransfer();
             goToFullyBack();
             driveForward(19,1);
-            strafeLeft(50,1);
+            strafeLeft(43,1);
+            driveBackward(43,1);
+            strafeLeft(14,1);
+            driveForward(45,1);
 
 
 
