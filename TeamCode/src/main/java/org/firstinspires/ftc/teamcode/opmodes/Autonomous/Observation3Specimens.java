@@ -109,11 +109,11 @@ public class Observation3Specimens extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveBackward(23,1);
-            strafeRight(13,1);
+            driveBackwardProfile(23,1);
+            strafeRightProfile(13,1);
             driveBackward(5,0.25);
 //            sleep(500);
-            driveForward(4,1);
+            driveForwardProfile(4,1);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -128,8 +128,8 @@ public class Observation3Specimens extends LinearOpMode {
             ShoulderTransfer();
 
 
-            driveForward(6,1);
-            strafeLeft(43,1);
+            driveForwardProfile(6,1);
+            strafeLeftProfile(43,1);
 //            driveBackward(35,1);
 //            strafeLeft(15,1);
 //            strafeLeft(10,0.25);
@@ -141,7 +141,7 @@ public class Observation3Specimens extends LinearOpMode {
             driveForward(9,0.25);
             sleep(300);
             intakeSpecimenServos();
-            driveBackward(3,0.25);
+            driveBackward(4,0.25);
             sleep(500);
             closeIntakeClaw();
             sleep(300);
@@ -153,8 +153,8 @@ public class Observation3Specimens extends LinearOpMode {
             driveBackward(5,0.25);
 //            goToFullyBack();
 
-            strafeRight(41,1);
-            driveBackward(11,1);
+            strafeRightProfile(37,1);
+            driveBackwardProfile(15,1);
             driveBackward(8,0.25);
 //            strafeLeft(5,0.5);
             driveForward(4,0.25);
@@ -172,11 +172,11 @@ public class Observation3Specimens extends LinearOpMode {
             openOuttakeClaw();
             ShoulderTransfer();
             goToFullyBack();
-            driveForward(19,1);
-            strafeLeft(43,1);
-            driveBackward(43,1);
-            strafeLeft(14,1);
-            driveForward(45,1);
+            driveForwardProfile(19,1);
+            strafeLeftProfile(43,1);
+            driveBackwardProfile(43,1);
+            strafeLeftProfile(14,1);
+            driveForwardProfile(45,1);
 
 
 
@@ -240,8 +240,45 @@ public class Observation3Specimens extends LinearOpMode {
         drive(-ticks, ticks, -ticks, ticks, speed);
     }
 
+    private void driveForwardProfile(double inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        driveNew(ticks, ticks, ticks, ticks, speed);
+    }
+
+    private void driveBackwardProfile(double inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        driveNew(-ticks, -ticks, -ticks, -ticks, speed);
+    }
+
+    // Strafe left/right by a specified distance in inches
+    private void strafeRightProfile(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
+        int ticks = inchesToTicks(inches);
+        driveNew(ticks, -ticks, -ticks, ticks, speed);
+    }
+
+    private void strafeLeftProfile(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
+        int ticks = inchesToTicks(inches);
+        driveNew(-ticks, ticks, ticks, -ticks, speed);
+    }
+
+    // Turn by a specified distance in inches (measured at wheels)
+    private void turnRightProfile(double degrees, double speed) {
+        double distance = (degrees/360.0) * robotRotationCircumference;
+        int ticks = (int) (distance * ticksPerInch);
+        driveNew(ticks, -ticks, ticks, -ticks, speed);
+    }
+
+    private void turnLeftProfile(double degrees, double speed) {
+        // Positive inches = turn right, negative = turn left
+        double distance = (degrees/360.0) * robotRotationCircumference;
+        int ticks = (int) (distance * ticksPerInch);
+        driveNew(-ticks, ticks, -ticks, ticks, speed);
+    }
+
     // Original drive method modified to be private since we'll use the new methods above
-    private void driveOld (int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
+    private void drive (int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
         rightFrontPos += rightFrontTarget;
         leftRearPos += leftBackTarget;
@@ -267,7 +304,7 @@ public class Observation3Specimens extends LinearOpMode {
         }
     }
 
-    private void drive(int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
+    private void driveNew (int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
         // Set target positions
         int targetLF = leftFrontPos + leftFrontTicks;
         int targetRF = rightFrontPos + rightFrontTicks;
