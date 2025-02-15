@@ -60,8 +60,8 @@ public class BasicTeleOp extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.33;
-    private final double R_ELBOW_TRANSFER = 0.92;
+    private final double L_ELBOW_TRANSFER = 0.31;
+    private final double R_ELBOW_TRANSFER = 0.94;``
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.82;
@@ -405,7 +405,6 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void transferSample() {
         openIntakeClaw();
-        sleep(100);
         closeOuttakeClaw();
 
     }
