@@ -61,7 +61,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
     private final double L_ELBOW_TRANSFER = 0.31;
-    private final double R_ELBOW_TRANSFER = 0.94;``
+    private final double R_ELBOW_TRANSFER = 0.94;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.82;
@@ -85,7 +85,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
-    private final int MOTOR_TRANSFER_POSITION = 400;
+    private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
 
     //Drive Speeds
@@ -144,7 +144,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         closeLooselyIntakeClaw();
-        sleep(500);
+        sleep(200);
         intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_UP_POWER);
@@ -165,7 +165,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_DOWN_POWER);
         openOuttakeClaw();
-        sleep(500);
+        sleep(270);
         intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
 
@@ -487,28 +487,28 @@ public class BasicTeleOp extends LinearOpMode {
                 speed = 0.25;
             } else {
                 // Handle other speed controls
-//                if (gamepad1.a) {
-//                    speed = 0.25;
-//
-//                } else if (gamepad1.b) {
-//                    speed = 0.5;
-//
-//                } else if (gamepad1.y) {
-//                    speed = 0.75;
-//
-//                } else if (gamepad1.x) {
-//                    speed = 1;
-//
-//                }
+                if (gamepad1.a) {
+                    speed = 0.25;
 
-                if (gamepad1.left_trigger > 0.05) {
+                } else if (gamepad1.b) {
+                    speed = 0.5;
+
+                } else if (gamepad1.y) {
+                    speed = 0.75;
+
+                } else if (gamepad1.x) {
                     speed = 1;
 
-                } else if (gamepad1.right_trigger > 0.05) {
-                    speed = 0.25;
-                } else {
-                    speed = 0.5;
                 }
+
+//                if (gamepad1.left_trigger > 0.05) {
+//                    speed = 1;
+//
+//                } else if (gamepad1.right_trigger > 0.05) {
+//                    speed = 0.25;
+//                } else {
+//                    speed = 0.5;
+//                }
             }
         }
         public void HandleNonChassisMovements () {

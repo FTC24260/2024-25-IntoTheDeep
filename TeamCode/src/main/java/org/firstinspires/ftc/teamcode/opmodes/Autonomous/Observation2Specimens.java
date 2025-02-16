@@ -113,12 +113,12 @@ public class Observation2Specimens extends LinearOpMode {
             strafeRight(13,1);
             driveBackward(5,0.25);
             sleep(500);
-            ShoulderBasket();
             driveForward(4,1);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(600);
             linearSlidesStop();
+            ShoulderBasket();
             sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
@@ -155,11 +155,11 @@ public class Observation2Specimens extends LinearOpMode {
 //            strafeLeft(5,0.5);
             driveForward(3,0.25);
             sleep(1000);
-            ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(500);
             linearSlidesStop();
+            ShoulderBasket();
             sleep(500);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);

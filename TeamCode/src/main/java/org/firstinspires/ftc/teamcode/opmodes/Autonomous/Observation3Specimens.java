@@ -47,7 +47,7 @@ public class Observation3Specimens extends LinearOpMode {
     private final double INTAKE_WRIST_90_CC = 0.5;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
     private final double INTAKE_WRIST_135_CC = 0.625;
-    private final double INTAKE_WRIST_STRAIGHT = 0.16;
+    private final double INTAKE_WRIST_STRAIGHT = 0.13;
     private final double INTAKE_WRIST_45_CC = 0.365;
 
     //Linear Slides
@@ -109,39 +109,36 @@ public class Observation3Specimens extends LinearOpMode {
         InitializedPosition();
 
         if (opModeIsActive()) {
-            driveBackwardProfile(23,1);
-            strafeRightProfile(13,1);
+            //First Specimen
+            driveBackward(23,1);
+            strafeRight(13,1);
             driveBackward(5,0.25);
-//            sleep(500);
-            driveForwardProfile(4,1);
+            driveForward(4,1);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
-            sleep(600);
+            sleep(500);
             linearSlidesStop();
-//            sleep(500);
+            sleep(200);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            sleep(600);
+            sleep(500);
             linearSlidesStop();
             openOuttakeClaw();
             ShoulderTransfer();
 
-
-            driveForwardProfile(6,1);
-            strafeLeftProfile(43,1);
-//            driveBackward(35,1);
-//            strafeLeft(15,1);
-//            strafeLeft(10,0.25);
-//            strafeRight(15,1);
+            //Push spike mark and pick up 2nd specimen
+            driveForward(5,0.5);
+            strafeLeft(38,1);
+            driveBackward(32,1);
+            strafeLeft(15,1);
             intakeSpecimenMotor();
-            sleep(200);
-            driveForward(12,0.75);
+            driveForward(45,1);
+            driveForward(15,0.25);
             openIntakeClaw();
-            driveForward(9,0.25);
-            sleep(300);
+            sleep(1000);
             intakeSpecimenServos();
-            driveBackward(4,0.25);
+            driveBackward(3,0.25);
             sleep(500);
             closeIntakeClaw();
             sleep(300);
@@ -151,14 +148,13 @@ public class Observation3Specimens extends LinearOpMode {
             transferSample();
             sleep(300);
             driveBackward(5,0.25);
-//            goToFullyBack();
 
-            strafeRightProfile(37,1);
-            driveBackwardProfile(15,1);
-            driveBackward(8,0.25);
-//            strafeLeft(5,0.5);
+            //Score 2nd specimen
+            strafeRightProfile(43,1);
+            driveBackward(5,0.5);
+            driveBackward(14,0.25);
+            sleep(200);
             driveForward(4,0.25);
-//            sleep(1000);
             ShoulderBasket();
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
@@ -172,11 +168,51 @@ public class Observation3Specimens extends LinearOpMode {
             openOuttakeClaw();
             ShoulderTransfer();
             goToFullyBack();
-            driveForwardProfile(19,1);
-            strafeLeftProfile(43,1);
-            driveBackwardProfile(43,1);
-            strafeLeftProfile(14,1);
-            driveForwardProfile(45,1);
+
+            //Score 3rd specimen
+            driveForward(8,1);
+            strafeLeft(50,1);
+            intakeSpecimenMotor();
+            sleep(200);
+            openIntakeClaw();
+            driveForward(8,1);
+            driveForward(10,0.25);
+            sleep(1000);
+            intakeSpecimenServos();
+            driveBackward(3,0.25);
+            sleep(500);
+            closeIntakeClaw();
+            sleep(500);
+            goToRaisedIntake();
+            goToTransfer();
+            sleep(700);
+            transferSample();
+            sleep(1000);
+            driveBackward(5,0.25);
+            goToFullyBack();
+            strafeRight(41,1);
+            driveBackward(14,1);
+            driveBackward(5,0.25);
+//            strafeLeft(5,0.5);
+            driveForward(3,0.25);
+            sleep(1000);
+            ShoulderBasket();
+            linearSlideR.setPower(1);
+            linearSlideL.setPower(-1);
+            sleep(500);
+            linearSlidesStop();
+            sleep(500);
+            linearSlideR.setPower(-1);
+            linearSlideL.setPower(1);
+            sleep(500);
+            linearSlidesStop();
+            openOuttakeClaw();
+            ShoulderTransfer();
+            goToFullyBack();
+
+            //Park
+            driveForward(19,1);
+            strafeLeft(50,1);
 
 
 
