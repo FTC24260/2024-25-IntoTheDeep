@@ -160,7 +160,7 @@ public class Observation2Specimens extends LinearOpMode {
             sleep(500);
             linearSlidesStop();
             ShoulderBasket();
-            sleep(500);
+            sleep(1000);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
             sleep(500);

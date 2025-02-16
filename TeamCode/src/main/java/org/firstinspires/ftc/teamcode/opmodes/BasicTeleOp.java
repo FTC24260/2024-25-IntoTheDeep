@@ -76,7 +76,7 @@ public class BasicTeleOp extends LinearOpMode {
     private final double INTAKE_WRIST_90_CC = 0.44;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
     private final double INTAKE_WRIST_135_CC = 0.6;
-    private final double INTAKE_WRIST_STRAIGHT = 0.14;
+    private final double INTAKE_WRIST_STRAIGHT = 0.13;
     private final double INTAKE_WRIST_45_CC = 0.32;
     private final double INTAKE_WRIST_45_C = 0;
 
@@ -100,7 +100,7 @@ public class BasicTeleOp extends LinearOpMode {
     private ClawState clawState = ClawState.CLOSED;
 
     private enum IntakeState {
-        POSITIONING, INTAKE, TRANSFER, SPECIMEN, FULLYBACK
+        POSITIONING, INTAKE, TRANSFER, SPECIMEN, FULLYBACK, SPECIMENUP
     }
 
     private IntakeState intakeState = IntakeState.TRANSFER;
@@ -144,7 +144,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
         intakeElbowL.setPosition(L_ELBOW_TRANSFER);
         closeLooselyIntakeClaw();
-        sleep(200);
+        sleep(500);
         intakeMotor.setTargetPosition(-MOTOR_TRANSFER_POSITION);
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_UP_POWER);
@@ -157,7 +157,7 @@ public class BasicTeleOp extends LinearOpMode {
         intakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         intakeMotor.setPower(INTAKE_UP_POWER);
 
-        intakeState = IntakeState.SPECIMEN;
+        intakeState = IntakeState.SPECIMENUP;
     }
 
     public void goToPositioning() {
@@ -198,11 +198,10 @@ public class BasicTeleOp extends LinearOpMode {
     }
 
     public void intakeSpecimen() {
-        goToPositioning();
+        intakeSpecimenMotor();
         intakeWristUpsideDown();
-        sleep(700);
-        intakeElbowR.setPosition(R_ELBOW_SPECIMEN_INTAKE);
-        intakeElbowL.setPosition(L_ELBOW_SPECIMEN_INTAKE);
+        sleep(400);
+        intakeSpecimenServos();
 
         intakeState = IntakeState.SPECIMEN;
 
@@ -246,8 +245,15 @@ public class BasicTeleOp extends LinearOpMode {
             openIntakeClaw();
             sleep(300);
         } else {
-            closeIntakeClaw();
-            sleep(300);
+            if (intakeState == IntakeState.SPECIMEN) {
+                closeIntakeClaw();
+                sleep(300);
+            }
+            else {
+                closeIntakeClaw();
+                sleep(200);
+                goToPositioningFromIntake();
+            }
         }
     }
 
@@ -362,7 +368,7 @@ public class BasicTeleOp extends LinearOpMode {
 
     public void toggleIntakeWristC() {
         if (intakeWristState == IntakeWristState.STRAIGHT) {
-            intakeWristUpsideDown();
+            intakeWrist135CC();
             sleep(300);
 
         } else if (intakeWristState == IntakeWristState.DIAGONALCC) {
@@ -524,7 +530,7 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.start) {
-                if (intakeState == IntakeState.INTAKE || intakeState == IntakeState.SPECIMEN) {
+                if (intakeState == IntakeState.INTAKE || intakeState == IntakeState.SPECIMEN || intakeState == IntakeState.POSITIONING) {
                     toggleIntakeClaw();
                 } else {
                     toggleOuttakeClaw();
@@ -540,14 +546,9 @@ public class BasicTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.dpad_up) {
-                if (intakeState == IntakeState.SPECIMEN) {
-                    intakeSpecimenServos();
-                }
-
-                else {
-                    intakeSpecimenMotor();
-                    sleep(500);
-                }
+                ShoulderHighTransfer();
+                intakeSpecimen();
+                ShoulderTransfer();
             }
 
             if (gamepad2.dpad_down) {
@@ -584,7 +585,7 @@ public class BasicTeleOp extends LinearOpMode {
                 rightRear.setPower(0);
                 leftFront.setPower(0);
                 leftRear.setPower(0);
-                if (intakeState == IntakeState.INTAKE){
+                if (intakeState == IntakeState.INTAKE || intakeState == IntakeState.SPECIMENUP){
                     goToPositioningFromIntake();
 
                 } else if (intakeState == IntakeState.SPECIMEN) {
@@ -601,7 +602,6 @@ public class BasicTeleOp extends LinearOpMode {
                 if (intakeState == IntakeState.INTAKE || intakeState == IntakeState.POSITIONING) {
                     ShoulderTransfer();
                     closeLooselyIntakeClaw();
-                    sleep(100);
                     intakeWristStraight();
                     goToTransfer();
 
