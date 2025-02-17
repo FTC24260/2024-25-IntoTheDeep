@@ -41,6 +41,9 @@ public class NetScore2Samples extends LinearOpMode {
     private final double ShoulderPositionRest = 0.6;
     private final double ShoulderPositionBasket = 0;
 
+    private final double SpecimenClawOpen = 0.4;
+    private final double SpecimenClawClosed = 1;
+
     //Linear Slides
     private final double linearSlidesPower = 1;
     private final double linearSlidesBufferZone = 0.1;
@@ -49,7 +52,7 @@ public class NetScore2Samples extends LinearOpMode {
 
     //Outtake Claw
     private final double OUTTAKE_CLAW_DEFAULT_OPEN_POSITION = 0.4;
-    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.79;
+    private final double OUTTAKE_CLAW_CLOSED_POSITION = 0.8;
     private final double OUTTAKE_CLAW_LOOSELY_CLOSED_POSITION = 0.6;
 
 
@@ -60,8 +63,8 @@ public class NetScore2Samples extends LinearOpMode {
     private final double R_ELBOW_HIGH_POSITIONING = 0.65;
     private final double L_ELBOW_LOW_POSITIONING = 0.67;
     private final double R_ELBOW_LOW_POSITIONING = 0.66;
-    private final double L_ELBOW_TRANSFER = 0.33;
-    private final double R_ELBOW_TRANSFER = 0.92;
+    private final double L_ELBOW_TRANSFER = 0.31;
+    private final double R_ELBOW_TRANSFER = 0.94;
     private final double R_ELBOW_FULLY_BACK = 1;
     private final double L_ELBOW_FULLY_BACK = 0.2;
     private final double R_ELBOW_SPECIMEN_INTAKE = 0.82;
@@ -76,7 +79,7 @@ public class NetScore2Samples extends LinearOpMode {
     private final double INTAKE_WRIST_90_CC = 0.44;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
     private final double INTAKE_WRIST_135_CC = 0.6;
-    private final double INTAKE_WRIST_STRAIGHT = 0.14;
+    private final double INTAKE_WRIST_STRAIGHT = 0.13;
     private final double INTAKE_WRIST_45_CC = 0.32;
     private final double INTAKE_WRIST_45_C = 0;
 
@@ -85,8 +88,9 @@ public class NetScore2Samples extends LinearOpMode {
     private final double INTAKE_DOWN_POWER = 1;
     private final int MOTOR_INTAKE_POSITION = 1050;
     private final int MOTOR_SPECIMEN_INTAKE_POSITION = 800;
-    private final int MOTOR_TRANSFER_POSITION = 400;
+    private final int MOTOR_TRANSFER_POSITION = 450;
     private final int MOTOR_FULLY_BACK_POSITION = 0;
+
 
     private enum ClawState {
         OPEN, CLOSED
@@ -107,33 +111,33 @@ public class NetScore2Samples extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Pre-load Sample Basket Score
-            driveForward(12,0.25);
-            strafeLeft(12,0.25);
-            turnRight(55,0.25);
+            driveForwardProfile(12,0.75);
+            strafeLeftProfile(12,0.75);
+            turnRightProfile(55,0.25);
             sleep(300);
-            strafeLeft(7,0.25);
-            driveBackward(13,0.25);
+            strafeLeftProfile(7,0.75);
+            driveBackwardProfile(13,0.75);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             sleep(1600);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
-            driveBackward(5,0.5);
+            driveBackwardProfile(5,0.5);
             ShoulderBasket();
             sleep(500);
             ShoulderTransfer();
             driveForward(7.5,0.25);
             linearSlideR.setPower(-1);
             linearSlideL.setPower(1);
-            driveForward(3,0.25);
+            driveForwardProfile(3,0.25);
             sleep(1500);
             linearSlideR.setPower(0);
             linearSlideL.setPower(0);
 
             //First Neutral Sample Basket Score
-            turnLeft(55,0.25);
-            driveForward(4,0.5);
-            strafeLeft(2,0.25);
+            turnLeft(55,0.5);
+            driveForwardProfile(6,0.5);
+            strafeLeft(3,0.5);
             goToPositioning();
             openIntakeClaw();
             goToIntakeFromPositioning();
@@ -144,10 +148,10 @@ public class NetScore2Samples extends LinearOpMode {
             sleep(400);
             transferSample();
             sleep(300);
-            driveBackward(10,0.25);
+            driveBackwardProfile(10,0.25);
             goToFullyBack();
-            turnRight(55,0.25);
-            strafeLeft(5,0.5);
+            turnRightProfile(55,0.25);
+            strafeLeftProfile(5,0.5);
             linearSlideR.setPower(1);
             linearSlideL.setPower(-1);
             driveBackward(4,0.25);
@@ -188,110 +192,82 @@ public class NetScore2Samples extends LinearOpMode {
     }
 
     // Drive forward/backward by a specified distance in inches
-    private void driveForward(double inches, double maxSpeed) {
+    private void driveForward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
-        drive(ticks, ticks, ticks, ticks, maxSpeed);
+        drive(ticks, ticks, ticks, ticks, speed);
     }
 
-    private void driveBackward(double inches, double maxSpeed) {
+    private void driveBackward(double inches, double speed) {
         int ticks = inchesToTicks(inches);
-        drive(-ticks, -ticks, -ticks, -ticks, maxSpeed);
+        drive(-ticks, -ticks, -ticks, -ticks, speed);
     }
 
-    // Strafe with acceleration/deceleration
-    private void strafeRight(double inches, double maxSpeed) {
+    // Strafe left/right by a specified distance in inches
+    private void strafeRight(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
-        drive(ticks, -ticks, -ticks, ticks, maxSpeed);
+        drive(ticks, -ticks, -ticks, ticks, speed);
     }
 
-    private void strafeLeft(double inches, double maxSpeed) {
+    private void strafeLeft(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
         int ticks = inchesToTicks(inches);
-        drive(-ticks, ticks, ticks, -ticks, maxSpeed);
+        drive(-ticks, ticks, ticks, -ticks, speed);
     }
 
-    // Turn with acceleration/deceleration
-    private void turnRight(double degrees, double maxSpeed) {
+    // Turn by a specified distance in inches (measured at wheels)
+    private void turnRight(double degrees, double speed) {
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(ticks, -ticks, ticks, -ticks, maxSpeed);
+        drive(ticks, -ticks, ticks, -ticks, speed);
     }
 
-    private void turnLeft(double degrees, double maxSpeed) {
+    private void turnLeft(double degrees, double speed) {
+        // Positive inches = turn right, negative = turn left
         double distance = (degrees/360.0) * robotRotationCircumference;
         int ticks = (int) (distance * ticksPerInch);
-        drive(-ticks, ticks, -ticks, ticks, maxSpeed);
+        drive(-ticks, ticks, -ticks, ticks, speed);
     }
 
-    // Modified driveAccelDecel to accept individual motor ticks
-    private void driveAccelDecel(int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
-        // Set target positions
-        leftFront.setTargetPosition(leftFrontPos + leftFrontTicks);
-        rightFront.setTargetPosition(rightFrontPos + rightFrontTicks);
-        leftRear.setTargetPosition(leftRearPos + leftRearTicks);
-        rightRear.setTargetPosition(rightRearPos + rightRearTicks);
-
-        // Switch to RUN_TO_POSITION mode
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Start at zero speed
-        double currentSpeed = 0;
-
-        // Calculate total movement distance (use average of absolute ticks)
-        int totalTicks = (Math.abs(leftFrontTicks) + Math.abs(rightFrontTicks) +
-                Math.abs(leftRearTicks) + Math.abs(rightRearTicks)) / 4;
-
-        // Calculate midpoint for acceleration/deceleration
-        int midpoint = totalTicks / 2;
-
-        while (opModeIsActive() &&
-                (leftFront.isBusy() || rightFront.isBusy() ||
-                        leftRear.isBusy() || rightRear.isBusy())) {
-
-            // Calculate progress (average of all motors)
-            int currentProgress = (Math.abs(leftFront.getCurrentPosition() - leftFrontPos) +
-                    Math.abs(rightFront.getCurrentPosition() - rightFrontPos) +
-                    Math.abs(leftRear.getCurrentPosition() - leftRearPos) +
-                    Math.abs(rightRear.getCurrentPosition() - rightRearPos)) / 4;
-
-            // Acceleration phase until halfway
-            if (currentProgress < midpoint) {
-                currentSpeed = Math.min(currentSpeed + 0.01, maxSpeed);
-            }
-            // Deceleration phase after halfway
-            else {
-                currentSpeed = Math.max(currentSpeed - 0.01, 0);
-            }
-
-            // Apply power to all motors
-            leftFront.setPower(currentSpeed);
-            rightFront.setPower(currentSpeed);
-            leftRear.setPower(currentSpeed);
-            rightRear.setPower(currentSpeed);
-
-            sleep(20); // Small delay for smooth acceleration/deceleration
-
-            telemetry.addData("Current Speed", currentSpeed);
-            telemetry.addData("Progress", "%d / %d", currentProgress, totalTicks);
-            telemetry.update();
-        }
-
-        // Update stored positions
-        leftFrontPos = leftFront.getCurrentPosition();
-        rightFrontPos = rightFront.getCurrentPosition();
-        leftRearPos = leftRear.getCurrentPosition();
-        rightRearPos = rightRear.getCurrentPosition();
-
-        // Stop all motors
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-        leftRear.setPower(0);
-        rightRear.setPower(0);
+    private void driveForwardProfile(double inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        driveNew(ticks, ticks, ticks, ticks, speed);
     }
+
+    private void driveBackwardProfile(double inches, double speed) {
+        int ticks = inchesToTicks(inches);
+        driveNew(-ticks, -ticks, -ticks, -ticks, speed);
+    }
+
+    // Strafe left/right by a specified distance in inches
+    private void strafeRightProfile(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
+        int ticks = inchesToTicks(inches);
+        driveNew(ticks, -ticks, -ticks, ticks, speed);
+    }
+
+    private void strafeLeftProfile(double inches, double speed) {
+        // Positive inches = strafe right, negative = strafe left
+        int ticks = inchesToTicks(inches);
+        driveNew(-ticks, ticks, ticks, -ticks, speed);
+    }
+
+    // Turn by a specified distance in inches (measured at wheels)
+    private void turnRightProfile(double degrees, double speed) {
+        double distance = (degrees/360.0) * robotRotationCircumference;
+        int ticks = (int) (distance * ticksPerInch);
+        driveNew(ticks, -ticks, ticks, -ticks, speed);
+    }
+
+    private void turnLeftProfile(double degrees, double speed) {
+        // Positive inches = turn right, negative = turn left
+        double distance = (degrees/360.0) * robotRotationCircumference;
+        int ticks = (int) (distance * ticksPerInch);
+        driveNew(-ticks, ticks, -ticks, ticks, speed);
+    }
+
     // Original drive method modified to be private since we'll use the new methods above
-    private void drive(int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
+    private void drive (int leftFrontTarget, int rightFrontTarget, int leftBackTarget, int rightBackTarget, double speed) {
         leftFrontPos += leftFrontTarget;
         rightFrontPos += rightFrontTarget;
         leftRearPos += leftBackTarget;
@@ -315,6 +291,79 @@ public class NetScore2Samples extends LinearOpMode {
         while (opModeIsActive() && leftFront.isBusy() && rightFront.isBusy() && leftRear.isBusy() && rightRear.isBusy()) {
             idle();
         }
+    }
+
+    private void driveNew (int leftFrontTicks, int rightFrontTicks, int leftRearTicks, int rightRearTicks, double maxSpeed) {
+        // Set target positions
+        int targetLF = leftFrontPos + leftFrontTicks;
+        int targetRF = rightFrontPos + rightFrontTicks;
+        int targetLR = leftRearPos + leftRearTicks;
+        int targetRR = rightRearPos + rightRearTicks;
+
+        leftFront.setTargetPosition(targetLF);
+        rightFront.setTargetPosition(targetRF);
+        leftRear.setTargetPosition(targetLR);
+        rightRear.setTargetPosition(targetRR);
+
+        // Switch to RUN_TO_POSITION mode
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        double currentSpeed = 0.1;
+        int totalTicks = Math.max(Math.max(
+                        Math.abs(leftFrontTicks),
+                        Math.abs(rightFrontTicks)),
+                Math.max(
+                        Math.abs(leftRearTicks),
+                        Math.abs(rightRearTicks)
+                )
+        );
+
+        while (opModeIsActive() &&
+                (Math.abs(targetLF - leftFront.getCurrentPosition()) > 25 ||
+                        Math.abs(targetRF - rightFront.getCurrentPosition()) > 25 ||
+                        Math.abs(targetLR - leftRear.getCurrentPosition()) > 25 ||
+                        Math.abs(targetRR - rightRear.getCurrentPosition()) > 25)) {
+
+            // Calculate remaining distance
+            int remainingLF = Math.abs(targetLF - leftFront.getCurrentPosition());
+            int remainingRF = Math.abs(targetRF - rightFront.getCurrentPosition());
+            int remainingLR = Math.abs(targetLR - leftRear.getCurrentPosition());
+            int remainingRR = Math.abs(targetRR - rightRear.getCurrentPosition());
+
+            int remainingDistance = Math.max(Math.max(remainingLF, remainingRF),
+                    Math.max(remainingLR, remainingRR));
+
+            // Acceleration phase
+            if (remainingDistance > totalTicks * 0.7) {
+                currentSpeed = Math.min(currentSpeed + 0.08, maxSpeed);
+            }
+            // Cruise phase
+            else if (remainingDistance > totalTicks * 0.3) {
+                currentSpeed = maxSpeed;
+            }
+            // Deceleration phase
+            else {
+                currentSpeed = Math.max(0.15,
+                        maxSpeed * (remainingDistance / (totalTicks * 0.3)));
+            }
+
+            // Apply power to all motors
+            leftFront.setPower(currentSpeed);
+            rightFront.setPower(currentSpeed);
+            leftRear.setPower(currentSpeed);
+            rightRear.setPower(currentSpeed);
+
+            idle();
+        }
+
+        // Update stored positions
+        leftFrontPos = targetLF;
+        rightFrontPos = targetRF;
+        leftRearPos = targetLR;
+        rightRearPos = targetRR;
     }
     public void goToTransfer() {
         intakeElbowR.setPosition(R_ELBOW_TRANSFER);
@@ -419,9 +468,8 @@ public class NetScore2Samples extends LinearOpMode {
     }
 
     public void transferSample() {
-        closeOuttakeClaw();
-        sleep(50);
         openIntakeClaw();
+        closeOuttakeClaw();
 
     }
 

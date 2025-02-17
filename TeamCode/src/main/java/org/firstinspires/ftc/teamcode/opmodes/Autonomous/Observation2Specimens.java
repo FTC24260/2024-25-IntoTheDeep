@@ -47,7 +47,7 @@ public class Observation2Specimens extends LinearOpMode {
     private final double INTAKE_WRIST_90_CC = 0.5;
     private final double INTAKE_WRIST_UPSIDE_DOWN = 1;
     private final double INTAKE_WRIST_135_CC = 0.625;
-    private final double INTAKE_WRIST_STRAIGHT = 0.16;
+    private final double INTAKE_WRIST_STRAIGHT = 0.13;
     private final double INTAKE_WRIST_45_CC = 0.365;
 
     //Linear Slides
