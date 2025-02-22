@@ -112,6 +112,8 @@ public class NetScore3Samples extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+            //NetScore 3 samples
+
             //Pre-load Sample Basket Score
             driveForward(12,0.8);
             strafeLeft(6,0.8);
@@ -420,6 +422,7 @@ public class NetScore3Samples extends LinearOpMode {
         intakeElbowR.setPosition(R_ELBOW_LOW_POSITIONING);
         intakeElbowL.setPosition(L_ELBOW_LOW_POSITIONING);
     }
+
 
     public void goToIntakeFromPositioning() {
         intakeElbowR.setPosition(R_ELBOW_INTAKE);
